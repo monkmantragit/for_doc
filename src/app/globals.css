@@ -30,6 +30,20 @@
     --primary-color: #8B5C9E;
     --primary-color-light: #F9F5FF;
     --primary-color-dark: #6B4A7E;
+    
+    /* SOI Brand Color System */
+    --soi-navy: #1e3a5f;
+    --soi-purple: #8B5C9E;
+    --soi-pink: #d4a5b8;
+    --soi-mint: #a8c4a2;
+    --soi-white: #ffffff;
+    
+    /* SOI Semantic Colors */
+    --soi-primary: var(--soi-navy);
+    --soi-secondary: var(--soi-purple);
+    --soi-accent-care: var(--soi-pink);
+    --soi-accent-wellness: var(--soi-mint);
+    --soi-surface: var(--soi-white);
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
@@ -708,4 +722,80 @@ figure:has(img:not([src]),
 
 .prose pre {
   @apply rounded-xl shadow-md;
+}
+
+/* SOI Brand Utility Classes */
+@layer components {
+  /* Button System */
+  .btn-soi-primary {
+    @apply bg-soi-navy-800 text-white border-2 border-soi-pink-500 hover:bg-soi-navy-700 focus:ring-2 focus:ring-soi-mint-500 focus:ring-offset-2 px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:shadow-lg;
+  }
+  
+  .btn-soi-secondary {
+    @apply bg-soi-purple-500 text-white border-2 border-soi-mint-500 hover:bg-soi-purple-600 focus:ring-2 focus:ring-soi-pink-500 focus:ring-offset-2 px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:shadow-lg;
+  }
+  
+  .btn-soi-care {
+    @apply bg-soi-pink-500 text-soi-navy-800 border-2 border-soi-navy-800 hover:bg-soi-pink-400 focus:ring-2 focus:ring-soi-purple-500 focus:ring-offset-2 px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:shadow-lg;
+  }
+  
+  .btn-soi-wellness {
+    @apply bg-soi-mint-500 text-soi-navy-800 border-2 border-soi-navy-800 hover:bg-soi-mint-400 focus:ring-2 focus:ring-soi-purple-500 focus:ring-offset-2 px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:shadow-lg;
+  }
+  
+  /* Card System */
+  .card-soi-service {
+    @apply bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300;
+  }
+  
+  .card-soi-testimonial {
+    @apply bg-gradient-to-br from-soi-pink-50 to-soi-pink-100 border border-soi-pink-200 rounded-xl p-6;
+  }
+  
+  .card-soi-success {
+    @apply bg-gradient-to-br from-soi-mint-50 to-soi-mint-100 border border-soi-mint-200 rounded-xl p-6;
+  }
+  
+  /* Text Hierarchy */
+  .text-soi-heading {
+    @apply text-soi-navy-800 font-bold;
+  }
+  
+  .text-soi-subheading {
+    @apply text-soi-purple-500 font-semibold;
+  }
+  
+  .text-soi-body {
+    @apply text-gray-700 leading-relaxed;
+  }
+  
+  /* Background Tints */
+  .bg-tint-care {
+    @apply bg-gradient-to-br from-soi-pink-50 to-soi-pink-100;
+  }
+  
+  .bg-tint-wellness {
+    @apply bg-gradient-to-br from-soi-mint-50 to-soi-mint-100;
+  }
+  
+  .bg-tint-expertise {
+    @apply bg-gradient-to-br from-soi-purple-50 to-soi-purple-100;
+  }
+  
+  .bg-tint-authority {
+    @apply bg-gradient-to-br from-soi-navy-50 to-soi-navy-100;
+  }
+  
+  /* Hero Gradients */
+  .gradient-soi-medical-authority {
+    background: linear-gradient(135deg, #1e3a5f 0%, #8B5C9E 50%, #2a4d6b 100%);
+  }
+  
+  .gradient-soi-care-wellness {
+    background: linear-gradient(135deg, #f4ecf1 0%, #e6f2e6 100%);
+  }
+  
+  .gradient-soi-expertise {
+    background: linear-gradient(135deg, #8B5C9E 0%, #1e3a5f 100%);
+  }
 }

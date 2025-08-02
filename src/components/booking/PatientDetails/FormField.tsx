@@ -33,13 +33,13 @@ export function FormField({
 
   const inputClassName = cn(
     'w-full px-4 py-3 rounded-2xl border bg-white/50',
-    'text-[17px] text-gray-900 placeholder:text-gray-400/80',
+    'text-[17px] text-soi-navy-800 placeholder:text-soi-navy-400/80',
     'backdrop-blur-sm transition-all duration-200',
     'focus:outline-none focus:ring-4',
     {
       'border-red-300 focus:border-red-500 focus:ring-red-200/50': error,
-      'border-green-300 focus:border-green-500 focus:ring-green-200/50': isValid,
-      'border-gray-200/80 hover:border-gray-300 focus:border-blue-500 focus:ring-blue-200/50':
+      'border-soi-mint-300 focus:border-soi-mint-500 focus:ring-soi-mint-200/50': isValid,
+      'border-soi-pink-200/80 hover:border-soi-pink-300 focus:border-soi-pink-500 focus:ring-soi-pink-200/50':
         !error && !isValid,
     }
   );
@@ -47,11 +47,11 @@ export function FormField({
   return (
     <div className="space-y-1.5">
       <div className="flex justify-between items-baseline">
-        <label className="block text-[15px] font-medium text-gray-700">
+        <label className="block text-[15px] font-medium text-soi-navy-700">
           {label}
         </label>
         {optional && (
-          <span className="text-[13px] text-gray-500">Optional</span>
+          <span className="text-[13px] text-soi-navy-500">Optional</span>
         )}
       </div>
 

@@ -78,12 +78,12 @@ export default async function SurgeonsStaffPage({ searchParams }: StaffPageProps
   });
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-tint-care">
       <SiteHeader theme="transparent" />
       
       <main>
         {/* Hero Section - More subtle and refined */}
-        <section className="relative bg-gradient-to-br from-[#2E3A59] via-[#2a3450] to-[#1f2937] pt-20 pb-12">
+        <section className="relative bg-gradient-to-br from-soi-navy-600 via-soi-navy-700 to-soi-navy-800 pt-20 pb-12">
           <Container>
             {/* Breadcrumb */}
             <nav className="flex items-center space-x-2 text-sm text-white/60 mb-6">
@@ -93,7 +93,7 @@ export default async function SurgeonsStaffPage({ searchParams }: StaffPageProps
             </nav>
 
             <div className="max-w-4xl mx-auto text-center">
-              <div className="inline-block bg-[#8B5C9E]/15 text-white px-3 py-1 rounded-md text-xs font-medium mb-4 border border-[#8B5C9E]/20">
+              <div className="inline-block bg-soi-pink-500/10 text-white px-3 py-1 rounded-md text-xs font-medium mb-4 border border-soi-pink-500/20">
                 EXPERT MEDICAL TEAM
             </div>
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
@@ -104,7 +104,7 @@ export default async function SurgeonsStaffPage({ searchParams }: StaffPageProps
             </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3 px-4">
                 <BookingButton 
-                  className="bg-[#8B5C9E] hover:bg-[#7A4F8C] text-white px-6 py-2.5 text-sm font-medium rounded-lg transition-all duration-300 hover:shadow-lg w-full sm:w-auto"
+                  className="bg-soi-navy-500 hover:bg-soi-navy-600 text-white px-6 py-2.5 text-sm font-medium rounded-lg transition-all duration-300 hover:shadow-lg w-full sm:w-auto border-2 border-soi-pink-400"
                   icon={null}
                   text="Book an Appointment"
                 />
@@ -121,20 +121,20 @@ export default async function SurgeonsStaffPage({ searchParams }: StaffPageProps
         </section>
 
         {/* Filter Section - More compact */}
-        <section className="py-8 px-4 md:px-8 lg:px-12 bg-white border-b border-gray-100">
+        <section className="py-8 px-4 md:px-8 lg:px-12 bg-white border-b border-soi-pink-200">
           <Container>
             <div className="max-w-4xl mx-auto">
               {/* Category Filter */}
               <div>
-                <h3 className="text-sm font-medium text-gray-700 mb-3">Filter by Department</h3>
+                <h3 className="text-sm font-medium text-soi-navy-700 mb-3">Filter by Department</h3>
                 <div className="flex flex-wrap gap-2">
                                         <Link 
                     href="/surgeons-staff"
                     className={cn(
                       "px-3 py-1.5 text-sm rounded-md border transition-all duration-200",
                       !category
-                        ? "bg-[#8B5C9E] text-white border-[#8B5C9E]"
-                        : "bg-white text-gray-600 border-gray-200 hover:border-[#8B5C9E]/50 hover:text-[#8B5C9E]"
+                        ? "bg-soi-navy-500 text-white border-soi-navy-500"
+                        : "bg-white text-soi-navy-600 border-soi-pink-200 hover:border-soi-pink-400 hover:text-soi-pink-600"
                     )}
                   >
                     All ({allStaff.length})
@@ -147,8 +147,8 @@ export default async function SurgeonsStaffPage({ searchParams }: StaffPageProps
                       className={cn(
                         "px-3 py-1.5 text-sm rounded-md border transition-all duration-200",
                         category === cat
-                          ? "bg-[#8B5C9E] text-white border-[#8B5C9E]"
-                          : "bg-white text-gray-600 border-gray-200 hover:border-[#8B5C9E]/50 hover:text-[#8B5C9E]"
+                          ? "bg-soi-navy-500 text-white border-soi-navy-500"
+                          : "bg-white text-soi-navy-600 border-soi-pink-200 hover:border-soi-pink-400 hover:text-soi-pink-600"
                       )}
                     >
                       {categoryConfig[cat]?.title || cat} ({groupedStaff[cat]?.length || 0})
@@ -167,10 +167,10 @@ export default async function SurgeonsStaffPage({ searchParams }: StaffPageProps
               // Show filtered category
               <>
                 <div className="text-center mb-10">
-                  <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
+                  <h2 className="text-2xl md:text-3xl font-bold text-soi-navy-800 mb-3">
                     {categoryConfig[category]?.title || category}
                   </h2>
-                  <p className="text-gray-600">
+                  <p className="text-soi-navy-600">
                     {groupedStaff[category]?.length || 0} team member{(groupedStaff[category]?.length || 0) !== 1 ? 's' : ''} in this department
                   </p>
               </div>
@@ -194,9 +194,9 @@ export default async function SurgeonsStaffPage({ searchParams }: StaffPageProps
                 ) : (
                   <div className="text-center py-12">
                     <div className="max-w-sm mx-auto">
-                      <Users className="h-12 w-12 text-gray-300 mx-auto mb-3" />
-                      <h3 className="text-lg font-medium text-gray-700 mb-2">No team members found</h3>
-                      <p className="text-gray-500 text-sm">No team members found in this category.</p>
+                      <Users className="h-12 w-12 text-soi-pink-300 mx-auto mb-3" />
+                      <h3 className="text-lg font-medium text-soi-navy-800 mb-2">No team members found</h3>
+                      <p className="text-soi-navy-600 text-sm">No team members found in this category.</p>
                                 </div>
                             </div>
                 )}
@@ -205,8 +205,8 @@ export default async function SurgeonsStaffPage({ searchParams }: StaffPageProps
               // Show all categories
               <>
                 <div className="text-center mb-10">
-                  <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">Our Complete Team</h2>
-                  <p className="text-gray-600 max-w-2xl mx-auto">
+                  <h2 className="text-2xl md:text-3xl font-bold text-soi-navy-800 mb-3">Our Complete Team</h2>
+                  <p className="text-soi-navy-600 max-w-2xl mx-auto">
                     Our multidisciplinary team provides comprehensive care across all aspects of orthopedic and sports medicine.
                                     </p>
                                 </div>
@@ -218,10 +218,10 @@ export default async function SurgeonsStaffPage({ searchParams }: StaffPageProps
 
                   return (
                     <div key={categoryKey} className="mb-12">
-                      <div className="flex items-center mb-6 pb-3 border-b border-gray-100">
-                        <IconComponent className="h-6 w-6 text-[#8B5C9E] mr-3" />
-                        <h3 className="text-xl md:text-2xl font-bold text-gray-900">{config.title}</h3>
-                        <span className="ml-3 text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
+                      <div className="flex items-center mb-6 pb-3 border-b border-soi-pink-200">
+                        <IconComponent className="h-6 w-6 text-soi-pink-500 mr-3" />
+                        <h3 className="text-xl md:text-2xl font-bold text-soi-navy-800">{config.title}</h3>
+                        <span className="ml-3 text-xs text-soi-navy-500 bg-soi-pink-100 px-2 py-1 rounded-full">
                           {categoryStaff.length}
                         </span>
                       </div>
@@ -250,7 +250,7 @@ export default async function SurgeonsStaffPage({ searchParams }: StaffPageProps
           </section>
 
         {/* Call to Action - More subtle */}
-        <section className="py-12 px-4 md:px-8 lg:px-12 bg-[#2E3A59]">
+        <section className="py-12 px-4 md:px-8 lg:px-12 bg-soi-navy-600">
           <Container>
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
@@ -261,7 +261,7 @@ export default async function SurgeonsStaffPage({ searchParams }: StaffPageProps
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                 <BookingButton 
-                  className="bg-[#8B5C9E] hover:bg-[#7A4F8C] text-white px-6 py-3 font-medium rounded-lg transition-all duration-300 hover:shadow-lg w-full sm:w-auto"
+                  className="bg-soi-navy-500 hover:bg-soi-navy-600 text-white px-6 py-3 font-medium rounded-lg transition-all duration-300 hover:shadow-lg w-full sm:w-auto border-2 border-soi-pink-400"
                   icon={null}
                   text="Book an Appointment"
                 />

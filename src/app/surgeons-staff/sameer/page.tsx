@@ -9,14 +9,14 @@ import ExpandableBioSimple from '@/components/ExpandableBioSimple';
 
 export default function SameerPage() {
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen bg-tint-care">
       <SiteHeader theme="light" />
       
       <Container className="pt-24 pb-16">
         <div className="flex items-center mb-8">
           <Link 
             href="/surgeons-staff" 
-            className="inline-flex items-center text-[#8B5C9E] hover:text-[#7A4F8C] font-medium"
+            className="inline-flex items-center text-soi-navy-600 hover:text-soi-pink-600 font-medium"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Team
@@ -24,9 +24,9 @@ export default function SameerPage() {
         </div>
         
         {/* Hero Section */}
-        <div className="flex flex-col md:flex-row items-center rounded-xl overflow-hidden bg-white shadow-md p-6 md:p-8 mb-10">
+        <div className="flex flex-col md:flex-row items-center rounded-xl overflow-hidden bg-white shadow-md p-6 border border-soi-pink-200 md:p-8 mb-10 border border-soi-pink-200">
           <div className="md:w-1/4 flex justify-center mb-6 md:mb-0">
-            <div className="relative w-48 h-48 rounded-full overflow-hidden border-4 border-[#f8f5fe]">
+            <div className="relative w-48 h-48 rounded-full overflow-hidden border-4 border-soi-pink-200">
               <Image 
                 src="/images/dr-sameer.webp" 
                 alt="Dr. Sameer KM" 
@@ -37,20 +37,20 @@ export default function SameerPage() {
             </div>
           </div>
           <div className="md:w-3/4 md:pl-8 text-center md:text-left">
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Dr. Sameer KM</h1>
+            <h1 className="text-3xl md:text-4xl font-bold text-soi-navy-800 mb-2">Dr. Sameer KM</h1>
             <div className="flex flex-col md:flex-row items-center md:items-start">
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800 mb-4 md:mb-0 md:mr-4">
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-soi-navy-100 text-soi-navy-800 mb-4 md:mb-0 md:mr-4">
                 <Stethoscope className="w-4 h-4 mr-1" />
                 Associate Consultant
               </span>
             </div>
-            <p className="text-lg text-gray-600 mt-2 italic">
+            <p className="text-lg text-soi-navy-600 mt-2 italic">
               MBBS, MS(Ortho), DNB (Ortho),<br />
               Dip.FIFA(SM)(Switzerland), Dip SICOT(Belgium),<br />
               Fellowship in Arthroscopy & Arthroplasty (SOI)
             </p>
             <div className="mt-6">
-              <BookingButton className="px-6 py-3 bg-[#8B5C9E] hover:bg-[#7A4F8C] text-white rounded-lg shadow-md transition-colors" />
+              <BookingButton className="px-6 py-3 bg-soi-navy-500 hover:bg-soi-navy-600 text-white rounded-lg shadow-md transition-colors border-2 border-soi-pink-400" />
             </div>
           </div>
         </div>
@@ -58,31 +58,31 @@ export default function SameerPage() {
         {/* Content Sections */}
         <div className="space-y-6">
           {/* Professional Biography Section */}
-          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6">
+          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6 border border-soi-pink-200">
             <div className="flex items-center mb-4">
-              <FileText className="h-5 w-5 text-[#8B5C9E] mr-3" />
-              <h2 className="text-xl font-bold text-gray-900">Professional Biography</h2>
+              <FileText className="h-5 w-5 text-soi-pink-500 mr-3" />
+              <h2 className="text-xl font-bold text-soi-navy-800">Professional Biography</h2>
             </div>
             <ExpandableBioSimple>
-              <p className="text-gray-800 leading-relaxed">
+              <p className="text-soi-navy-700 leading-relaxed">
                 Dr. Sameer KM is a highly skilled orthopedic surgeon with specialized training in Sports Medicine, Arthroscopy, and Joint Replacement procedures. After completing his MBBS and MS Orthopedics from prestigious institutions in India, he further enhanced his expertise by obtaining a Diploma in Football Medicine from FIFA and a Diploma from SICOT, Belgium.
               </p>
-              <p className="text-gray-800 leading-relaxed mt-4">
-                <span className="font-semibold text-purple-800">Experience & Training:</span><br/>
+              <p className="text-soi-navy-700 leading-relaxed mt-4">
+                <span className="font-semibold text-soi-navy-800">Experience & Training:</span><br/>
                 Dr. Sameer has gained valuable experience working across various medical institutions in India, including Government Medical College, Thrissur, and Oxford Medical College, Bangalore. He completed his specialized Fellowship in Arthroscopy and Arthroplasty at Sports Orthopedics Institute under the guidance of Dr. Naveen Kumar L.V, where he honed his skills in advanced orthopedic techniques.
               </p>
-              <p className="text-gray-800 leading-relaxed mt-4">
-                <span className="font-semibold text-purple-800">Achievements & Current Role:</span><br/>
+              <p className="text-soi-navy-700 leading-relaxed mt-4">
+                <span className="font-semibold text-soi-navy-800">Achievements & Current Role:</span><br/>
                 Recognized for his academic excellence as the Best Outgoing Post Graduate student, Dr. Sameer has published multiple research papers in reputed medical journals. He brings his extensive knowledge in sports-related injuries, trauma management, and joint replacements to provide comprehensive orthopedic care. Currently serving as Associate Consultant at Sports Orthopedics Institute & Manipal Hospital, Dr. Sameer is committed to delivering high-quality patient care with his expertise in arthroscopic procedures and joint replacements.
               </p>
             </ExpandableBioSimple>
           </div>
           
           {/* Expertise Section */}
-          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6">
+          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6 border border-soi-pink-200">
             <div className="flex items-center mb-4">
-              <Stethoscope className="h-5 w-5 text-[#8B5C9E] mr-3" />
-              <h2 className="text-xl font-bold text-gray-900">Expertise</h2>
+              <Stethoscope className="h-5 w-5 text-soi-pink-500 mr-3" />
+              <h2 className="text-xl font-bold text-soi-navy-800">Expertise</h2>
             </div>
             <div className="prose max-w-none">
               <ul className="list-disc pl-5 space-y-2">
@@ -95,10 +95,10 @@ export default function SameerPage() {
           </div>
           
           {/* Rewards and Recognition Section */}
-          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6">
+          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6 border border-soi-pink-200">
             <div className="flex items-center mb-4">
-              <Award className="h-5 w-5 text-[#8B5C9E] mr-3" />
-              <h2 className="text-xl font-bold text-gray-900">Rewards and Recognition</h2>
+              <Award className="h-5 w-5 text-soi-pink-500 mr-3" />
+              <h2 className="text-xl font-bold text-soi-navy-800">Rewards and Recognition</h2>
             </div>
             <div className="prose max-w-none">
               <ul className="list-disc pl-5 space-y-2">
@@ -109,10 +109,10 @@ export default function SameerPage() {
           </div>
 
           {/* Professional Work Experience Section */}
-          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6">
+          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6 border border-soi-pink-200">
             <div className="flex items-center mb-4">
-              <Briefcase className="h-5 w-5 text-[#8B5C9E] mr-3" />
-              <h2 className="text-xl font-bold text-gray-900">Professional Work Experience</h2>
+              <Briefcase className="h-5 w-5 text-soi-pink-500 mr-3" />
+              <h2 className="text-xl font-bold text-soi-navy-800">Professional Work Experience</h2>
             </div>
             <div className="prose max-w-none">
               <ul className="list-disc pl-5 space-y-2">
@@ -127,10 +127,10 @@ export default function SameerPage() {
           </div>
           
           {/* Qualifications Section */}
-          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6">
+          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6 border border-soi-pink-200">
             <div className="flex items-center mb-4">
-              <GraduationCap className="h-5 w-5 text-[#8B5C9E] mr-3" />
-              <h2 className="text-xl font-bold text-gray-900">Qualifications</h2>
+              <GraduationCap className="h-5 w-5 text-soi-pink-500 mr-3" />
+              <h2 className="text-xl font-bold text-soi-navy-800">Qualifications</h2>
             </div>
             <div className="prose max-w-none">
               <ul className="list-disc pl-5 space-y-2">
@@ -144,10 +144,10 @@ export default function SameerPage() {
           </div>
           
           {/* Technical Skills Courses Section */}
-          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6">
+          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6 border border-soi-pink-200">
             <div className="flex items-center mb-4">
-              <BookOpen className="h-5 w-5 text-[#8B5C9E] mr-3" />
-              <h2 className="text-xl font-bold text-gray-900">Technical Skills Courses</h2>
+              <BookOpen className="h-5 w-5 text-soi-pink-500 mr-3" />
+              <h2 className="text-xl font-bold text-soi-navy-800">Technical Skills Courses</h2>
             </div>
             <div className="prose max-w-none">
               <ul className="list-disc pl-5 space-y-2">
@@ -165,10 +165,10 @@ export default function SameerPage() {
           </div>
           
           {/* Research Section */}
-          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6">
+          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6 border border-soi-pink-200">
             <div className="flex items-center mb-4">
-              <FileText className="h-5 w-5 text-[#8B5C9E] mr-3" />
-              <h2 className="text-xl font-bold text-gray-900">Research</h2>
+              <FileText className="h-5 w-5 text-soi-pink-500 mr-3" />
+              <h2 className="text-xl font-bold text-soi-navy-800">Research</h2>
             </div>
             <div className="prose max-w-none">
               <p>Submitted thesis titled "Functional And Radiological outcome of Medial Malleolar Fractures Treated by Open Reduction And Internal Fixation" to KUHS, Kerala as part of M.S. Orthopedics Degree.</p>
@@ -176,10 +176,10 @@ export default function SameerPage() {
           </div>
           
           {/* Publications Section */}
-          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6">
+          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6 border border-soi-pink-200">
             <div className="flex items-center mb-4">
-              <FileText className="h-5 w-5 text-[#8B5C9E] mr-3" />
-              <h2 className="text-xl font-bold text-gray-900">Publications</h2>
+              <FileText className="h-5 w-5 text-soi-pink-500 mr-3" />
+              <h2 className="text-xl font-bold text-soi-navy-800">Publications</h2>
             </div>
             <div className="prose max-w-none">
               <ul className="list-disc pl-5 space-y-2">
@@ -191,10 +191,10 @@ export default function SameerPage() {
           </div>
           
           {/* Areas of Interest Section */}
-          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6">
+          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6 border border-soi-pink-200">
             <div className="flex items-center mb-4">
-              <Heart className="h-5 w-5 text-[#8B5C9E] mr-3" />
-              <h2 className="text-xl font-bold text-gray-900">Areas of Interest</h2>
+              <Heart className="h-5 w-5 text-soi-pink-500 mr-3" />
+              <h2 className="text-xl font-bold text-soi-navy-800">Areas of Interest</h2>
             </div>
             <div className="prose max-w-none">
               <ul className="list-disc pl-5 space-y-2">
@@ -207,10 +207,10 @@ export default function SameerPage() {
           </div>
           
           {/* Languages Section */}
-          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6">
+          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6 border border-soi-pink-200">
             <div className="flex items-center mb-4">
-              <Globe className="h-5 w-5 text-[#8B5C9E] mr-3" />
-              <h2 className="text-xl font-bold text-gray-900">Languages</h2>
+              <Globe className="h-5 w-5 text-soi-pink-500 mr-3" />
+              <h2 className="text-xl font-bold text-soi-navy-800">Languages</h2>
             </div>
             <div className="prose max-w-none">
               <ul className="list-disc pl-5 space-y-2">
@@ -224,10 +224,10 @@ export default function SameerPage() {
           </div>
           
           {/* Hobbies Section */}
-          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6">
+          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6 border border-soi-pink-200">
             <div className="flex items-center mb-4">
-              <Heart className="h-5 w-5 text-[#8B5C9E] mr-3" />
-              <h2 className="text-xl font-bold text-gray-900">Hobbies</h2>
+              <Heart className="h-5 w-5 text-soi-pink-500 mr-3" />
+              <h2 className="text-xl font-bold text-soi-navy-800">Hobbies</h2>
             </div>
             <div className="prose max-w-none">
               <ul className="list-disc pl-5 space-y-2">

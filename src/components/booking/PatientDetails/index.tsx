@@ -27,10 +27,10 @@ export default function PatientDetails({ data, onSubmit }: PatientDetailsProps) 
         className="max-w-md mx-auto space-y-8"
       >
         <header className="text-center space-y-2">
-          <h2 className="text-2xl font-semibold text-gray-900">
+          <h2 className="text-2xl font-semibold text-soi-navy-800">
             Patient Details
           </h2>
-          <p className="text-base text-gray-500">
+          <p className="text-base text-soi-navy-600">
             Please provide your contact information
           </p>
         </header>

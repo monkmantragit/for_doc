@@ -26,11 +26,11 @@ function WidgetContent() {
   }, []);
 
   return (
-    <div className="p-4">
+    <div className="p-4 bg-white">
       <BookingWidget
         buttonStyle={(searchParams.get('buttonStyle') as 'default' | 'outline' | 'minimal') || 'default'}
         buttonText={searchParams.get('buttonText') || 'Book Appointment'}
-        primaryColor={searchParams.get('primaryColor') || '#8B5C9E'}
+        primaryColor={searchParams.get('primaryColor') || '#1e3a5f'}
       />
     </div>
   );
@@ -39,7 +39,7 @@ function WidgetContent() {
 // Main page component with Suspense boundary
 export default function WidgetPage() {
   return (
-    <Suspense fallback={<div className="p-4">Loading...</div>}>
+    <Suspense fallback={<div className="p-4 bg-white text-soi-navy-600">Loading...</div>}>
       <WidgetContent />
     </Suspense>
   );

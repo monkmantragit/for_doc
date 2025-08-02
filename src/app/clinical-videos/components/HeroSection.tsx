@@ -32,7 +32,7 @@ export function HeroSection({ title, description, imageSrc }: HeroSectionProps) 
         <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-[1.1] mb-6">
           <span className="relative inline-block">
             {title.split(' ')[0]}
-            <div className="absolute -inset-1 bg-[#8B5C9E]/20 blur-xl animate-pulse"></div>
+            <div className="absolute -inset-1 bg-soi-purple-500/20 blur-xl animate-pulse"></div>
           </span>
           <br />
           <span className="text-white">
@@ -48,14 +48,14 @@ export function HeroSection({ title, description, imageSrc }: HeroSectionProps) 
         <div className="flex flex-wrap gap-4 justify-center">
           <a 
             href="#videos" 
-            className="px-6 py-3 bg-[#8B5C9E] hover:bg-[#7a4f8a] text-white font-medium rounded-lg inline-flex items-center transition-colors"
+            className="px-6 py-3 bg-soi-navy-500 hover:bg-soi-navy-600 text-white font-medium rounded-lg inline-flex items-center transition-colors"
           >
             <Video className="w-5 h-5 mr-2" />
             Watch Videos
           </a>
           
           <BookingButton 
-            className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-medium rounded-lg inline-flex items-center transition-colors backdrop-blur-sm"
+            className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-medium rounded-lg inline-flex items-center transition-colors backdrop-blur-sm border-2 border-white/30 hover:border-soi-pink-400"
             icon={<Calendar className="w-5 h-5 mr-2" />}
             text="Request Consultation"
           />

@@ -20,15 +20,15 @@ export default async function ProcedurePage({ params }: ProcedurePageProps) {
   
   if (!procedure) {
     return (
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-tint-authority">
         <SiteHeader theme="light" />
         <main className="container mx-auto px-4 py-16">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">Procedure Not Found</h1>
-            <p className="text-gray-600 mb-8">The requested procedure could not be found.</p>
+            <h1 className="text-2xl font-bold text-soi-navy-800 mb-4">Procedure Not Found</h1>
+            <p className="text-soi-navy-600 mb-8">The requested procedure could not be found.</p>
             <Link 
               href="/procedure-surgery" 
-              className="inline-block bg-[#8B5C9E] text-white px-6 py-3 rounded-lg hover:bg-[#7A4F8C] transition-colors"
+              className="inline-block bg-soi-navy-500 text-white px-6 py-3 rounded-lg hover:bg-soi-navy-600 transition-colors border-2 border-soi-purple-400"
             >
               Back to Procedures
             </Link>
@@ -47,26 +47,26 @@ export default async function ProcedurePage({ params }: ProcedurePageProps) {
   );
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-tint-authority">
       <SiteHeader theme="light" />
       
       <main>
         {/* Hero Section */}
-        <div className="w-full bg-gradient-to-r from-[#8B5C9E]/5 to-purple-50 pt-16">
+        <div className="w-full bg-gradient-to-r from-soi-navy-500/10 to-soi-purple-100 pt-16">
           <div className="container mx-auto px-4 py-12">
             <div className="flex flex-col md:flex-row items-center gap-8">
               <div className="flex-1 order-2 md:order-1">
                 <div className="mb-2">
-                  <Link href="/procedure-surgery" className="text-sm text-[#8B5C9E] hover:underline">
+                  <Link href="/procedure-surgery" className="text-sm text-soi-purple-600 hover:text-soi-navy-600 hover:underline">
                     ← Back to Procedures
                   </Link>
                 </div>
-                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+                <h1 className="text-3xl md:text-4xl font-bold text-soi-navy-800 mb-6">
                   {procedure.title}
                 </h1>
                 
                 {procedure.content_text && (
-                  <p className="text-lg text-gray-600 mb-8">
+                  <p className="text-lg text-soi-navy-600 mb-8">
                     {procedure.content_text.length > 200 
                       ? procedure.content_text.substring(0, 200) + '...'
                       : procedure.content_text
@@ -76,12 +76,12 @@ export default async function ProcedurePage({ params }: ProcedurePageProps) {
                 
                 <div className="flex flex-wrap gap-2 mb-6">
                   {procedure.category && (
-                    <span className="px-3 py-1 bg-[#8B5C9E]/10 text-[#8B5C9E] rounded-full text-sm font-medium">
+                    <span className="px-3 py-1 bg-soi-purple-100 text-soi-purple-700 rounded-full text-sm font-medium">
                       {procedure.category}
                     </span>
                   )}
                   {procedure.procedure_type && (
-                    <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">
+                    <span className="px-3 py-1 bg-soi-navy-100 text-soi-navy-700 rounded-full text-sm font-medium">
                       {procedure.procedure_type}
                     </span>
                   )}
@@ -126,25 +126,25 @@ export default async function ProcedurePage({ params }: ProcedurePageProps) {
               
               {/* Related Procedures */}
               {relatedProcedures.length > 0 && (
-                <div className="mt-8 bg-gray-50 p-6 rounded-lg">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Related Procedures</h3>
+                <div className="mt-8 bg-white p-6 rounded-lg border border-soi-purple-200">
+                  <h3 className="text-lg font-semibold text-soi-navy-800 mb-4">Related Procedures</h3>
                   <div className="space-y-4">
                     {relatedProcedures.map((related) => (
                       <Link
                         key={related.slug}
                         href={`/procedure-surgery/${related.slug}`}
-                        className="block p-4 bg-white rounded-lg hover:shadow-md transition-shadow"
+                        className="block p-4 bg-soi-purple-50 rounded-lg hover:bg-soi-purple-100 hover:shadow-md transition-all border border-soi-purple-200"
                       >
-                        <h4 className="font-medium text-gray-900 mb-2">{related.title}</h4>
+                        <h4 className="font-medium text-soi-navy-800 mb-2">{related.title}</h4>
                         {related.content_text && (
-                          <p className="text-sm text-gray-600 line-clamp-2">
+                          <p className="text-sm text-soi-navy-600 line-clamp-2">
                             {related.content_text.length > 100 
                               ? related.content_text.substring(0, 100) + '...'
                               : related.content_text
                             }
                           </p>
                         )}
-                        <div className="flex items-center gap-4 mt-2 text-xs text-gray-500">
+                        <div className="flex items-center gap-4 mt-2 text-xs text-soi-purple-600">
                           {related.recovery_time && (
                             <span className="flex items-center gap-1">
                               <Calendar className="w-3 h-3" />

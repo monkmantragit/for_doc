@@ -88,20 +88,20 @@ export default function ContactForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {submitStatus === 'success' && (
-        <div className="p-4 bg-green-50 text-green-800 rounded-lg">
+        <div className="p-4 bg-soi-mint-50 text-soi-mint-800 rounded-lg border border-soi-mint-200">
           Thank you for your message! We'll get back to you soon.
         </div>
       )}
       
       {submitStatus === 'error' && (
-        <div className="p-4 bg-red-50 text-red-800 rounded-lg">
+        <div className="p-4 bg-red-50 text-red-800 rounded-lg border border-red-200">
           There was an error sending your message. Please try again.
         </div>
       )}
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="name" className="block text-sm font-medium text-soi-navy-700 mb-1">
             Name *
           </label>
           <input
@@ -110,14 +110,14 @@ export default function ContactForm() {
             name="name"
             value={formData.name}
             onChange={handleChange}
-            className={`w-full px-4 py-2 rounded-lg border ${errors.name ? 'border-red-500' : 'border-gray-200'} focus:ring-[#8B5C9E] focus:border-[#8B5C9E]`}
+            className={`w-full px-4 py-2 rounded-lg border ${errors.name ? 'border-red-500' : 'border-soi-pink-200'} focus:ring-soi-pink-500 focus:border-soi-pink-500`}
             placeholder="Your Name"
           />
           {errors.name && <p className="mt-1 text-sm text-red-500">{errors.name}</p>}
         </div>
         
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="email" className="block text-sm font-medium text-soi-navy-700 mb-1">
             Email *
           </label>
           <input
@@ -126,7 +126,7 @@ export default function ContactForm() {
             name="email"
             value={formData.email}
             onChange={handleChange}
-            className={`w-full px-4 py-2 rounded-lg border ${errors.email ? 'border-red-500' : 'border-gray-200'} focus:ring-[#8B5C9E] focus:border-[#8B5C9E]`}
+            className={`w-full px-4 py-2 rounded-lg border ${errors.email ? 'border-red-500' : 'border-soi-pink-200'} focus:ring-soi-pink-500 focus:border-soi-pink-500`}
             placeholder="your.email@example.com"
           />
           {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email}</p>}
@@ -135,7 +135,7 @@ export default function ContactForm() {
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="phone" className="block text-sm font-medium text-soi-navy-700 mb-1">
             Phone Number
           </label>
           <input
@@ -144,13 +144,13 @@ export default function ContactForm() {
             name="phone"
             value={formData.phone}
             onChange={handleChange}
-            className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-[#8B5C9E] focus:border-[#8B5C9E]"
+            className="w-full px-4 py-2 rounded-lg border border-soi-pink-200 focus:ring-soi-pink-500 focus:border-soi-pink-500"
             placeholder="+91 XXXXXXXXXX"
           />
         </div>
         
         <div>
-          <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="subject" className="block text-sm font-medium text-soi-navy-700 mb-1">
             Subject
           </label>
           <select
@@ -158,7 +158,7 @@ export default function ContactForm() {
             name="subject"
             value={formData.subject}
             onChange={handleChange}
-            className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-[#8B5C9E] focus:border-[#8B5C9E] bg-white"
+            className="w-full px-4 py-2 rounded-lg border border-soi-pink-200 focus:ring-soi-pink-500 focus:border-soi-pink-500 bg-white"
           >
             <option value="General Inquiry">General Inquiry</option>
             <option value="Appointment Request">Appointment Request</option>
@@ -171,7 +171,7 @@ export default function ContactForm() {
       </div>
       
       <div>
-        <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor="message" className="block text-sm font-medium text-soi-navy-700 mb-1">
           Message *
         </label>
         <textarea
@@ -180,7 +180,7 @@ export default function ContactForm() {
           value={formData.message}
           onChange={handleChange}
           rows={5}
-          className={`w-full px-4 py-2 rounded-lg border ${errors.message ? 'border-red-500' : 'border-gray-200'} focus:ring-[#8B5C9E] focus:border-[#8B5C9E] resize-none`}
+          className={`w-full px-4 py-2 rounded-lg border ${errors.message ? 'border-red-500' : 'border-soi-pink-200'} focus:ring-soi-pink-500 focus:border-soi-pink-500 resize-none`}
           placeholder="How can we help you?"
         ></textarea>
         {errors.message && <p className="mt-1 text-sm text-red-500">{errors.message}</p>}
@@ -190,7 +190,7 @@ export default function ContactForm() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="px-6 py-3 bg-[#8B5C9E] hover:bg-[#7a4f8a] text-white font-medium rounded-lg flex items-center gap-2 transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+          className="px-6 py-3 bg-soi-navy-500 hover:bg-soi-navy-600 text-white font-medium rounded-lg flex items-center gap-2 transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
         >
           {isSubmitting ? 'Sending...' : 'Send Message'}
           <Send className="w-4 h-4" />

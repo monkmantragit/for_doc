@@ -77,7 +77,7 @@ export default function GalleryPage() {
   };
 
   return (
-    <div ref={containerRef} className="min-h-screen bg-white">
+    <div ref={containerRef} className="min-h-screen bg-tint-expertise">
       <SiteHeader theme="light" />
       
       {/* Hero Section */}
@@ -136,8 +136,8 @@ export default function GalleryPage() {
                     className={`
                       px-4 py-2 rounded-full text-sm font-medium transition-all
                       ${selectedCategory === category
-                        ? 'bg-[#8B5C9E] text-white shadow-md'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        ? 'bg-soi-navy-500 text-white shadow-md'
+                        : 'bg-white text-soi-navy-700 hover:bg-soi-purple-50 border border-soi-purple-200'
                       }
                     `}
                   >
@@ -148,18 +148,18 @@ export default function GalleryPage() {
               
               {/* Search */}
               <div className="relative w-full md:w-64">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-soi-navy-400" />
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => handleSearchChange(e.target.value)}
                   placeholder="Search gallery..."
-                  className="w-full pl-10 pr-4 py-2 rounded-full border border-gray-200 focus:border-[#8B5C9E] focus:ring-2 focus:ring-[#8B5C9E]/20 transition-all"
+                  className="w-full pl-10 pr-4 py-2 rounded-full border border-soi-purple-200 bg-white focus:border-soi-purple-500 focus:ring-2 focus:ring-soi-purple-200/50 transition-all text-soi-navy-800 placeholder:text-soi-navy-400"
                 />
                 {searchQuery && (
                   <button
                     onClick={() => setSearchQuery('')}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-soi-navy-400 hover:text-soi-navy-600"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -171,14 +171,14 @@ export default function GalleryPage() {
           {/* Loading State */}
           {loading && (
             <div className="flex justify-center py-12">
-              <Loader2 className="w-8 h-8 animate-spin text-[#8B5C9E]" />
+              <Loader2 className="w-8 h-8 animate-spin text-soi-purple-500" />
             </div>
           )}
 
           {/* Results Info */}
           {!loading && (
             <div className="max-w-7xl mx-auto mb-6">
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-soi-navy-500">
                 Showing {images.length} of {total} images
                 {selectedCategory !== 'All' && ` in "${selectedCategory}"`}
                 {searchQuery && ` matching "${searchQuery}"`}
@@ -198,7 +198,7 @@ export default function GalleryPage() {
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.9 }}
                     transition={{ duration: 0.3 }}
-                    className="group relative aspect-square rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer"
+                    className="group relative aspect-square rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer border border-soi-purple-100 hover:border-soi-purple-300 bg-white"
                     onClick={() => setSelectedImage(image.id)}
                     style={{ minHeight: '200px' }}
                   >
@@ -221,13 +221,13 @@ export default function GalleryPage() {
               </div>
             ) : !loading ? (
               <div className="text-center py-12">
-                <p className="text-gray-600 mb-4">No images found matching your search criteria.</p>
+                <p className="text-soi-navy-600 mb-4">No images found matching your search criteria.</p>
                 <button
                   onClick={() => {
                     setSelectedCategory('All');
                     setSearchQuery('');
                   }}
-                  className="px-4 py-2 bg-[#8B5C9E] text-white rounded-full text-sm hover:bg-[#7A4B8D] transition-colors"
+                  className="px-4 py-2 bg-soi-navy-500 text-white rounded-full text-sm hover:bg-soi-navy-600 transition-colors"
                 >
                   Reset Filters
                 </button>
@@ -240,7 +240,7 @@ export default function GalleryPage() {
                 <button
                   onClick={() => setPage(Math.max(1, page - 1))}
                   disabled={page === 1}
-                  className="px-4 py-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-4 py-2 rounded-lg border border-soi-navy-200 text-soi-navy-600 hover:bg-soi-navy-50 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Previous
                 </button>
@@ -253,8 +253,8 @@ export default function GalleryPage() {
                       onClick={() => setPage(pageNum)}
                       className={`px-4 py-2 rounded-lg border ${
                         page === pageNum
-                          ? 'bg-[#8B5C9E] text-white border-[#8B5C9E]'
-                          : 'border-gray-200 text-gray-600 hover:bg-gray-50'
+                          ? 'bg-soi-navy-500 text-white border-soi-navy-500'
+                          : 'border-soi-navy-200 text-soi-navy-600 hover:bg-soi-navy-50'
                       }`}
                     >
                       {pageNum}
@@ -265,7 +265,7 @@ export default function GalleryPage() {
                 <button
                   onClick={() => setPage(Math.min(totalPages, page + 1))}
                   disabled={page === totalPages}
-                  className="px-4 py-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-4 py-2 rounded-lg border border-soi-navy-200 text-soi-navy-600 hover:bg-soi-navy-50 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Next
                 </button>

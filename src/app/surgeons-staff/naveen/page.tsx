@@ -10,14 +10,14 @@ import ExpandableSection from '@/components/ExpandableSection';
 
 export default function NaveenPage() {
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen bg-tint-care">
       <SiteHeader theme="light" />
       
       <Container className="pt-24 pb-16">
         <div className="flex items-center mb-8">
           <Link 
             href="/surgeons-staff" 
-            className="inline-flex items-center text-[#8B5C9E] hover:text-[#7A4F8C] font-medium"
+            className="inline-flex items-center text-soi-navy-600 hover:text-soi-pink-600 font-medium"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Team
@@ -25,9 +25,9 @@ export default function NaveenPage() {
         </div>
         
         {/* Hero Section */}
-        <div className="flex flex-col md:flex-row items-center rounded-xl overflow-hidden bg-white shadow-md p-6 md:p-8 mb-10">
+        <div className="flex flex-col md:flex-row items-center rounded-xl overflow-hidden bg-white shadow-md p-6 border border-soi-pink-200 md:p-8 mb-10 border border-soi-pink-200">
           <div className="md:w-1/4 flex justify-center mb-6 md:mb-0">
-            <div className="relative w-48 h-48 rounded-full overflow-hidden border-4 border-[#f8f5fe]">
+            <div className="relative w-48 h-48 rounded-full overflow-hidden border-4 border-soi-pink-200">
               <Image 
                 src="/images/naveen.jpg" 
                 alt="Dr. Naveen Kumar L.V" 
@@ -38,20 +38,20 @@ export default function NaveenPage() {
             </div>
           </div>
           <div className="md:w-3/4 md:pl-8 text-center md:text-left">
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Dr. Naveen Kumar L.V</h1>
+            <h1 className="text-3xl md:text-4xl font-bold text-soi-navy-800 mb-2">Dr. Naveen Kumar L.V</h1>
             <div className="flex flex-col md:flex-row items-center md:items-start">
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800 mb-4 md:mb-0 md:mr-4">
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-soi-navy-100 text-soi-navy-800 mb-4 md:mb-0 md:mr-4">
                 <Stethoscope className="w-4 h-4 mr-1" />
                 Orthopedic Surgeon
               </span>
             </div>
-            <p className="text-lg text-gray-600 mt-2 italic">
+            <p className="text-lg text-soi-navy-600 mt-2 italic">
               MBBS, MS Orth (India), FRCS Orth (Eng),<br/>
               MCh Hip & Knee (UK), MSc Orth (UK), Dip SICOT (Italy),<br/>
               FEBOT (Portugal), MRCGP (UK), Dip FIFA SM (Switzerland), FSEM (UK)
             </p>
             <div className="mt-6">
-              <BookingButton className="px-6 py-3 bg-[#8B5C9E] hover:bg-[#7A4F8C] text-white rounded-lg shadow-md transition-colors" />
+              <BookingButton className="px-6 py-3 bg-soi-navy-500 hover:bg-soi-navy-600 text-white rounded-lg shadow-md transition-colors border-2 border-soi-pink-400" />
             </div>
           </div>
         </div>
@@ -59,10 +59,10 @@ export default function NaveenPage() {
         {/* Content Sections */}
         <div className="space-y-6">
           {/* Expertise Section */}
-          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6">
+          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6 border border-soi-pink-200 border border-soi-pink-200">
             <div className="flex items-center mb-4">
-              <Stethoscope className="h-5 w-5 text-[#8B5C9E] mr-3" />
-              <h2 className="text-xl font-bold text-gray-900">Expertise</h2>
+              <Stethoscope className="h-5 w-5 text-soi-pink-500 mr-3" />
+              <h2 className="text-xl font-bold text-soi-navy-800">Expertise</h2>
             </div>
             <ExpandableSection>
               <div className="prose max-w-none">
@@ -80,35 +80,35 @@ export default function NaveenPage() {
           </div>
 
           {/* Professional Biography Section */}
-          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6">
+          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6 border border-soi-pink-200">
             <div className="flex items-center mb-4">
-              <FileText className="h-5 w-5 text-[#8B5C9E] mr-3" />
-              <h2 className="text-xl font-bold text-gray-900">Professional Biography</h2>
+              <FileText className="h-5 w-5 text-soi-pink-500 mr-3" />
+              <h2 className="text-xl font-bold text-soi-navy-800">Professional Biography</h2>
             </div>
             <ExpandableBioSimple>
-              <p className="text-gray-800 leading-relaxed">
-                Dr Naveen is the Prestigious John Charnley Gold Medalist, Wrightington Hospital, UK, Topper at dip SICOT, Italy and Best Trainee awardee – BIOS, UK. He achieved the distinction at FEBOT, Portugal and FRCS Orth I – England. He has achieved 10 qualifications to his credit so far! He has the highest number of qualifications among all the orthopedic surgeons in Karnataka and possibly India. He has completed several fellowships in UK and Germany in Arthroplasty and Arthroscopic surgeries. He has presented his papers on various podiums across the globe! His name and photographs have been etched on the Hall of Fame at <a href="https://www.wwl.nhs.uk/wrightington-hospital" target="_blank" rel="noopener noreferrer" className="text-purple-700 hover:text-purple-900 underline">Wrightington Hospital, Wrightington, Lancashire, UK</a> and also at <a href="https://www.med.uni-wuerzburg.de/en/orthopaedie/chair-of-orthopedic-and-orthopedic-clinic-koenig-ludwig-haus/" target="_blank" rel="noopener noreferrer" className="text-purple-700 hover:text-purple-900 underline">König-Ludwig-Haus Hospital, Würzburg, Germany</a>. With over 24 years of vast experience in the diverse fields of Shoulder, Knee & Ankle Arthroscopy, Hip & Knee Arthroplasty and Trauma, Dr Naveen has returned to his homeland to serve the people over here.
+              <p className="text-soi-navy-700 leading-relaxed">
+                Dr Naveen is the Prestigious John Charnley Gold Medalist, Wrightington Hospital, UK, Topper at dip SICOT, Italy and Best Trainee awardee – BIOS, UK. He achieved the distinction at FEBOT, Portugal and FRCS Orth I – England. He has achieved 10 qualifications to his credit so far! He has the highest number of qualifications among all the orthopedic surgeons in Karnataka and possibly India. He has completed several fellowships in UK and Germany in Arthroplasty and Arthroscopic surgeries. He has presented his papers on various podiums across the globe! His name and photographs have been etched on the Hall of Fame at <a href="https://www.wwl.nhs.uk/wrightington-hospital" target="_blank" rel="noopener noreferrer" className="text-soi-navy-600 hover:text-soi-pink-600 underline">Wrightington Hospital, Wrightington, Lancashire, UK</a> and also at <a href="https://www.med.uni-wuerzburg.de/en/orthopaedie/chair-of-orthopedic-and-orthopedic-clinic-koenig-ludwig-haus/" target="_blank" rel="noopener noreferrer" className="text-soi-navy-600 hover:text-soi-pink-600 underline">König-Ludwig-Haus Hospital, Würzburg, Germany</a>. With over 24 years of vast experience in the diverse fields of Shoulder, Knee & Ankle Arthroscopy, Hip & Knee Arthroplasty and Trauma, Dr Naveen has returned to his homeland to serve the people over here.
               </p>
-              <p className="text-gray-800 leading-relaxed mt-4">
-                <span className="font-semibold text-purple-800">Early Life & Education:</span><br/>
+              <p className="text-soi-navy-700 leading-relaxed mt-4">
+                <span className="font-semibold text-soi-navy-800">Early Life & Education:</span><br/>
                 Dr Naveen comes from a humble background. His father was a school teacher and mother a home-maker. He was born in Davangere and had his schooling from MKT Kirloskar School, Harihar. He then completed his Pre-University from MES College, Bangalore. He undertook his undergraduate studies from BLDEA's Medical College, Bijapur. He completed his MS Ortho from KMC, Mangalore, MAHE University. Further to this, the quest and hunger for knowledge and learning took him around the globe. He worked and trained in UK in several esteemed hospitals and institutions including Wrightington Hospital, Wigan, University Hospital, Cardiff, Withybush Hospital, Haverfordwest for over a period of 14 years. He was invited for several esteemed fellowships in Germany during his tenure in UK, which he completed.
               </p>
-              <p className="text-gray-800 leading-relaxed mt-4">
-                <span className="font-semibold text-purple-800">Career Progression:</span><br/>
+              <p className="text-soi-navy-700 leading-relaxed mt-4">
+                <span className="font-semibold text-soi-navy-800">Career Progression:</span><br/>
                 After returning to India in 2018, he did set up his consulting chambers in HSR Layout and Koramangala, Bangalore. In Jan 2023 he joined Manipal Hospital, Sarjapur Road as a Senior Consultant in Orthopaedics & Sports Injuries. In Jan 2025, he has been promoted as the Chief of Orthopaedics & Sports Medicine at Manipal Hospital.
               </p>
-              <p className="text-gray-800 leading-relaxed mt-4">
-                <span className="font-semibold text-purple-800">Current Practice & Charitable Work:</span><br/>
+              <p className="text-soi-navy-700 leading-relaxed mt-4">
+                <span className="font-semibold text-soi-navy-800">Current Practice & Charitable Work:</span><br/>
                 Currently he has been seeing more than 80 patients per day in his specialty out patient clinics in HSR Layout as well as at Manipal Hospital. He has been performing thousands of complex surgeries such as arthroscopies of knees, shoulders and ankles with complex ligament reconstructions, knee replacements, hip replacements, revision knee replacements and revision hip surgeries. In addition, there is a lot of anonymous charity work which goes on parallelly without being avowed.
               </p>
             </ExpandableBioSimple>
           </div>
 
           {/* Awards & Distinction Section */}
-          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6">
+          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6 border border-soi-pink-200">
             <div className="flex items-center mb-4">
-              <Award className="h-5 w-5 text-[#8B5C9E] mr-3" />
-              <h2 className="text-xl font-bold text-gray-900">Awards & Distinction</h2>
+              <Award className="h-5 w-5 text-soi-pink-500 mr-3" />
+              <h2 className="text-xl font-bold text-soi-navy-800">Awards & Distinction</h2>
             </div>
             <ExpandableSection>
               <div className="prose max-w-none">
@@ -137,10 +137,10 @@ export default function NaveenPage() {
           </div>
 
           {/* Qualifications Section */}
-          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6">
+          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6 border border-soi-pink-200">
             <div className="flex items-center mb-4">
-              <GraduationCap className="h-5 w-5 text-[#8B5C9E] mr-3" />
-              <h2 className="text-xl font-bold text-gray-900">Qualifications</h2>
+              <GraduationCap className="h-5 w-5 text-soi-pink-500 mr-3" />
+              <h2 className="text-xl font-bold text-soi-navy-800">Qualifications</h2>
             </div>
             <ExpandableSection>
               <div className="prose max-w-none">
@@ -162,10 +162,10 @@ export default function NaveenPage() {
           </div>
           
           {/* Additional Credentials Section */}
-          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6">
+          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6 border border-soi-pink-200">
             <div className="flex items-center mb-4">
-              <Medal className="h-5 w-5 text-[#8B5C9E] mr-3" />
-              <h2 className="text-xl font-bold text-gray-900">Additional Credentials</h2>
+              <Medal className="h-5 w-5 text-soi-pink-500 mr-3" />
+              <h2 className="text-xl font-bold text-soi-navy-800">Additional Credentials</h2>
             </div>
             <ExpandableSection>
               <div className="prose max-w-none">
@@ -178,10 +178,10 @@ export default function NaveenPage() {
           </div>
           
           {/* Professional Visits Section */}
-          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6">
+          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6 border border-soi-pink-200">
             <div className="flex items-center mb-4">
-              <Globe className="h-5 w-5 text-[#8B5C9E] mr-3" />
-              <h2 className="text-xl font-bold text-gray-900">Professional Visits</h2>
+              <Globe className="h-5 w-5 text-soi-pink-500 mr-3" />
+              <h2 className="text-xl font-bold text-soi-navy-800">Professional Visits</h2>
             </div>
             <ExpandableSection>
               <div className="prose max-w-none">
@@ -196,10 +196,10 @@ export default function NaveenPage() {
           </div>
 
           {/* Faculty Section */}
-          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6">
+          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6 border border-soi-pink-200">
             <div className="flex items-center mb-4">
-              <Users className="h-5 w-5 text-[#8B5C9E] mr-3" />
-              <h2 className="text-xl font-bold text-gray-900">Faculty & Guest Lectures</h2>
+              <Users className="h-5 w-5 text-soi-pink-500 mr-3" />
+              <h2 className="text-xl font-bold text-soi-navy-800">Faculty & Guest Lectures</h2>
             </div>
             <ExpandableSection>
               <div className="prose max-w-none">
@@ -225,10 +225,10 @@ export default function NaveenPage() {
           </div>
 
           {/* Conferences Section */}
-          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6">
+          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6 border border-soi-pink-200">
             <div className="flex items-center mb-4">
-              <Users className="h-5 w-5 text-[#8B5C9E] mr-3" />
-              <h2 className="text-xl font-bold text-gray-900">Conferences</h2>
+              <Users className="h-5 w-5 text-soi-pink-500 mr-3" />
+              <h2 className="text-xl font-bold text-soi-navy-800">Conferences</h2>
             </div>
             <ExpandableSection>
               <div className="prose max-w-none">
@@ -247,13 +247,13 @@ export default function NaveenPage() {
           </div>
 
           {/* Podium Presentations Section */}
-          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6">
+          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6 border border-soi-pink-200">
             <div className="flex items-center mb-4">
-              <FileText className="h-5 w-5 text-[#8B5C9E] mr-3" />
-              <h2 className="text-xl font-bold text-gray-900">Podium Presentations</h2>
+              <FileText className="h-5 w-5 text-soi-pink-500 mr-3" />
+              <h2 className="text-xl font-bold text-soi-navy-800">Podium Presentations</h2>
             </div>
             <div className="prose max-w-none">
-              <h3 className="text-lg font-semibold text-gray-800 mt-2 mb-3">Primary Author</h3>
+              <h3 className="text-lg font-semibold text-soi-navy-700 mt-2 mb-3">Primary Author</h3>
               <ul className="list-disc pl-5 space-y-2">
                 <li>European Congress of Radiology, Vienna, Austria – "Trauma CT scans with pelvic compression devices in-situ: Helpful or Hindrance?" – March 2018</li>
                 <li>North West Orthopaedic Association (NWOA) Research Day, Manchester, UK – Management of pelvic discontinuity in Revision Arthroplasty – Dec 2017</li>
@@ -272,7 +272,7 @@ export default function NaveenPage() {
                 <li>IOS UK Conference, Liverpool, UK – "Outcomes of C stem Asian hip replacement" – July 2015</li>
               </ul>
               
-              <h3 className="text-lg font-semibold text-gray-800 mt-6 mb-3">Co-author</h3>
+              <h3 className="text-lg font-semibold text-soi-navy-700 mt-6 mb-3">Co-author</h3>
               <ul className="list-disc pl-5 space-y-2">
                 <li>SICOT Orthopaedic World Congress, Cape Town, South Africa – "Long term outcome of knee arthroplasty in patients upto 40 years of age" – Dec 2018</li>
                 <li>SICOT Orthopaedic World Congress, Cape Town, South Africa – "Proximal Femoral Replacement – A solution for profound femoral bone loss?" – Dec 2018</li>
@@ -290,10 +290,10 @@ export default function NaveenPage() {
           </div>
 
           {/* Poster Presentations Section */}
-          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6">
+          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6 border border-soi-pink-200">
             <div className="flex items-center mb-4">
-              <FileText className="h-5 w-5 text-[#8B5C9E] mr-3" />
-              <h2 className="text-xl font-bold text-gray-900">Poster Presentations</h2>
+              <FileText className="h-5 w-5 text-soi-pink-500 mr-3" />
+              <h2 className="text-xl font-bold text-soi-navy-800">Poster Presentations</h2>
             </div>
             <div className="prose max-w-none">
               <ul className="list-disc pl-5 space-y-2">
@@ -309,10 +309,10 @@ export default function NaveenPage() {
           </div>
 
           {/* Courses Section */}
-          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6">
+          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6 border border-soi-pink-200">
             <div className="flex items-center mb-4">
-              <BookOpen className="h-5 w-5 text-[#8B5C9E] mr-3" />
-              <h2 className="text-xl font-bold text-gray-900">Courses</h2>
+              <BookOpen className="h-5 w-5 text-soi-pink-500 mr-3" />
+              <h2 className="text-xl font-bold text-soi-navy-800">Courses</h2>
             </div>
             <div className="prose max-w-none">
               <ul className="list-disc pl-5 space-y-2">
@@ -334,10 +334,10 @@ export default function NaveenPage() {
           </div>
 
           {/* Continued Medical Education Section */}
-          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6">
+          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6 border border-soi-pink-200">
             <div className="flex items-center mb-4">
-              <BookOpen className="h-5 w-5 text-[#8B5C9E] mr-3" />
-              <h2 className="text-xl font-bold text-gray-900">Continued Medical Education (CMEs)</h2>
+              <BookOpen className="h-5 w-5 text-soi-pink-500 mr-3" />
+              <h2 className="text-xl font-bold text-soi-navy-800">Continued Medical Education (CMEs)</h2>
             </div>
             <div className="prose max-w-none">
               <ul className="list-disc pl-5 space-y-2">
@@ -354,10 +354,10 @@ export default function NaveenPage() {
           </div>
 
           {/* Publications Section */}
-          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6">
+          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6 border border-soi-pink-200">
             <div className="flex items-center mb-4">
-              <FileText className="h-5 w-5 text-[#8B5C9E] mr-3" />
-              <h2 className="text-xl font-bold text-gray-900">Publications</h2>
+              <FileText className="h-5 w-5 text-soi-pink-500 mr-3" />
+              <h2 className="text-xl font-bold text-soi-navy-800">Publications</h2>
             </div>
             <div className="prose max-w-none">
               <ul className="list-disc pl-5 space-y-2">
@@ -375,10 +375,10 @@ export default function NaveenPage() {
           </div>
 
           {/* Executive & Management Experience Section */}
-          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6">
+          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6 border border-soi-pink-200">
             <div className="flex items-center mb-4">
-              <Briefcase className="h-5 w-5 text-[#8B5C9E] mr-3" />
-              <h2 className="text-xl font-bold text-gray-900">Executive & Management Experience</h2>
+              <Briefcase className="h-5 w-5 text-soi-pink-500 mr-3" />
+              <h2 className="text-xl font-bold text-soi-navy-800">Executive & Management Experience</h2>
             </div>
             <div className="prose max-w-none">
               <ul className="list-disc pl-5 space-y-2">
@@ -394,10 +394,10 @@ export default function NaveenPage() {
           </div>
 
           {/* Affiliations & Memberships Section */}
-          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6">
+          <div className="rounded-xl overflow-hidden bg-white shadow-md p-6 border border-soi-pink-200">
             <div className="flex items-center mb-4">
-              <Users className="h-5 w-5 text-[#8B5C9E] mr-3" />
-              <h2 className="text-xl font-bold text-gray-900">Affiliations & Memberships</h2>
+              <Users className="h-5 w-5 text-soi-pink-500 mr-3" />
+              <h2 className="text-xl font-bold text-soi-navy-800">Affiliations & Memberships</h2>
             </div>
             <div className="prose max-w-none">
               <ul className="list-disc pl-5 space-y-2">

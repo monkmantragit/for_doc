@@ -141,7 +141,7 @@ const ContentRenderer = ({ contentBlocks }: { contentBlocks: ContentBlock[] }) =
                   block.level === 1 ? 'text-3xl mb-6' : 
                   block.level === 2 ? 'text-2xl mb-4 mt-8' : 
                   'text-xl mb-3 mt-6'
-                } text-gray-900`}
+                } text-soi-navy-800`}
                 dangerouslySetInnerHTML={{ __html: block.text || '' }}
               />
             );
@@ -150,7 +150,7 @@ const ContentRenderer = ({ contentBlocks }: { contentBlocks: ContentBlock[] }) =
             return (
               <p 
                 key={index} 
-                className="mb-4 text-gray-700 leading-relaxed"
+                className="mb-4 text-soi-navy-600 leading-relaxed"
                 dangerouslySetInnerHTML={{ __html: block.text || '' }}
               />
             );
@@ -171,7 +171,7 @@ const ContentRenderer = ({ contentBlocks }: { contentBlocks: ContentBlock[] }) =
           case 'button':
             return (
               <Link key={index} href={block.url || '#'}>
-                <button className="px-6 py-2 my-4 rounded-md bg-[#8B5C9E] text-white hover:bg-[#7A4C8C] transition-colors">
+                <button className="px-6 py-2 my-4 rounded-md bg-soi-navy-500 text-white hover:bg-soi-navy-600 transition-colors border-2 border-soi-purple-400">
                   {block.text}
                 </button>
               </Link>
@@ -180,7 +180,7 @@ const ContentRenderer = ({ contentBlocks }: { contentBlocks: ContentBlock[] }) =
           case 'styled_list_item':
             return (
               <div key={index} className="flex mb-3">
-                <div className="mr-3 text-[#8B5C9E]">
+                <div className="mr-3 text-soi-purple-600">
                   {/* Simplified icon handling - could be expanded with more icons */}
                   {block.icon === 'heartbeat' && '❤️'}
                   {block.icon === 'star-half-stroke' && '⭐'}
@@ -196,8 +196,8 @@ const ContentRenderer = ({ contentBlocks }: { contentBlocks: ContentBlock[] }) =
           
           case 'feature_box':
             return (
-              <div key={index} className="bg-gray-50 p-6 rounded-lg my-6 shadow-sm">
-                <h3 className="text-xl font-semibold mb-3">{block.title}</h3>
+              <div key={index} className="bg-soi-navy-50 p-6 rounded-lg my-6 shadow-sm border border-soi-navy-200">
+                <h3 className="text-xl font-semibold mb-3 text-soi-navy-800">{block.title}</h3>
                 <div dangerouslySetInnerHTML={{ __html: block.content || '' }} />
                 {block.image && (
                   <Image
@@ -241,7 +241,7 @@ export default async function PageDetail({ params }: Props) {
   const heroImage = page.contentBlocks.find(block => block.type === 'image')?.src || page.featuredImageUrl || DEFAULT_IMAGE;
   
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-tint-authority">
       <SiteHeader theme="light" />
       
       {/* Hero Section */}
@@ -266,14 +266,14 @@ export default async function PageDetail({ params }: Props) {
       </section>
 
       {/* Breadcrumb Navigation */}
-      <div className="bg-gray-100 border-b border-gray-200">
+      <div className="bg-white border-b border-soi-navy-200">
         <div className="container mx-auto px-4 py-3">
           <nav className="flex text-sm">
-            <Link href="/" className="text-gray-500 hover:text-[#8B5C9E]">Home</Link>
-            <span className="mx-2 text-gray-400">/</span>
-            <Link href="/pages" className="text-gray-500 hover:text-[#8B5C9E]">Pages</Link>
-            <span className="mx-2 text-gray-400">/</span>
-            <span className="text-gray-700">{page.title}</span>
+            <Link href="/" className="text-soi-navy-500 hover:text-soi-purple-600">Home</Link>
+            <span className="mx-2 text-soi-navy-400">/</span>
+            <Link href="/pages" className="text-soi-navy-500 hover:text-soi-purple-600">Pages</Link>
+            <span className="mx-2 text-soi-navy-400">/</span>
+            <span className="text-soi-navy-700">{page.title}</span>
           </nav>
         </div>
       </div>
@@ -291,7 +291,7 @@ export default async function PageDetail({ params }: Props) {
             <div className="mt-8">
               <Link 
                 href="/pages" 
-                className="inline-flex items-center text-[#8B5C9E] hover:underline"
+                className="inline-flex items-center text-soi-purple-600 hover:text-soi-navy-600 hover:underline"
               >
                 <ArrowLeft className="w-4 h-4 mr-1" />
                 Back to all pages
@@ -302,21 +302,21 @@ export default async function PageDetail({ params }: Props) {
           {/* Sidebar */}
           <div className="lg:w-1/3">
             <div className="bg-white rounded-xl shadow-sm p-6 sticky top-6">
-              <h3 className="text-xl font-bold mb-4">Need Assistance?</h3>
-              <p className="mb-6 text-gray-600">
+              <h3 className="text-xl font-bold mb-4 text-soi-navy-800">Need Assistance?</h3>
+              <p className="mb-6 text-soi-navy-600">
                 If you'd like to learn more about {page.title} or schedule a consultation with our specialists, we're here to help.
               </p>
               
               <BookingButton />
               
-              <hr className="my-6 border-gray-200" />
+              <hr className="my-6 border-soi-navy-200" />
               
-              <h4 className="font-semibold mb-2">More Resources</h4>
+              <h4 className="font-semibold mb-2 text-soi-navy-800">More Resources</h4>
               <ul className="space-y-2">
                 <li>
                   <Link 
                     href="/bone-joint-school" 
-                    className="inline-flex items-center text-gray-700 hover:text-[#8B5C9E]"
+                    className="inline-flex items-center text-soi-navy-600 hover:text-soi-purple-600"
                   >
                     <ChevronRight className="w-4 h-4 mr-1" />
                     Bone & Joint School
@@ -325,7 +325,7 @@ export default async function PageDetail({ params }: Props) {
                 <li>
                   <Link 
                     href="/procedure-surgery" 
-                    className="inline-flex items-center text-gray-700 hover:text-[#8B5C9E]"
+                    className="inline-flex items-center text-soi-navy-600 hover:text-soi-purple-600"
                   >
                     <ChevronRight className="w-4 h-4 mr-1" />
                     Procedures & Surgeries
@@ -334,7 +334,7 @@ export default async function PageDetail({ params }: Props) {
                 <li>
                   <Link 
                     href="/blogs" 
-                    className="inline-flex items-center text-gray-700 hover:text-[#8B5C9E]"
+                    className="inline-flex items-center text-soi-navy-600 hover:text-soi-purple-600"
                   >
                     <ChevronRight className="w-4 h-4 mr-1" />
                     Blog Articles

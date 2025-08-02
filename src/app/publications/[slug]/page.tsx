@@ -70,7 +70,7 @@ const ExternalLinkButton = ({ url }: { url: string }) => (
     href={url}
     target="_blank"
     rel="noopener noreferrer"
-    className="inline-flex items-center px-4 py-2 bg-[#8B5C9E] text-white rounded-md hover:bg-[#8B5C9E]/90 transition-colors"
+    className="inline-flex items-center px-4 py-2 bg-soi-navy-500 text-white rounded-md hover:bg-soi-navy-600 transition-colors border-2 border-soi-purple-400"
   >
     <ExternalLink className="w-4 h-4 mr-2" />
     View Original Publication
@@ -97,11 +97,11 @@ const RelatedPublicationCard = ({ publication }: { publication: Publication }) =
           </div>
         </div>
         <div className="p-4">
-          <h3 className="text-sm font-medium text-gray-900 line-clamp-2 group-hover:text-[#8B5C9E] transition-colors">
+          <h3 className="text-sm font-medium text-soi-navy-800 line-clamp-2 group-hover:text-soi-purple-600 transition-colors">
             {cleanTitle}
           </h3>
           {publication.authors && (
-            <p className="text-xs text-gray-600 mt-1 line-clamp-1">{publication.authors}</p>
+            <p className="text-xs text-soi-navy-600 mt-1 line-clamp-1">{publication.authors}</p>
           )}
         </div>
       </div>
@@ -115,12 +115,12 @@ export default async function PublicationDetail({ params }: Props) {
 
   if (!publication) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-tint-authority">
         <SiteHeader />
         <div className="container mx-auto px-4 py-12 text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Publication Not Found</h1>
-          <p className="text-gray-600 mb-6">The requested publication could not be found.</p>
-          <Link href="/publications" className="text-[#8B5C9E] hover:underline">
+          <h1 className="text-2xl font-bold text-soi-navy-800 mb-4">Publication Not Found</h1>
+          <p className="text-soi-navy-600 mb-6">The requested publication could not be found.</p>
+          <Link href="/publications" className="text-soi-purple-600 hover:text-soi-navy-600 hover:underline">
             Back to Publications
           </Link>
         </div>
@@ -160,7 +160,7 @@ export default async function PublicationDetail({ params }: Props) {
   const imageUrl = publication.featured_image_url || DEFAULT_IMAGE;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-tint-authority">
       <SiteHeader />
       
       {/* Breadcrumbs */}
@@ -171,11 +171,11 @@ export default async function PublicationDetail({ params }: Props) {
               <div key={index} className="flex items-center">
                 {index > 0 && <span className="mx-2 text-gray-400">/</span>}
                 {item.url ? (
-                  <Link href={item.url} className="text-[#8B5C9E] hover:underline">
+                  <Link href={item.url} className="text-soi-purple-600 hover:text-soi-navy-600 hover:underline">
                     {item.name}
                   </Link>
                 ) : (
-                  <span className="text-gray-600 font-medium">{item.name}</span>
+                  <span className="text-soi-navy-600 font-medium">{item.name}</span>
                 )}
               </div>
             ))}
@@ -191,7 +191,7 @@ export default async function PublicationDetail({ params }: Props) {
             {/* Publication Category Badge */}
             {publication.publication_type && (
               <div className="flex items-center mb-4">
-                <div className="flex items-center text-sm text-[#8B5C9E] bg-[#8B5C9E]/10 px-3 py-1 rounded-full">
+                <div className="flex items-center text-sm text-soi-navy-700 bg-soi-navy-100 px-3 py-1 rounded-full">
                   <BookOpen className="w-4 h-4 mr-1.5" />
                   <span className="font-medium">{publication.publication_type}</span>
                 </div>
@@ -199,30 +199,30 @@ export default async function PublicationDetail({ params }: Props) {
             )}
 
             {/* Title */}
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 break-words">
+            <h1 className="text-3xl md:text-4xl font-bold text-soi-navy-800 mb-6 break-words">
               {cleanTitle}
             </h1>
 
             {/* Meta Information */}
-            <div className="flex flex-wrap items-center gap-6 text-gray-600 mb-6">
+            <div className="flex flex-wrap items-center gap-6 text-soi-navy-600 mb-6">
               {publication.authors && (
                 <div className="flex items-center min-w-0">
                   <User className="w-5 h-5 mr-2 flex-shrink-0" />
-                  <span className="break-words">{publication.authors}</span>
+                  <span className="break-words text-soi-navy-700">{publication.authors}</span>
                 </div>
               )}
               
               {formattedDate && (
                 <div className="flex items-center">
                   <Calendar className="w-5 h-5 mr-2" />
-                  <span>{formattedDate}</span>
+                  <span className="text-soi-navy-700">{formattedDate}</span>
                 </div>
               )}
 
               {publication.category && (
                 <div className="flex items-center">
                   <Bookmark className="w-5 h-5 mr-2" />
-                  <span>{publication.category}</span>
+                  <span className="text-soi-navy-700">{publication.category}</span>
                 </div>
               )}
             </div>
@@ -258,7 +258,7 @@ export default async function PublicationDetail({ params }: Props) {
               {hasContent ? (
                 <div className="bg-white rounded-lg shadow-sm p-6 md:p-8 overflow-hidden">
                   <div 
-                    className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-[#8B5C9E] prose-a:no-underline hover:prose-a:underline prose-strong:text-gray-900 prose-ul:text-gray-700 prose-ol:text-gray-700 [&_a]:break-all [&_a]:hyphens-auto [&_*]:break-words [&_*]:overflow-wrap-anywhere"
+                    className="prose prose-lg max-w-none prose-headings:text-soi-navy-800 prose-p:text-soi-navy-600 prose-a:text-soi-purple-600 prose-a:no-underline hover:prose-a:underline prose-strong:text-soi-navy-700 prose-ul:text-soi-navy-600 prose-ol:text-soi-navy-600 [&_a]:break-all [&_a]:hyphens-auto [&_*]:break-words [&_*]:overflow-wrap-anywhere"
                     style={{ wordBreak: 'break-word', overflowWrap: 'anywhere' }}
                     dangerouslySetInnerHTML={{ __html: publication.content_html || '' }}
                   />
@@ -267,8 +267,8 @@ export default async function PublicationDetail({ params }: Props) {
                 <div className="bg-white rounded-lg shadow-sm p-6 md:p-8">
                   <div className="text-center py-8">
                     <FileText className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">Full Content Available</h3>
-                    <p className="text-gray-600 mb-6">
+                    <h3 className="text-lg font-medium text-soi-navy-800 mb-2">Full Content Available</h3>
+                    <p className="text-soi-navy-600 mb-6">
                       The complete article is available through the original publication source.
                     </p>
                   </div>
@@ -280,7 +280,7 @@ export default async function PublicationDetail({ params }: Props) {
             <div className="lg:col-span-1">
               {/* Citation */}
               <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Citation</h3>
+                <h3 className="text-lg font-semibold text-soi-navy-800 mb-4">Citation</h3>
                 <PublicationCitation
                   title={cleanTitle}
                   authors={publication.authors || 'Unknown Author'}
@@ -293,7 +293,7 @@ export default async function PublicationDetail({ params }: Props) {
               {/* Related Publications */}
               {relatedPublications.length > 0 && (
                 <div className="bg-white rounded-lg shadow-sm p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Related Publications</h3>
+                  <h3 className="text-lg font-semibold text-soi-navy-800 mb-4">Related Publications</h3>
                   <div className="space-y-4">
                     {relatedPublications.map((relatedPub) => (
                       <RelatedPublicationCard key={relatedPub.id} publication={relatedPub} />
@@ -302,7 +302,7 @@ export default async function PublicationDetail({ params }: Props) {
                   <div className="mt-6">
                     <Link 
                       href="/publications"
-                      className="inline-flex items-center text-[#8B5C9E] hover:underline"
+                      className="inline-flex items-center text-soi-purple-600 hover:text-soi-navy-600 hover:underline"
                     >
                       View all publications
                       <ArrowRight className="w-4 h-4 ml-1" />

@@ -229,11 +229,11 @@ export default async function CategoryPage({ params }: Props) {
       <div className="min-h-screen flex flex-col">
         <SiteHeader theme="light" />
         <main className="flex-grow container mx-auto px-4 py-20 text-center">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">Category Not Found</h1>
-          <p className="text-gray-600 mb-6">The category you're looking for could not be found.</p>
+          <h1 className="text-3xl font-bold text-soi-navy-800 mb-4">Category Not Found</h1>
+          <p className="text-soi-navy-600 mb-6">The category you're looking for could not be found.</p>
           <Link 
             href="/categories" 
-            className="inline-flex items-center text-[#8B5C9E] hover:underline"
+            className="inline-flex items-center text-soi-purple-600 hover:text-soi-navy-600 hover:underline"
           >
             <ArrowLeft className="w-4 h-4 mr-1" />
             Back to all categories
@@ -245,7 +245,7 @@ export default async function CategoryPage({ params }: Props) {
   }
   
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-tint-expertise">
       <SiteHeader theme="light" />
       
       {/* Hero Section */}
@@ -271,14 +271,14 @@ export default async function CategoryPage({ params }: Props) {
       </section>
 
       {/* Breadcrumb Navigation */}
-      <div className="bg-gray-100 border-b border-gray-200">
+      <div className="bg-white border-b border-soi-purple-200">
         <div className="container mx-auto px-4 py-3">
           <nav className="flex text-sm">
-            <Link href="/" className="text-gray-500 hover:text-[#8B5C9E]">Home</Link>
-            <span className="mx-2 text-gray-400">/</span>
-            <Link href="/categories" className="text-gray-500 hover:text-[#8B5C9E]">Categories</Link>
-            <span className="mx-2 text-gray-400">/</span>
-            <span className="text-gray-700">{category.title}</span>
+            <Link href="/" className="text-soi-navy-500 hover:text-soi-purple-600">Home</Link>
+            <span className="mx-2 text-soi-navy-400">/</span>
+            <Link href="/categories" className="text-soi-navy-500 hover:text-soi-purple-600">Categories</Link>
+            <span className="mx-2 text-soi-navy-400">/</span>
+            <span className="text-soi-navy-700">{category.title}</span>
           </nav>
         </div>
       </div>
@@ -287,11 +287,11 @@ export default async function CategoryPage({ params }: Props) {
       <main className="container mx-auto px-4 py-12 md:py-16">
         <div className="mb-10">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+            <h2 className="text-2xl md:text-3xl font-bold text-soi-navy-800">
               Articles in {category.title}
             </h2>
             
-            <div className="text-sm text-gray-500">
+            <div className="text-sm text-soi-purple-600">
               {posts.length} article{posts.length !== 1 ? 's' : ''}
             </div>
           </div>
@@ -306,11 +306,11 @@ export default async function CategoryPage({ params }: Props) {
           </div>
         ) : (
           <div className="bg-white rounded-lg p-8 text-center shadow-sm">
-            <h3 className="text-xl font-medium text-gray-900 mb-2">No articles found</h3>
-            <p className="text-gray-600">
+            <h3 className="text-xl font-medium text-soi-navy-800 mb-2">No articles found</h3>
+            <p className="text-soi-navy-600">
               No articles found in the "{category.title}" category.
             </p>
-            <Link href="/blogs" className="mt-4 inline-block text-[#8B5C9E] hover:underline">
+            <Link href="/blogs" className="mt-4 inline-block text-soi-purple-600 hover:text-soi-navy-600 hover:underline">
               View all articles
             </Link>
           </div>

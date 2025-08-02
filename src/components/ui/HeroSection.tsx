@@ -103,7 +103,7 @@ export default function HeroSection({
                 className="absolute inset-0 w-full h-full object-cover"
                 style={{ objectPosition: 'center' }}
               />
-              <div className="absolute inset-0 bg-[#2E3A59]/50" />
+              <div className="absolute inset-0 bg-black/60" />
               <div 
                 className="absolute inset-0" 
                 style={{ 
@@ -127,9 +127,9 @@ export default function HeroSection({
             />
             <div className="absolute inset-0 bg-[url('/images/blue-grid.svg')] opacity-10 mix-blend-overlay"></div>
             
-            {/* Purple accent color */}
-            <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-[#8B5C9E]/20 blur-3xl rounded-full transform translate-x-1/4 -translate-y-1/4"></div>
-            <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-[#8B5C9E]/20 blur-3xl rounded-full transform -translate-x-1/4 translate-y-1/4"></div>
+            {/* Subtle accent colors */}
+            <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-white/5 blur-3xl rounded-full transform translate-x-1/4 -translate-y-1/4"></div>
+            <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-white/5 blur-3xl rounded-full transform -translate-x-1/4 translate-y-1/4"></div>
           </div>
         );
       
@@ -144,7 +144,7 @@ export default function HeroSection({
                 background: `linear-gradient(to bottom, ${bgColor} 0%, transparent 100%)`
               }}
             />
-            <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-[#8B5C9E]/10 blur-3xl rounded-full transform translate-x-1/4 -translate-y-1/4"></div>
+            <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-white/8 blur-3xl rounded-full transform translate-x-1/4 -translate-y-1/4"></div>
           </div>
         );
       
@@ -156,8 +156,8 @@ export default function HeroSection({
               style={{ backgroundColor: bgColor }}
             />
             <div className="absolute inset-0 bg-[url('/images/blue-grid.svg')] opacity-10 mix-blend-overlay"></div>
-            <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-[#8B5C9E]/20 blur-3xl rounded-full"></div>
-            <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-[#8B5C9E]/20 blur-3xl rounded-full"></div>
+            <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-white/5 blur-3xl rounded-full"></div>
+            <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-white/5 blur-3xl rounded-full"></div>
           </div>
         );
       
@@ -194,7 +194,7 @@ export default function HeroSection({
           >
             <span className="relative inline-block">
               {title}
-              <div className="absolute -inset-1 bg-[#8B5C9E]/20 blur-lg animate-pulse-slow opacity-70"></div>
+              <div className="absolute -inset-1 bg-white/10 blur-lg animate-pulse-slow opacity-70"></div>
             </span>
           </motion.h1>
         ) : (

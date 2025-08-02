@@ -1,0 +1,247 @@
+---
+alwaysApply: true
+description: SOI Accessibility Guardian - Text Readability and Compliance Enforcer
+---
+
+# 🛡️ SOI Accessibility Guardian
+
+## Mandatory Text Readability Standards
+
+### WCAG Compliance Requirements
+- **Level AA**: Minimum 4.5:1 contrast ratio for normal text
+- **Level AAA**: Target 7:1 contrast ratio for optimal readability
+- **Large Text**: Minimum 3:1 ratio (18pt+ or 14pt+ bold)
+- **Interactive Elements**: Minimum 3:1 for focus indicators
+
+### Pre-Approved Color Combinations
+
+#### ✅ SAFE TEXT COMBINATIONS
+```css
+/* Primary Text Combinations */
+.navy-on-white { color: #1e3a5f; background: #ffffff; } /* 12.6:1 ✅ */
+.white-on-navy { color: #ffffff; background: #1e3a5f; } /* 12.6:1 ✅ */
+.purple-on-white { color: #8B5C9E; background: #ffffff; } /* 6.2:1 ✅ */
+.white-on-purple { color: #ffffff; background: #8B5C9E; } /* 6.2:1 ✅ */
+
+/* Accent Combinations */
+.navy-on-light-pink { color: #1e3a5f; background: #f8f4f6; } /* 11.5:1 ✅ */
+.navy-on-light-mint { color: #1e3a5f; background: #f4f8f4; } /* 11.2:1 ✅ */
+.mint-on-navy { color: #a8c4a2; background: #1e3a5f; } /* 5.1:1 ✅ */
+.pink-on-navy { color: #d4a5b8; background: #1e3a5f; } /* 4.8:1 ✅ */
+```
+
+#### ⚠️ RESTRICTED COMBINATIONS
+```css
+/* Use only for decorative elements, never for text */
+.pink-on-white { color: #d4a5b8; background: #ffffff; } /* 3.1:1 ⚠️ */
+.mint-on-white { color: #a8c4a2; background: #ffffff; } /* 2.8:1 ❌ */
+.light-purple { color: #b88cc8; } /* ❌ Never use for text */
+```
+
+## Component-Specific Accessibility Rules
+
+### Buttons
+```tsx
+// ✅ CORRECT Button Implementation
+<button className="bg-soi-navy text-white border-2 border-soi-pink hover:bg-soi-navy/90 focus:ring-2 focus:ring-soi-mint focus:ring-offset-2">
+  {/* Navy bg + White text = 12.6:1 contrast */}
+  Book Appointment
+</button>
+
+// ❌ INCORRECT - Poor contrast
+<button className="bg-soi-pink text-white">
+  {/* Pink bg + White text = 2.4:1 contrast - FAILS */}
+</button>
+```
+
+### Cards and Sections
+```tsx
+// ✅ CORRECT Card Implementation
+<div className="bg-white border border-gray-200 rounded-lg">
+  <h3 className="text-soi-navy font-bold">
+    {/* Navy text on white = 12.6:1 contrast */}
+  </h3>
+  <p className="text-gray-800">
+    {/* Dark gray for body text = 12.6:1 contrast */}
+  </p>
+</div>
+```
+
+### Links and Interactive Elements
+```tsx
+// ✅ CORRECT Link Styling
+<a 
+  href="#" 
+  className="text-soi-purple hover:text-soi-navy underline focus:ring-2 focus:ring-soi-mint"
+>
+  {/* Purple text = 6.2:1, Navy hover = 12.6:1, Mint focus ring visible */}
+</a>
+```
+
+## Mandatory Pre-Implementation Checks
+
+### Before Any Color Change
+```typescript
+// Required validation function
+const validateContrast = (foreground: string, background: string): boolean => {
+  const ratio = calculateContrastRatio(foreground, background);
+  return ratio >= 4.5; // WCAG AA minimum
+};
+
+// Usage example
+if (!validateContrast('#8B5C9E', '#ffffff')) {
+  throw new Error('Contrast ratio too low for accessibility');
+}
+```
+
+### Text Hierarchy Validation
+- [ ] **H1**: Navy (#1e3a5f) on light backgrounds only
+- [ ] **H2**: Purple (#8B5C9E) on white backgrounds only  
+- [ ] **H3**: Navy with 80% opacity minimum
+- [ ] **Body Text**: #2a2a2a or darker for maximum readability
+- [ ] **Captions**: #666666 minimum (7.1:1 on white)
+- [ ] **Links**: Purple (#8B5C9E) with underline, Navy hover
+
+## Screen Reader Compatibility
+
+### Color-Independent Information
+```tsx
+// ✅ CORRECT - Information not dependent on color alone
+<div className="bg-red-100 border-l-4 border-red-500 p-4">
+  <div className="flex">
+    <ExclamationTriangleIcon className="h-5 w-5 text-red-400" />
+    <div className="ml-3">
+      <p className="text-sm text-red-700">
+        <span className="sr-only">Error: </span>
+        Please fill in all required fields.
+      </p>
+    </div>
+  </div>
+</div>
+
+// ❌ INCORRECT - Relies on color alone
+<p className="text-red-500">Required field</p>
+```
+
+### ARIA Labels and Descriptions
+```tsx
+// ✅ CORRECT - Descriptive labels
+<button 
+  className="bg-soi-navy text-white"
+  aria-label="Book appointment with orthopedic specialist"
+  aria-describedby="booking-help"
+>
+  Book Now
+</button>
+<div id="booking-help" className="sr-only">
+  Opens booking form in new window
+</div>
+```
+
+## Testing Requirements
+
+### Automated Testing
+```typescript
+// Required accessibility tests
+describe('Color Accessibility', () => {
+  test('all text meets minimum contrast ratio', () => {
+    // Test implementation
+  });
+  
+  test('focus indicators are visible', () => {
+    // Test implementation  
+  });
+  
+  test('color is not the only way to convey information', () => {
+    // Test implementation
+  });
+});
+```
+
+### Manual Testing Checklist
+- [ ] Navigate entire page using only keyboard
+- [ ] Test with screen reader (NVDA/JAWS/VoiceOver)
+- [ ] Verify in high contrast mode
+- [ ] Check with color blindness simulators
+- [ ] Test at 200% zoom level
+- [ ] Validate in grayscale mode
+
+## Emergency Accessibility Fixes
+
+### Quick Contrast Fixes
+```css
+/* If contrast is too low, use these emergency overrides */
+.emergency-high-contrast {
+  color: #000000 !important;
+  background: #ffffff !important;
+}
+
+.emergency-button-fix {
+  background: #1e3a5f !important;
+  color: #ffffff !important;
+  border: 2px solid #ffffff !important;
+}
+```
+
+### Focus State Emergencies
+```css
+/* If focus states are invisible */
+.emergency-focus {
+  outline: 3px solid #a8c4a2 !important;
+  outline-offset: 2px !important;
+}
+```
+
+## Compliance Monitoring
+
+### Required Tools
+- **axe-core**: Automated accessibility testing
+- **Lighthouse**: Accessibility audit scores
+- **WAVE**: Web accessibility evaluation
+- **Colour Contrast Analyser**: Manual contrast checking
+
+### Success Metrics
+- [ ] Lighthouse Accessibility Score: 95+ (Target: 100)
+- [ ] Zero critical accessibility violations
+- [ ] All text passes WCAG AA contrast requirements
+- [ ] Keyboard navigation 100% functional
+- [ ] Screen reader compatibility verified
+
+## Documentation Requirements
+
+### Accessibility Statement
+```markdown
+## Accessibility Compliance
+- WCAG 2.1 AA compliant
+- Minimum 4.5:1 contrast ratio for all text
+- Keyboard navigation supported
+- Screen reader compatible
+- Color-blind friendly design
+```
+
+### Testing Evidence
+- [ ] Contrast ratio measurements documented
+- [ ] Screen reader testing results recorded
+- [ ] Keyboard navigation paths verified
+- [ ] High contrast mode screenshots captured
+- [ ] Color blindness simulation results saved
+
+## Violation Response Protocol
+
+### Critical Violations (Immediate Fix Required)
+- Text contrast below 3:1
+- Keyboard navigation broken
+- Screen reader cannot access content
+- Color-only information conveyance
+
+### Major Violations (Fix within 24 hours)
+- Text contrast below 4.5:1
+- Missing focus indicators
+- Insufficient color differentiation
+- Poor semantic markup
+
+### Minor Violations (Fix within 1 week)
+- Contrast below 7:1 (AAA level)
+- Minor screen reader improvements
+- Enhanced keyboard shortcuts
+- Better color coding alternatives

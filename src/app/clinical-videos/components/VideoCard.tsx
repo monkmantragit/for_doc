@@ -138,7 +138,7 @@ export function VideoCard({ youtubeId, title, category, thumbnailUrl }: VideoCar
   };
 
   return (
-    <div className="bg-white rounded-lg overflow-hidden shadow-md transition-all hover:shadow-lg">
+    <div className="bg-white rounded-lg overflow-hidden shadow-md transition-all hover:shadow-lg border border-soi-purple-100 hover:border-soi-purple-300">
       <div className="relative aspect-video" style={{ minHeight: "200px" }}>
         {/* Thumbnail with play button */}
         <div 
@@ -154,21 +154,21 @@ export function VideoCard({ youtubeId, title, category, thumbnailUrl }: VideoCar
           />
           <div className="absolute inset-0 flex items-center justify-center group">
             <div className="bg-black/20 absolute inset-0 group-hover:bg-black/40 transition-colors duration-300"></div>
-            <div className="w-16 h-16 bg-[#8B5C9E] rounded-full flex items-center justify-center z-10 shadow-lg group-hover:scale-110 transition-transform duration-300">
+            <div className="w-16 h-16 bg-soi-navy-500 rounded-full flex items-center justify-center z-10 shadow-lg group-hover:scale-110 transition-transform duration-300">
               <Play className="w-6 h-6 text-white fill-white ml-1" />
             </div>
           </div>
           
           {/* Category label */}
           {category && (
-            <div className="absolute top-2 right-2 bg-[#8B5C9E] text-white text-xs font-medium px-2 py-1 rounded-md shadow-md">
+            <div className="absolute top-2 right-2 bg-soi-navy-500 text-white text-xs font-medium px-2 py-1 rounded-md shadow-md">
               {category}
             </div>
           )}
         </div>
       </div>
       <div className="p-4">
-        <h3 className="font-medium text-gray-900 text-lg line-clamp-2">{title}</h3>
+        <h3 className="font-medium text-soi-navy-800 text-lg line-clamp-2">{title}</h3>
       </div>
     </div>
   );

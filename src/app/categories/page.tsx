@@ -70,7 +70,7 @@ const CategoryCard = ({ category }: { category: Category }) => {
   return (
     <Link 
       href={`/categories/${category.slug}`}
-      className="group relative overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-300 block h-64"
+      className="group relative overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-all duration-300 block h-64 border border-soi-purple-200 hover:border-soi-purple-400"
     >
       <Image
         src={category.featuredImageUrl}
@@ -78,12 +78,12 @@ const CategoryCard = ({ category }: { category: Category }) => {
         fill
         className="object-cover transition-all duration-500 group-hover:scale-105"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+      <div className="absolute inset-0 bg-gradient-to-t from-soi-purple-900/90 via-soi-purple-800/50 to-transparent"></div>
       <div className="absolute bottom-0 left-0 right-0 p-6">
-        <h3 className="text-xl md:text-2xl font-bold text-white group-hover:text-white/90 transition-colors">
+        <h3 className="text-xl md:text-2xl font-bold text-white group-hover:text-soi-mint-100 transition-colors">
           {category.title}
         </h3>
-        <div className="flex items-center mt-2 text-white/80 transition-opacity opacity-80 group-hover:opacity-100">
+        <div className="flex items-center mt-2 text-white/90 transition-all opacity-90 group-hover:opacity-100 group-hover:text-soi-mint-200">
           <span className="text-sm">View articles</span>
           <ArrowUpRight className="w-4 h-4 ml-1" />
         </div>
@@ -97,7 +97,7 @@ export default async function CategoriesPage() {
   const categories = await getCategories();
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-tint-expertise">
       <SiteHeader theme="light" />
       
       {/* Hero Section */}
@@ -111,7 +111,7 @@ export default async function CategoriesPage() {
             priority
             className="object-cover"
           />
-          <div className="absolute inset-0 bg-black/40"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-soi-purple-900/80 via-soi-navy-900/70 to-black/60"></div>
         </div>
         
         <div className="relative z-10 container mx-auto px-4">
@@ -127,10 +127,10 @@ export default async function CategoriesPage() {
       {/* Main Content Area */}
       <main className="container mx-auto px-4 py-12 md:py-16">
         <div className="mb-10">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+          <h2 className="text-2xl md:text-3xl font-bold text-soi-navy-800 mb-2">
             Medical Categories
           </h2>
-          <p className="text-gray-600">
+          <p className="text-soi-navy-600">
             Select a category to explore related articles and resources
           </p>
         </div>
@@ -143,9 +143,9 @@ export default async function CategoriesPage() {
             ))}
           </div>
         ) : (
-          <div className="bg-white rounded-lg p-8 text-center shadow-sm">
-            <h3 className="text-xl font-medium text-gray-900 mb-2">No categories found</h3>
-            <p className="text-gray-600">
+          <div className="bg-white rounded-lg p-8 text-center shadow-sm border border-soi-purple-200">
+            <h3 className="text-xl font-medium text-soi-navy-800 mb-2">No categories found</h3>
+            <p className="text-soi-navy-600">
               Categories will appear here once added to the database.
             </p>
           </div>

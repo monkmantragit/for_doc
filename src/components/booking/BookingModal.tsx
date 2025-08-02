@@ -155,12 +155,12 @@ const BookingModalContent = ({ isOpen, onClose }: BookingModalProps) => {
 
             {/* Footer - Only show if not on Thank You step and Summary doesn't have its own submit button */}
             {state.currentStep < 3 && (
-              <div className="flex-shrink-0 border-t border-gray-200 bg-gray-50 p-4">
+              <div className="flex-shrink-0 border-t border-soi-pink-200 bg-soi-pink-50 p-4">
                 <div className="flex items-center justify-between">
                   {state.currentStep > 0 ? (
                     <button
                       onClick={handleBack}
-                      className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
+                      className="px-4 py-2 text-sm font-medium text-soi-navy-600 hover:text-soi-navy-800 transition-colors"
                     >
                       Back
                     </button>
@@ -174,7 +174,7 @@ const BookingModalContent = ({ isOpen, onClose }: BookingModalProps) => {
                     className={`
                       px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
                       ${canProceed()
-                        ? 'bg-[#8B5C9E] text-white hover:bg-[#7A4B8D] shadow-sm hover:shadow-md'
+                        ? 'bg-soi-navy-500 text-white hover:bg-soi-navy-600 shadow-sm hover:shadow-md'
                         : 'bg-gray-200 text-gray-500 cursor-not-allowed'
                       }
                     `}

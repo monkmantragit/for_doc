@@ -82,10 +82,10 @@ export default async function StaffMemberPage({ params }: { params: { slug: stri
   
   if (!staffMember) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-tint-care flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Staff Member Not Found</h1>
-          <Link href="/surgeons-staff" className="text-blue-600 hover:text-blue-800">
+          <h1 className="text-2xl font-bold text-soi-navy-800 mb-4">Staff Member Not Found</h1>
+          <Link href="/surgeons-staff" className="text-soi-pink-600 hover:text-soi-navy-600">
             ← Back to Team
           </Link>
         </div>
@@ -105,12 +105,12 @@ export default async function StaffMemberPage({ params }: { params: { slug: stri
     (staffMember.content_text ? staffMember.content_text.slice(0, 150) + '...' : null);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-tint-care">
       <SiteHeader theme="transparent" />
       
       <main>
         {/* Hero Section - More refined */}
-        <section className="relative bg-gradient-to-br from-[#2E3A59] via-[#2a3450] to-[#1f2937] pt-20 pb-10">
+        <section className="relative bg-gradient-to-br from-soi-navy-700 via-soi-navy-600 to-soi-navy-800 pt-20 pb-10">
           <Container>
             {/* Breadcrumb */}
             <nav className="flex items-center space-x-2 text-sm text-white/60 mb-6">
@@ -125,7 +125,7 @@ export default async function StaffMemberPage({ params }: { params: { slug: stri
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
               {/* Text Content */}
               <div className="order-2 lg:order-1">
-                <div className="inline-block bg-[#8B5C9E]/15 text-white px-3 py-1 rounded-md text-xs font-medium mb-4 border border-[#8B5C9E]/20">
+                <div className="inline-block bg-soi-pink-500/20 text-white px-3 py-1 rounded-md text-xs font-medium mb-4 border border-soi-pink-500/30">
                   {position.toUpperCase()}
                 </div>
                 <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
@@ -145,7 +145,7 @@ export default async function StaffMemberPage({ params }: { params: { slug: stri
                 </div>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <BookingButton 
-                    className="bg-[#8B5C9E] hover:bg-[#7A4F8C] text-white px-6 py-2.5 text-sm rounded-lg font-medium transition-all duration-300 hover:shadow-lg"
+                    className="bg-soi-navy-500 hover:bg-soi-navy-600 text-white px-6 py-2.5 text-sm rounded-lg font-medium transition-all duration-300 hover:shadow-lg border-2 border-soi-pink-400"
                     icon={null}
                     text="Book an Appointment"
                   />
@@ -163,7 +163,7 @@ export default async function StaffMemberPage({ params }: { params: { slug: stri
               <div className="relative order-1 lg:order-2">
                 <div className="relative w-full max-w-xs mx-auto lg:max-w-sm">
                   <div className="relative aspect-[3/4] overflow-hidden rounded-xl">
-                    <div className="absolute inset-0 bg-gradient-to-tr from-[#8B5C9E]/15 to-transparent z-10"></div>
+                    <div className="absolute inset-0 bg-gradient-to-tr from-soi-pink-500/20 to-transparent z-10"></div>
                     <Image
                       src={imageUrl}
                       alt={name}
@@ -171,7 +171,7 @@ export default async function StaffMemberPage({ params }: { params: { slug: stri
                       className="object-cover object-top rounded-xl shadow-lg"
                       sizes="(max-width: 1024px) 300px, 400px"
                     />
-                    <div className="absolute -bottom-4 -right-4 w-16 h-16 bg-[#8B5C9E] rounded-full flex items-center justify-center shadow-lg z-20">
+                    <div className="absolute -bottom-4 -right-4 w-16 h-16 bg-soi-pink-500 rounded-full flex items-center justify-center shadow-lg z-20">
                       <Stethoscope className="w-8 h-8 text-white" />
                     </div>
                   </div>
@@ -189,24 +189,24 @@ export default async function StaffMemberPage({ params }: { params: { slug: stri
               <div className="lg:col-span-2">
                 <div className="bg-white rounded-lg shadow-sm p-6 mb-6 border border-gray-100">
                   <div className="flex items-center mb-4">
-                    <User className="h-5 w-5 text-[#8B5C9E] mr-2" />
-                    <h2 className="text-xl font-bold text-gray-900">About {name}</h2>
+                    <User className="h-5 w-5 text-soi-pink-500 mr-2" />
+                    <h2 className="text-xl font-bold text-soi-navy-800">About {name}</h2>
                   </div>
                   
                   {/* Show content with graceful fallbacks */}
                   {staffMember.content_html ? (
                     <div 
-                      className="prose prose-gray max-w-none text-gray-700 prose-headings:text-gray-900 prose-links:text-[#8B5C9E] prose-links:hover:text-[#7A4F8C] prose-p:text-sm prose-p:leading-relaxed"
+                      className="prose prose-gray max-w-none text-soi-navy-600 prose-headings:text-soi-navy-800 prose-links:text-soi-pink-600 prose-links:hover:text-soi-navy-600 prose-p:text-sm prose-p:leading-relaxed"
                       dangerouslySetInnerHTML={{ __html: staffMember.content_html }}
                     />
                   ) : staffMember.content_text ? (
-                    <div className="text-gray-700 whitespace-pre-wrap leading-relaxed text-sm">
+                    <div className="text-soi-navy-600 whitespace-pre-wrap leading-relaxed text-sm">
                       {staffMember.content_text}
                     </div>
                   ) : staffMember.excerpt ? (
-                    <p className="text-gray-700 leading-relaxed">{staffMember.excerpt}</p>
+                    <p className="text-soi-navy-600 leading-relaxed">{staffMember.excerpt}</p>
                   ) : (
-                    <div className="text-gray-600 leading-relaxed">
+                    <div className="text-soi-navy-600 leading-relaxed">
                       <p className="mb-3">
                         {name} is a valued member of our professional team at Sports Orthopedics Institute.
                       </p>
@@ -221,18 +221,18 @@ export default async function StaffMemberPage({ params }: { params: { slug: stri
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
                     <div className="flex items-center mb-3">
-                      <Award className="h-5 w-5 text-[#8B5C9E] mr-2" />
-                      <h3 className="font-semibold text-gray-900">Specialization</h3>
+                      <Award className="h-5 w-5 text-soi-pink-500 mr-2" />
+                      <h3 className="font-semibold text-soi-navy-800">Specialization</h3>
                     </div>
-                    <p className="text-gray-700 text-sm">{position || 'Healthcare Professional'}</p>
+                    <p className="text-soi-navy-600 text-sm">{position || 'Healthcare Professional'}</p>
                   </div>
 
                   <div className="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
                     <div className="flex items-center mb-3">
-                      <Building className="h-5 w-5 text-[#8B5C9E] mr-2" />
-                      <h3 className="font-semibold text-gray-900">Department</h3>
+                      <Building className="h-5 w-5 text-soi-pink-500 mr-2" />
+                      <h3 className="font-semibold text-soi-navy-800">Department</h3>
                     </div>
-                    <p className="text-gray-700 text-sm">{staffMember.category || 'Sports Orthopedics'}</p>
+                    <p className="text-soi-navy-600 text-sm">{staffMember.category || 'Sports Orthopedics'}</p>
                   </div>
                 </div>
               </div>
@@ -241,16 +241,16 @@ export default async function StaffMemberPage({ params }: { params: { slug: stri
               <div className="space-y-4">
                 {/* Quick Contact - Always show */}
                 <div className="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
-                  <h3 className="font-semibold text-gray-900 mb-4">Quick Contact</h3>
+                  <h3 className="font-semibold text-soi-navy-800 mb-4">Quick Contact</h3>
                   <div className="space-y-2">
                     <BookingButton 
-                      className="w-full bg-[#8B5C9E] hover:bg-[#7A4F8C] text-white py-2.5 text-sm rounded-md font-medium transition-all duration-300 shadow-sm"
+                      className="w-full bg-soi-navy-500 hover:bg-soi-navy-600 text-white py-2.5 text-sm rounded-md font-medium transition-all duration-300 shadow-sm border-2 border-soi-pink-400"
                       icon={null}
                       text="Book an Appointment"
                     />
                     <Link
                       href="/contact"
-                      className="w-full inline-flex items-center justify-center px-4 py-2.5 bg-gray-50 hover:bg-gray-100 text-gray-700 hover:text-gray-900 text-sm font-medium rounded-md transition-all duration-300 border border-gray-200"
+                      className="w-full inline-flex items-center justify-center px-4 py-2.5 bg-soi-pink-50 hover:bg-soi-pink-100 text-soi-navy-700 hover:text-soi-navy-800 text-sm font-medium rounded-md transition-all duration-300 border border-soi-pink-200"
                     >
                       <Phone className="w-4 h-4 mr-2" />
                       Contact Office
@@ -260,33 +260,33 @@ export default async function StaffMemberPage({ params }: { params: { slug: stri
 
                 {/* Professional Info - Show available fields gracefully */}
                 <div className="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
-                  <h3 className="font-semibold text-gray-900 mb-3">Professional Info</h3>
+                  <h3 className="font-semibold text-soi-navy-800 mb-3">Professional Info</h3>
                   <div className="space-y-3">
                     {/* Always show position */}
                     <div className="flex items-start">
-                      <Award className="h-4 w-4 text-[#8B5C9E] mr-2 mt-0.5 flex-shrink-0" />
+                      <Award className="h-4 w-4 text-soi-pink-500 mr-2 mt-0.5 flex-shrink-0" />
                       <div>
-                        <p className="text-xs font-medium text-gray-700">Position</p>
-                        <p className="text-sm text-gray-600">{position || 'Healthcare Professional'}</p>
+                        <p className="text-xs font-medium text-soi-navy-700">Position</p>
+                        <p className="text-sm text-soi-navy-600">{position || 'Healthcare Professional'}</p>
                       </div>
                     </div>
                     
                     {/* Always show department */}
                     <div className="flex items-start">
-                      <Building className="h-4 w-4 text-[#8B5C9E] mr-2 mt-0.5 flex-shrink-0" />
+                      <Building className="h-4 w-4 text-soi-pink-500 mr-2 mt-0.5 flex-shrink-0" />
                       <div>
-                        <p className="text-xs font-medium text-gray-700">Department</p>
-                        <p className="text-sm text-gray-600">{staffMember.category || 'Sports Orthopedics'}</p>
+                        <p className="text-xs font-medium text-soi-navy-700">Department</p>
+                        <p className="text-sm text-soi-navy-600">{staffMember.category || 'Sports Orthopedics'}</p>
                       </div>
                     </div>
                     
                     {/* Show reading time only if available */}
                     {staffMember.reading_time && (
                       <div className="flex items-start">
-                        <BookOpen className="h-4 w-4 text-[#8B5C9E] mr-2 mt-0.5 flex-shrink-0" />
+                        <BookOpen className="h-4 w-4 text-soi-pink-500 mr-2 mt-0.5 flex-shrink-0" />
                         <div>
-                          <p className="text-xs font-medium text-gray-700">Profile Length</p>
-                          <p className="text-sm text-gray-600">{staffMember.reading_time} min read</p>
+                          <p className="text-xs font-medium text-soi-navy-700">Profile Length</p>
+                          <p className="text-sm text-soi-navy-600">{staffMember.reading_time} min read</p>
                         </div>
                       </div>
                     )}
@@ -296,14 +296,14 @@ export default async function StaffMemberPage({ params }: { params: { slug: stri
                 </div>
 
                 {/* Back to Team - Always show */}
-                <div className="bg-gradient-to-br from-[#8B5C9E]/5 to-blue-50 rounded-lg p-4">
-                  <h3 className="font-semibold text-gray-900 mb-2">Our Team</h3>
-                  <p className="text-gray-600 text-sm mb-3">
+                <div className="bg-gradient-to-br from-soi-pink-100 to-soi-pink-50 rounded-lg p-4">
+                  <h3 className="font-semibold text-soi-navy-800 mb-2">Our Team</h3>
+                  <p className="text-soi-navy-600 text-sm mb-3">
                     Discover more about our expert healthcare professionals.
                   </p>
           <Link 
             href="/surgeons-staff" 
-                    className="inline-flex items-center text-[#8B5C9E] text-sm font-medium hover:text-[#7A4F8C] transition-colors"
+                    className="inline-flex items-center text-soi-pink-600 text-sm font-medium hover:text-soi-navy-600 transition-colors"
           >
                     <ArrowLeft className="w-4 h-4 mr-1" />
                     View All Team Members
@@ -319,8 +319,8 @@ export default async function StaffMemberPage({ params }: { params: { slug: stri
           <section className="py-10 px-4 md:px-8 lg:px-12 bg-white border-t border-gray-100">
             <Container>
               <div className="text-center mb-8">
-                <h2 className="text-2xl font-bold text-gray-900 mb-3">Meet More Team Members</h2>
-                <p className="text-gray-600 text-sm">
+                <h2 className="text-2xl font-bold text-soi-navy-800 mb-3">Meet More Team Members</h2>
+                <p className="text-soi-navy-600 text-sm">
                   Other professionals in our {staffMember.category || 'healthcare'} department
                 </p>
               </div>
@@ -345,7 +345,7 @@ export default async function StaffMemberPage({ params }: { params: { slug: stri
         )}
 
         {/* Call to Action - Always show */}
-        <section className="py-10 px-4 md:px-8 lg:px-12 bg-[#2E3A59]">
+        <section className="py-10 px-4 md:px-8 lg:px-12 bg-soi-navy-700">
           <Container>
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
@@ -356,7 +356,7 @@ export default async function StaffMemberPage({ params }: { params: { slug: stri
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                 <BookingButton 
-                  className="bg-[#8B5C9E] hover:bg-[#7A4F8C] text-white px-6 py-3 font-medium rounded-lg transition-all duration-300 hover:shadow-lg w-full sm:w-auto"
+                  className="bg-soi-navy-500 hover:bg-soi-navy-600 text-white px-6 py-3 font-medium rounded-lg transition-all duration-300 hover:shadow-lg w-full sm:w-auto border-2 border-soi-pink-400"
                   icon={null}
                   text="Book an Appointment"
                 />

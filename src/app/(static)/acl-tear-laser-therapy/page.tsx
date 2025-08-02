@@ -11,24 +11,24 @@ export const metadata = {
 };
 
 const AclTearLaserTherapyPage = () => {
-  // Define brand colors (example, adjust if actual colors are in a theme/config)
+  // SOI Brand Colors - Medical Authority Theme
   const brandColors = {
-    primary: '#2E3A59', // Example: Dark Blue/Charcoal for headings
-    accent: '#8B5C9E',  // Example: Purple for links and accents
-    text: '#333333',    // Example: Dark gray for body text
-    lightText: '#555555', // Example: Lighter gray for secondary text
-    background: '#FFFFFF',
-    lightGray: '#F7FAFC', // For table header or subtle backgrounds
+    primary: '#1e3a5f',    // SOI Navy - Medical Authority
+    accent: '#8B5C9E',     // SOI Purple - Medical Expertise
+    text: '#1e3a5f',       // SOI Navy - Professional Text
+    lightText: '#2a4d6b',  // SOI Navy 700 - Readable Content
+    background: '#FFFFFF', // Clean White
+    lightGray: '#f0f4f8',  // SOI Navy 50 - Light Background
   };
 
   return (
     <>
       <SiteHeader /> {/* Assuming a default or light theme for content pages */}
-      <main className="container mx-auto px-4 py-8 sm:py-12 md:py-16" style={{ color: brandColors.text }}>
+      <main className="container mx-auto px-4 py-8 sm:py-12 md:py-16 bg-tint-authority" style={{ color: brandColors.text }}>
         <article className="max-w-3xl mx-auto"> {/* Constrain article width for readability */}
           
           {/* Hero Image */}
-          <div className="my-6 sm:my-8 md:my-10 relative w-full aspect-[16/9] rounded-lg overflow-hidden shadow-lg">
+          <div className="my-6 sm:my-8 md:my-10 relative w-full aspect-[16/9] rounded-lg overflow-hidden shadow-lg border border-soi-navy-200">
             <Image 
               src="https://73n.0c8.myftpupload.com/wp-content/uploads/2025/04/New-Project-1-1-1024x576-1024x585.jpg" 
               alt="ACL Tear Laser Therapy" 

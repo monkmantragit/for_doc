@@ -1,0 +1,319 @@
+---
+globs: tailwind.config.*,src/**/*.tsx,src/**/*.css
+description: SOI Tailwind Color System - Custom Color Implementation Guide
+---
+
+# 🎨 SOI Tailwind Color System
+
+## Custom Color Configuration
+
+### Tailwind Config Extension
+```javascript
+// tailwind.config.js - Add to theme.extend.colors
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        'soi': {
+          navy: {
+            50: '#f0f4f8',
+            100: '#d9e6f2', 
+            200: '#b3cce5',
+            300: '#8db3d8',
+            400: '#6799cb',
+            500: '#4180be',
+            600: '#356691',
+            700: '#2a4d6b',  // Lighter variant
+            800: '#1e3a5f',  // PRIMARY SOI NAVY
+            900: '#162d47',
+            950: '#0f1f33'
+          },
+          purple: {
+            50: '#f7f4f9',
+            100: '#ede6f0',
+            200: '#dbd0e1',
+            300: '#c3b1cc',
+            400: '#a68bb3',
+            500: '#8B5C9E',  // PRIMARY SOI PURPLE
+            600: '#7a4f8c',
+            700: '#684274',
+            800: '#563760',
+            900: '#472f50',
+            950: '#2d1e32'
+          },
+          pink: {
+            50: '#faf7f8',
+            100: '#f4ecf1',
+            200: '#ead9e3',
+            300: '#dbc0cd',
+            400: '#c79db0',
+            500: '#d4a5b8',  // PRIMARY SOI PINK
+            600: '#b88ca0',
+            700: '#9d7487',
+            800: '#836071',
+            900: '#6d505e',
+            950: '#422f37'
+          },
+          mint: {
+            50: '#f4f8f4',
+            100: '#e6f2e6',
+            200: '#cde5cd',
+            300: '#a8d1a8',
+            400: '#7db87d',
+            500: '#a8c4a2',  // PRIMARY SOI MINT
+            600: '#8fb089',
+            700: '#769670',
+            800: '#5f7a5f',
+            900: '#4f644f',
+            950: '#2a362a'
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+## Semantic Color Classes
+
+### Primary Usage Classes
+```css
+/* Background Classes */
+.bg-soi-primary { @apply bg-soi-navy-800; }
+.bg-soi-secondary { @apply bg-soi-purple-500; }
+.bg-soi-accent-care { @apply bg-soi-pink-500; }
+.bg-soi-accent-wellness { @apply bg-soi-mint-500; }
+
+/* Text Classes */
+.text-soi-primary { @apply text-soi-navy-800; }
+.text-soi-secondary { @apply text-soi-purple-500; }
+.text-soi-accent-care { @apply text-soi-pink-500; }
+.text-soi-accent-wellness { @apply text-soi-mint-500; }
+
+/* Border Classes */
+.border-soi-primary { @apply border-soi-navy-800; }
+.border-soi-secondary { @apply border-soi-purple-500; }
+.border-soi-accent-care { @apply border-soi-pink-500; }
+.border-soi-accent-wellness { @apply border-soi-mint-500; }
+```
+
+## Component-Specific Classes
+
+### Button System
+```tsx
+// Primary Button (Authority/Trust)
+<button className="bg-soi-navy-800 text-white border-2 border-soi-pink-500 hover:bg-soi-navy-700 focus:ring-2 focus:ring-soi-mint-500 focus:ring-offset-2 px-6 py-3 rounded-lg font-medium transition-all duration-300">
+  Book Appointment
+</button>
+
+// Secondary Button (Expertise)
+<button className="bg-soi-purple-500 text-white border-2 border-soi-mint-500 hover:bg-soi-purple-600 focus:ring-2 focus:ring-soi-pink-500 focus:ring-offset-2 px-6 py-3 rounded-lg font-medium transition-all duration-300">
+  Learn More
+</button>
+
+// Care Button (Human Connection)
+<button className="bg-soi-pink-500 text-soi-navy-800 border-2 border-soi-navy-800 hover:bg-soi-pink-400 focus:ring-2 focus:ring-soi-purple-500 focus:ring-offset-2 px-6 py-3 rounded-lg font-medium transition-all duration-300">
+  Patient Care
+</button>
+
+// Wellness Button (Recovery/Success)
+<button className="bg-soi-mint-500 text-soi-navy-800 border-2 border-soi-navy-800 hover:bg-soi-mint-400 focus:ring-2 focus:ring-soi-purple-500 focus:ring-offset-2 px-6 py-3 rounded-lg font-medium transition-all duration-300">
+  Success Stories
+</button>
+```
+
+### Card System
+```tsx
+// Service Card
+<div className="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow">
+  <div className="p-6">
+    <h3 className="text-xl font-bold text-soi-navy-800 mb-2">Service Title</h3>
+    <p className="text-gray-700 mb-4">Service description...</p>
+    <div className="border-l-4 border-soi-purple-500 pl-4">
+      <span className="text-soi-purple-500 font-medium">Key Benefit</span>
+    </div>
+  </div>
+</div>
+
+// Testimonial Card
+<div className="bg-gradient-to-br from-soi-pink-50 to-soi-pink-100 border border-soi-pink-200 rounded-xl p-6">
+  <blockquote className="text-soi-navy-800 italic mb-4">
+    "Patient testimonial content..."
+  </blockquote>
+  <div className="flex items-center">
+    <div className="w-2 h-2 bg-soi-pink-500 rounded-full mr-3"></div>
+    <cite className="text-soi-navy-700 font-medium">Patient Name</cite>
+  </div>
+</div>
+
+// Success Story Card
+<div className="bg-gradient-to-br from-soi-mint-50 to-soi-mint-100 border border-soi-mint-200 rounded-xl p-6">
+  <div className="flex items-center mb-4">
+    <div className="w-8 h-8 bg-soi-mint-500 rounded-full flex items-center justify-center mr-3">
+      <CheckIcon className="w-5 h-5 text-white" />
+    </div>
+    <h4 className="text-lg font-bold text-soi-navy-800">Recovery Success</h4>
+  </div>
+  <p className="text-soi-navy-700">Success story content...</p>
+</div>
+```
+
+### Navigation System
+```tsx
+// Primary Navigation
+<nav className="bg-gradient-to-r from-soi-navy-800 to-soi-navy-700 shadow-lg">
+  <div className="container mx-auto px-4">
+    <div className="flex items-center justify-between h-16">
+      {/* Logo */}
+      <div className="flex items-center">
+        <img src="/logo.svg" alt="SOI" className="h-8 w-auto" />
+      </div>
+      
+      {/* Navigation Links */}
+      <div className="hidden md:flex space-x-8">
+        <a href="#" className="text-white hover:text-soi-mint-300 transition-colors font-medium">
+          Services
+        </a>
+        <a href="#" className="text-white hover:text-soi-mint-300 transition-colors font-medium">
+          Team
+        </a>
+        <a href="#" className="text-white hover:text-soi-mint-300 transition-colors font-medium">
+          Videos
+        </a>
+      </div>
+      
+      {/* CTA Button */}
+      <button className="bg-soi-purple-500 text-white px-4 py-2 rounded-lg hover:bg-soi-purple-600 transition-colors font-medium">
+        Book Now
+      </button>
+    </div>
+  </div>
+</nav>
+```
+
+## Gradient System
+
+### Hero Gradients
+```css
+/* Medical Authority Gradient */
+.gradient-medical-authority {
+  background: linear-gradient(135deg, 
+    theme('colors.soi.navy.800') 0%, 
+    theme('colors.soi.purple.500') 50%, 
+    theme('colors.soi.navy.700') 100%);
+}
+
+/* Care & Wellness Gradient */
+.gradient-care-wellness {
+  background: linear-gradient(135deg, 
+    theme('colors.soi.pink.100') 0%, 
+    theme('colors.soi.mint.100') 100%);
+}
+
+/* Expertise Gradient */
+.gradient-expertise {
+  background: linear-gradient(135deg, 
+    theme('colors.soi.purple.500') 0%, 
+    theme('colors.soi.navy.800') 100%);
+}
+```
+
+### Background Tints
+```css
+/* Light Background Tints for Content Sections */
+.bg-tint-care { @apply bg-gradient-to-br from-soi-pink-50 to-soi-pink-100; }
+.bg-tint-wellness { @apply bg-gradient-to-br from-soi-mint-50 to-soi-mint-100; }
+.bg-tint-expertise { @apply bg-gradient-to-br from-soi-purple-50 to-soi-purple-100; }
+.bg-tint-authority { @apply bg-gradient-to-br from-soi-navy-50 to-soi-navy-100; }
+```
+
+## Accessibility-First Color Usage
+
+### Text Contrast Classes
+```css
+/* High Contrast Text Combinations */
+.text-high-contrast-navy { @apply text-soi-navy-800 bg-white; }
+.text-high-contrast-white { @apply text-white bg-soi-navy-800; }
+.text-high-contrast-purple { @apply text-soi-purple-500 bg-white; }
+
+/* Medium Contrast for Large Text */
+.text-medium-contrast-mint { @apply text-soi-mint-600 bg-soi-navy-800; }
+.text-medium-contrast-pink { @apply text-soi-pink-600 bg-soi-navy-800; }
+```
+
+### Focus States
+```css
+/* Accessible Focus Indicators */
+.focus-soi-primary { @apply focus:ring-2 focus:ring-soi-mint-500 focus:ring-offset-2; }
+.focus-soi-secondary { @apply focus:ring-2 focus:ring-soi-pink-500 focus:ring-offset-2; }
+.focus-soi-accent { @apply focus:ring-2 focus:ring-soi-purple-300 focus:ring-offset-2; }
+```
+
+## Page-Specific Color Schemes
+
+### Homepage Classes
+```css
+.homepage-hero { @apply bg-gradient-to-br from-soi-navy-800 via-soi-purple-500 to-soi-navy-700; }
+.homepage-services { @apply bg-white; }
+.homepage-testimonials { @apply bg-tint-care; }
+.homepage-contact { @apply bg-soi-navy-800; }
+```
+
+### Clinical Videos Classes
+```css
+.videos-header { @apply bg-soi-navy-800 text-white; }
+.videos-featured { @apply bg-tint-expertise border border-soi-purple-200; }
+.videos-grid { @apply bg-gray-50; }
+.video-card { @apply bg-white border border-gray-200 hover:border-soi-purple-300; }
+.video-play-button { @apply bg-soi-purple-500 hover:bg-soi-purple-600; }
+```
+
+### Procedures Classes
+```css
+.procedure-header { @apply bg-soi-navy-800 text-white; }
+.procedure-content { @apply bg-white; }
+.procedure-cta { @apply bg-soi-purple-500 text-white border-2 border-soi-pink-500; }
+.procedure-success { @apply bg-tint-wellness; }
+```
+
+### Team/Surgeons Classes
+```css
+.team-header { @apply bg-soi-navy-800 text-white; }
+.doctor-card { @apply bg-white border-l-4 border-soi-pink-500; }
+.credentials { @apply text-soi-navy-700; }
+.team-cta { @apply bg-soi-purple-500 text-white; }
+```
+
+## Utility Classes
+
+### Spacing with Color Context
+```css
+.section-medical { @apply py-16 bg-white; }
+.section-care { @apply py-16 bg-tint-care; }
+.section-wellness { @apply py-16 bg-tint-wellness; }
+.section-authority { @apply py-16 bg-soi-navy-800 text-white; }
+```
+
+### Interactive States
+```css
+.interactive-navy { @apply hover:bg-soi-navy-700 active:bg-soi-navy-900 transition-colors; }
+.interactive-purple { @apply hover:bg-soi-purple-600 active:bg-soi-purple-700 transition-colors; }
+.interactive-pink { @apply hover:bg-soi-pink-400 active:bg-soi-pink-600 transition-colors; }
+.interactive-mint { @apply hover:bg-soi-mint-400 active:bg-soi-mint-600 transition-colors; }
+```
+
+## Implementation Guidelines
+
+### Color Priority Order
+1. **Navy (#1e3a5f)**: Primary brand color, headers, navigation, authority
+2. **Purple (#8B5C9E)**: Secondary brand, expertise, existing brand equity
+3. **Pink (#d4a5b8)**: Care accent, human connection, testimonials
+4. **Mint (#a8c4a2)**: Wellness accent, success, recovery indicators
+5. **White (#ffffff)**: Clean backgrounds, text contrast, breathing room
+
+### Usage Rules
+- **Never** use pink or mint as primary text colors on white backgrounds
+- **Always** ensure 4.5:1 minimum contrast ratio for text
+- **Prefer** navy and purple for text, pink and mint for accents
+- **Use** gradients sparingly, primarily for hero sections
+- **Maintain** consistent hover and focus states across components

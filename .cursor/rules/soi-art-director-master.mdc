@@ -1,0 +1,150 @@
+---
+alwaysApply: true
+description: SOI Art Director Master Rules - Visual Identity System Transformation
+---
+
+# 🎨 SOI Art Director Master Rules
+
+## Core Visual Identity System
+
+### Brand Color Palette
+```css
+/* PRIMARY SOI COLORS */
+--soi-navy: #1e3a5f;        /* Trust, Authority, Headers */
+--soi-purple: #8B5C9E;      /* Expertise, Existing Brand */
+--soi-pink: #d4a5b8;        /* Care, Human Connection */
+--soi-mint: #a8c4a2;        /* Wellness, Recovery */
+--soi-white: #ffffff;       /* Clarity, Clean Space */
+
+/* SEMANTIC COLORS */
+--primary: var(--soi-navy);
+--secondary: var(--soi-purple);
+--accent-care: var(--soi-pink);
+--accent-wellness: var(--soi-mint);
+--surface: var(--soi-white);
+```
+
+### Color Usage Hierarchy
+1. **Navy (#1e3a5f)**: Navigation, headers, primary CTAs, authority elements
+2. **Purple (#8B5C9E)**: Existing brand elements, expertise sections, secondary CTAs
+3. **Pink (#d4a5b8)**: Patient care, testimonials, human connection elements
+4. **Mint (#a8c4a2)**: Success stories, recovery, wellness outcomes
+5. **White (#ffffff)**: Backgrounds, clean spaces, text contrast
+
+## Mandatory Accessibility Standards
+
+### Text Contrast Requirements
+- **Minimum**: 4.5:1 contrast ratio for normal text
+- **Target**: 7:1 contrast ratio for optimal readability
+- **Large Text**: 3:1 minimum (18pt+ or 14pt+ bold)
+- **Interactive Elements**: 3:1 minimum for focus indicators
+
+### Approved Text/Background Combinations
+```css
+/* ✅ SAFE COMBINATIONS */
+.text-on-white { color: #1e3a5f; }      /* Navy on White: 12.6:1 */
+.text-on-navy { color: #ffffff; }        /* White on Navy: 12.6:1 */
+.text-purple-on-white { color: #8B5C9E; } /* Purple on White: 6.2:1 */
+.text-on-light-pink { color: #1e3a5f; }  /* Navy on Light Pink tint */
+.text-on-light-mint { color: #1e3a5f; }  /* Navy on Light Mint tint */
+
+/* ⚠️ USE WITH CAUTION */
+.accent-pink { color: #d4a5b8; }         /* Pink: Only on dark backgrounds */
+.accent-mint { color: #a8c4a2; }         /* Mint: Only on dark backgrounds */
+```
+
+## Component Color Standards
+
+### Buttons
+```css
+.btn-primary {
+  background: var(--soi-navy);
+  color: var(--soi-white);
+  border: 2px solid var(--soi-pink);
+}
+
+.btn-secondary {
+  background: var(--soi-purple);
+  color: var(--soi-white);
+  border: 2px solid var(--soi-mint);
+}
+
+.btn-care {
+  background: var(--soi-pink);
+  color: var(--soi-navy);
+  border: 2px solid var(--soi-navy);
+}
+```
+
+### Cards & Sections
+- **Service Cards**: White background, Navy headers, Purple accents
+- **Testimonial Cards**: Light pink tint background, Navy text
+- **Procedure Cards**: White background, Purple borders, Navy content
+- **Success Stories**: Light mint tint background, Navy text
+
+## Page-Specific Color Themes
+
+### Homepage
+- Hero: Navy to Purple gradient
+- Services: Purple primary, Mint accents
+- Testimonials: Pink theme, Navy text
+- Contact: Navy primary, Pink CTAs
+
+### Clinical Videos
+- Header: Navy background
+- Featured Video: Purple accents
+- Video Cards: White background, Navy text
+- Play Buttons: Purple with mint hover
+
+### Procedures/Surgery
+- Headers: Navy primary
+- Content: Purple accents
+- CTAs: Navy with pink borders
+- Success metrics: Mint accents
+
+### Team/Surgeons
+- Headers: Navy authority
+- Cards: Pink human connection theme
+- Text: Navy for professionalism
+- CTAs: Purple expertise
+
+## Implementation Checklist
+
+### Before Any Color Change
+- [ ] Check existing functionality works
+- [ ] Verify text contrast ratios
+- [ ] Test on mobile devices
+- [ ] Validate with screen readers
+- [ ] Check print styles
+
+### After Color Implementation
+- [ ] Run accessibility audit
+- [ ] Test all interactive elements
+- [ ] Verify hover/focus states
+- [ ] Check loading states
+- [ ] Validate across browsers
+
+## Quality Gates
+
+### Mandatory Checks
+1. **Contrast Ratio**: Must meet WCAG AA standards
+2. **Functionality**: No broken interactions
+3. **Responsive**: Works on all screen sizes
+4. **Performance**: No impact on load times
+5. **Brand Consistency**: Follows SOI color hierarchy
+
+### Review Criteria
+- Does it enhance medical trust?
+- Is text clearly readable?
+- Do colors guide user journey?
+- Are CTAs prominent but not overwhelming?
+- Does it feel cohesive with existing brand?
+
+## Emergency Rollback Plan
+If any implementation causes:
+- Accessibility issues
+- Functionality breaks
+- Performance degradation
+- User experience problems
+
+**Immediately revert** and document issues for resolution.

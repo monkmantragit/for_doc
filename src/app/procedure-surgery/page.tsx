@@ -66,7 +66,7 @@ export default async function ProcedureSurgeryPage({
   }));
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-tint-authority">
       <SiteHeader theme="transparent" />
       
       <main>
@@ -75,11 +75,11 @@ export default async function ProcedureSurgeryPage({
           className="pt-24"
           variant="color"   // Change variant to color
           height="medium"
-          bgColor="#2E3A59" 
+          bgColor="#1e3a5f" 
           title={
             // Add Badge
             <div className="max-w-5xl mx-auto">
-              <div className="inline-block bg-[#8B5C9E]/20 text-white px-4 py-1 rounded-lg text-sm font-medium mb-6 backdrop-blur-sm border border-[#8B5C9E]/30">
+              <div className="inline-block bg-soi-purple-500/20 text-white px-4 py-1 rounded-lg text-sm font-medium mb-6 backdrop-blur-sm border border-soi-purple-500/30">
                 ADVANCED SURGICAL OPTIONS
               </div>
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-[1.1] mb-4">
@@ -98,7 +98,7 @@ export default async function ProcedureSurgeryPage({
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mt-8">
               {/* Primary Action: Booking Button */}
               <BookingButton 
-                className="bg-[#8B5C9E] hover:bg-[#7A4F8C] text-white rounded-lg px-8 sm:px-10 py-3 text-base font-medium transition-all duration-300 hover:shadow-lg w-full sm:w-auto"
+                className="bg-soi-navy-500 hover:bg-soi-navy-600 text-white rounded-lg px-8 sm:px-10 py-3 text-base font-medium transition-all duration-300 hover:shadow-lg w-full sm:w-auto"
                 icon={null}
                 text="Request Consultation"
               />
@@ -115,15 +115,15 @@ export default async function ProcedureSurgeryPage({
         <section className="py-12 px-4 md:px-8 lg:px-12">
           <div className="max-w-7xl mx-auto">
             <div className="mb-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Find Your Procedure</h2>
+              <h2 className="text-2xl font-bold text-soi-navy-800 mb-6">Find Your Procedure</h2>
               {search && (
-                <div className="mb-4 p-3 bg-blue-50 rounded-lg">
-                  <p className="text-sm text-blue-800">
+                <div className="mb-4 p-3 bg-soi-purple-50 rounded-lg border border-soi-purple-200">
+                  <p className="text-sm text-soi-purple-800">
                     Showing results for: <strong>"{search}"</strong>
                     {' '}
                     <a 
                       href="/procedure-surgery" 
-                      className="text-blue-600 hover:text-blue-800 underline ml-2"
+                      className="text-soi-purple-600 hover:text-soi-purple-700 underline ml-2"
                     >
                       Clear search
                     </a>
@@ -131,7 +131,7 @@ export default async function ProcedureSurgeryPage({
                 </div>
               )}
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Filter by Category</h3>
+            <h3 className="text-lg font-semibold text-soi-navy-800 mb-4">Filter by Category</h3>
             <CategoryFilter 
               categories={categoryOptions} 
               activeCategory={category || ''} 
@@ -143,13 +143,13 @@ export default async function ProcedureSurgeryPage({
         <section id="procedures-section" className="py-8 px-4 md:px-8 lg:px-12">
           <div className="max-w-7xl mx-auto">
             <div className="flex items-center justify-between mb-8">
-              <h2 className="text-2xl font-bold text-gray-900">
+              <h2 className="text-2xl font-bold text-soi-navy-800">
                 {category && category !== 'All'
                   ? `${category} Procedures`
                   : 'All Procedures'
                 }
               </h2>
-              <p className="text-gray-500">
+              <p className="text-soi-navy-500">
                 Showing {procedures.length} of {total} procedures
               </p>
             </div>
@@ -172,9 +172,9 @@ export default async function ProcedureSurgeryPage({
                 ))}
               </div>
             ) : (
-              <div className="text-center py-12">
-                <h3 className="text-xl font-medium text-gray-700 mb-2">No procedures found</h3>
-                <p className="text-gray-500">
+              <div className="text-center py-12 bg-white rounded-lg border border-soi-purple-200">
+                <h3 className="text-xl font-medium text-soi-navy-800 mb-2">No procedures found</h3>
+                <p className="text-soi-navy-600">
                   {category && category !== 'All'
                     ? 'No procedures found in this category. Please try another category.'
                     : 'No procedures found. Please check back later.'}
@@ -195,10 +195,10 @@ export default async function ProcedureSurgeryPage({
         </section>
         
         {/* Info Section */}
-        <section className="py-16 px-4 md:px-8 lg:px-12 bg-white">
+        <section className="py-16 px-4 md:px-8 lg:px-12 bg-white border-t border-soi-purple-200">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">About Our Surgical Procedures</h2>
-            <div className="prose lg:prose-lg mx-auto">
+            <h2 className="text-3xl font-bold text-soi-navy-800 mb-6 text-center">About Our Surgical Procedures</h2>
+            <div className="prose lg:prose-lg mx-auto prose-headings:text-soi-navy-800 prose-p:text-soi-navy-600 prose-strong:text-soi-navy-800">
               <p>
                 Our orthopedic surgical procedures are designed to address a wide range of musculoskeletal conditions,
                 from sports injuries to degenerative joint diseases. Our experienced surgeons utilize the latest

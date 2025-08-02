@@ -1,0 +1,197 @@
+---
+globs: src/app/**/*.tsx,src/components/**/*.tsx
+description: SOI Page Transformation Checklist - Systematic Enhancement Guide
+---
+
+# 📋 SOI Page Transformation Checklist
+
+## Pre-Transformation Assessment
+
+### Current State Analysis
+- [ ] Document existing color usage
+- [ ] Identify all interactive elements
+- [ ] Note current accessibility compliance
+- [ ] Screenshot current design for comparison
+- [ ] Test all functionality works correctly
+
+### Color Inventory
+- [ ] List all hardcoded colors
+- [ ] Identify Tailwind classes to update
+- [ ] Note CSS custom properties in use
+- [ ] Document gradient implementations
+- [ ] Check for inline styles
+
+## Transformation Process
+
+### Phase 1: Foundation Setup
+```tsx
+// Required color variables in component
+const soiColors = {
+  navy: '#1e3a5f',
+  purple: '#8B5C9E', 
+  pink: '#d4a5b8',
+  mint: '#a8c4a2',
+  white: '#ffffff'
+}
+
+// Or use Tailwind config
+const colorClasses = {
+  primary: 'bg-soi-navy text-white',
+  secondary: 'bg-soi-purple text-white',
+  accent: 'bg-soi-pink text-soi-navy',
+  success: 'bg-soi-mint text-soi-navy'
+}
+```
+
+### Phase 2: Component Updates
+- [ ] Update primary buttons to Navy background
+- [ ] Change secondary buttons to Purple
+- [ ] Apply Pink theme to care/testimonial sections
+- [ ] Use Mint for success/wellness indicators
+- [ ] Ensure White backgrounds for readability
+
+### Phase 3: Text Contrast Validation
+```tsx
+// Mandatory contrast checks
+const contrastPairs = [
+  { bg: '#1e3a5f', text: '#ffffff' }, // ✅ 12.6:1 Navy/White
+  { bg: '#ffffff', text: '#1e3a5f' }, // ✅ 12.6:1 White/Navy  
+  { bg: '#ffffff', text: '#8B5C9E' }, // ✅ 6.2:1 White/Purple
+  { bg: '#1e3a5f', text: '#a8c4a2' }, // ✅ 5.1:1 Navy/Mint
+  { bg: '#1e3a5f', text: '#d4a5b8' }  // ✅ 4.8:1 Navy/Pink
+]
+```
+
+## Page-Specific Checklists
+
+### Homepage Transformation
+- [ ] Hero section: Navy to Purple gradient
+- [ ] Navigation: Navy primary with Mint hover
+- [ ] Service cards: White bg, Navy headers, Purple accents
+- [ ] Testimonials: Pink theme with Navy text
+- [ ] Contact section: Navy with Pink CTAs
+- [ ] Footer: Navy background, White text
+
+### Clinical Videos Page
+- [ ] Header: Navy background consistency
+- [ ] Featured video: Purple play button, Navy frame
+- [ ] Video grid: White cards, Navy text
+- [ ] Category filters: Purple active, Navy inactive
+- [ ] Pagination: Navy primary, Mint hover
+
+### Procedure/Surgery Pages
+- [ ] Page header: Navy authority color
+- [ ] Content sections: Purple accent borders
+- [ ] Booking CTAs: Navy with Pink accent borders
+- [ ] Success metrics: Mint background tints
+- [ ] Related procedures: White cards, Purple links
+
+### Team/Surgeons Pages
+- [ ] Hero section: Navy professional theme
+- [ ] Doctor cards: Pink human connection accents
+- [ ] Credentials: Navy text for authority
+- [ ] Booking buttons: Purple expertise theme
+- [ ] Contact info: Navy with Mint accents
+
+### Contact/Booking Pages
+- [ ] Form fields: Navy borders, White backgrounds
+- [ ] Submit buttons: Navy primary with Pink accents
+- [ ] Success messages: Mint background
+- [ ] Error states: Maintain readability
+- [ ] Contact info: Navy text, Pink accents
+
+## Quality Assurance Checklist
+
+### Functionality Testing
+- [ ] All buttons work correctly
+- [ ] Forms submit properly
+- [ ] Navigation functions
+- [ ] Modals open/close
+- [ ] Responsive behavior intact
+- [ ] Animations/transitions smooth
+
+### Accessibility Validation
+- [ ] Screen reader compatibility
+- [ ] Keyboard navigation works
+- [ ] Focus indicators visible
+- [ ] Color alone doesn't convey meaning
+- [ ] Text meets contrast requirements
+- [ ] Alt text for color-coded elements
+
+### Visual Quality Check
+- [ ] Colors appear consistent across browsers
+- [ ] No color bleeding or artifacts
+- [ ] Gradients render smoothly
+- [ ] Print styles maintain readability
+- [ ] High DPI displays look crisp
+
+### Performance Impact
+- [ ] No additional CSS bloat
+- [ ] Images optimized for new color scheme
+- [ ] No unnecessary re-renders
+- [ ] Bundle size unchanged
+- [ ] Load times maintained
+
+## Post-Implementation Validation
+
+### User Experience Testing
+- [ ] Navigation feels intuitive
+- [ ] CTAs are prominent and clear
+- [ ] Content hierarchy is obvious
+- [ ] Trust signals are enhanced
+- [ ] Medical authority is conveyed
+
+### Cross-Device Testing
+- [ ] Desktop: All resolutions
+- [ ] Tablet: Portrait and landscape
+- [ ] Mobile: Various screen sizes
+- [ ] Print: Readable in grayscale
+- [ ] High contrast mode compatible
+
+### Browser Compatibility
+- [ ] Chrome/Chromium
+- [ ] Firefox
+- [ ] Safari
+- [ ] Edge
+- [ ] Mobile browsers
+
+## Documentation Requirements
+
+### Change Log
+```markdown
+## [Page Name] Color Enhancement
+- **Changed**: [Specific elements updated]
+- **Reason**: [SOI brand alignment/accessibility/UX]
+- **Impact**: [User experience improvement]
+- **Testing**: [Validation performed]
+```
+
+### Rollback Instructions
+- [ ] Document original color values
+- [ ] Note any structural changes made
+- [ ] List dependencies affected
+- [ ] Provide quick revert steps
+- [ ] Test rollback procedure
+
+## Success Criteria
+
+### Visual Enhancement
+- ✅ Consistent SOI brand colors throughout
+- ✅ Enhanced medical trust and authority
+- ✅ Improved visual hierarchy
+- ✅ Better user journey guidance
+- ✅ Professional medical aesthetic
+
+### Technical Excellence
+- ✅ No functionality regressions
+- ✅ Maintained or improved accessibility
+- ✅ Responsive design intact
+- ✅ Performance not degraded
+- ✅ Cross-browser compatibility
+
+### Brand Alignment
+- ✅ Logo colors integrated seamlessly
+- ✅ Trust-building color psychology applied
+- ✅ Human connection elements enhanced
+- ✅ Wellness themes appropriately used
+- ✅ Medical authority reinforced

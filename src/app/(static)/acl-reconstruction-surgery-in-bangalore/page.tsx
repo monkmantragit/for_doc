@@ -11,33 +11,45 @@ export const metadata = {
 };
 
 const ACLReconstructionPage = () => {
+  // SOI Brand Colors - Medical Authority Theme
   const brandColors = {
-    primary: '#2E3A59',
-    accent: '#8B5C9E',
-    text: '#333333',
-    lightText: '#555555',
-    background: '#FFFFFF',
-    lightGray: '#F7FAFC',
-    success: '#4CAF50',
-    warning: '#FFC107',
+    primary: '#1e3a5f',    // SOI Navy - Medical Authority
+    accent: '#8B5C9E',     // SOI Purple - Medical Expertise
+    text: '#1e3a5f',       // SOI Navy - Professional Text
+    lightText: '#2a4d6b',  // SOI Navy 700 - Readable Content
+    background: '#FFFFFF', // Clean White
+    lightGray: '#f0f4f8',  // SOI Navy 50 - Light Background
+    success: '#a8c4a2',    // SOI Mint - Success States
+    warning: '#d4a5b8',    // SOI Pink - Care/Warning
   };
 
   const faqData = [
     {
-      question: "FAQ Question 1 from page_7.html...",
-      answer: "Answer to FAQ 1 from page_7.html..."
+      question: "How long does ACL reconstruction surgery take?",
+      answer: "ACL reconstruction surgery typically takes 1 to 1.5 hours. The duration may vary depending on the complexity of the case and whether additional procedures (like meniscus repair) are needed."
     },
     {
-      question: "FAQ Question 2 from page_7.html...",
-      answer: "Answer to FAQ 2 from page_7.html..."
+      question: "What is the success rate of ACL reconstruction?",
+      answer: "ACL reconstruction has a high success rate, typically 85-95% for returning to pre-injury activity levels. Success depends on factors like graft choice, surgical technique, and adherence to rehabilitation."
     },
-    // Add other FAQs from page_7.html here
+    {
+      question: "When can I return to sports after ACL surgery?",
+      answer: "Most patients can return to sports 6-9 months after ACL reconstruction, depending on the sport and individual recovery progress. Dr. Naveen will assess your readiness through functional tests and strength evaluations."
+    },
+    {
+      question: "What type of graft is best for my ACL reconstruction?",
+      answer: "The best graft depends on your age, activity level, and personal factors. Dr. Naveen will discuss options including hamstring tendon, patellar tendon, quadriceps tendon, or allograft to determine what's optimal for your situation."
+    },
+    {
+      question: "Is ACL reconstruction surgery painful?",
+      answer: "Modern arthroscopic techniques and pain management protocols minimize discomfort. Most patients experience manageable pain that improves significantly within the first week after surgery."
+    }
   ];
 
   return (
     <>
       <SiteHeader />
-      <main className="container mx-auto px-4 py-8 sm:py-12" style={{ color: brandColors.text, backgroundColor: brandColors.background }}>
+      <main className="container mx-auto px-4 py-8 sm:py-12 bg-tint-authority" style={{ color: brandColors.text }}>
         <article className="prose lg:prose-xl max-w-none">
           {/* Page Title */}
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 sm:mb-8 text-center" style={{ color: brandColors.primary }}>
@@ -342,7 +354,7 @@ const ACLReconstructionPage = () => {
           </section>
 
           {/* Call to Action Section */}
-          <section className="text-center py-8 sm:py-10 mt-10 sm:mt-12 bg-gray-100 rounded-lg shadow-md" style={{ backgroundColor: brandColors.lightGray }}>
+          <section className="text-center py-8 sm:py-10 mt-10 sm:mt-12 bg-white rounded-lg shadow-md border border-soi-navy-200">
             <h2 className="text-2xl sm:text-3xl font-semibold mb-4 sm:mb-6" style={{ color: brandColors.primary }}>
               Ready to Discuss Your ACL Options?
             </h2>
@@ -350,7 +362,7 @@ const ACLReconstructionPage = () => {
               An ACL injury shouldn't keep you from living your life. Contact Dr. Naveen Kumar for an expert consultation on ACL reconstruction surgery in Bangalore.
             </p>
             <Link href="/book-appointment" legacyBehavior>
-              <a className="inline-block text-white font-semibold py-3 px-8 rounded-lg shadow-md hover:opacity-90 transition duration-300 text-base sm:text-lg" style={{ backgroundColor: brandColors.accent, color: brandColors.background }}>
+              <a className="inline-block text-white font-semibold py-3 px-8 rounded-lg shadow-md hover:opacity-90 transition duration-300 text-base sm:text-lg border-2 border-soi-pink-400" style={{ backgroundColor: brandColors.primary, color: brandColors.background }}>
                 Book Your Consultation
               </a>
             </Link>

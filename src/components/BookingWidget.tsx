@@ -10,7 +10,7 @@ interface BookingWidgetProps {
 const BookingWidget = ({
   buttonStyle = 'default',
   buttonText = 'Request Consultation',
-  primaryColor = '#8B5C9E'
+  primaryColor = '#1e3a5f'
 }: BookingWidgetProps) => {
   const [isOpen, setIsOpen] = useState(false);
 

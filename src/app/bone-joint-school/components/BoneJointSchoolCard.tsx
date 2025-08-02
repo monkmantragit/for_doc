@@ -18,7 +18,7 @@ export const BoneJointSchoolCard = ({ title, slug, summary, imageUrl, category }
   const href = `/bone-joint-school/${slug}`;
 
   return (
-    <Link href={href} className="group flex flex-col relative bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-[#8B5C9E]/30 overflow-hidden h-full">
+    <Link href={href} className="group flex flex-col relative bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-soi-purple-200 hover:border-soi-purple-400 overflow-hidden h-full">
       
       {/* Image Container */}
       <div className="relative w-full h-48 overflow-hidden bg-gray-200">
@@ -36,7 +36,7 @@ export const BoneJointSchoolCard = ({ title, slug, summary, imageUrl, category }
         
         {/* Add category label if available */}
         {category && (
-          <div className="absolute top-3 right-3 px-2 py-1 bg-[#8B5C9E]/80 text-white text-xs font-medium rounded-full z-10">
+          <div className="absolute top-3 right-3 px-2 py-1 bg-soi-purple-500 text-white text-xs font-medium rounded-full z-10">
             {category}
           </div>
         )}
@@ -44,15 +44,15 @@ export const BoneJointSchoolCard = ({ title, slug, summary, imageUrl, category }
       
       {/* Content Container */}
       <div className="flex-grow p-6 flex flex-col">
-        <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-[#8B5C9E] transition-colors">
+        <h3 className="text-xl font-semibold text-soi-navy-800 mb-2 group-hover:text-soi-purple-600 transition-colors">
           {title}
         </h3>
         {summary && (
-          <p className="text-gray-600 text-sm mb-4 line-clamp-3 flex-grow">
+          <p className="text-soi-navy-600 text-sm mb-4 line-clamp-3 flex-grow">
             {summary}
           </p>
         )}
-        <div className="flex items-center text-[#8B5C9E] text-sm font-medium mt-auto pt-2">
+        <div className="flex items-center text-soi-purple-600 text-sm font-medium mt-auto pt-2">
           Learn More
           <ArrowRight className="ml-1 w-4 h-4 group-hover:translate-x-1 transition-transform"/>
         </div>

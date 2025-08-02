@@ -75,8 +75,8 @@ const DoctorCard = ({ doctor, isSelected, onSelect }: DoctorCardProps) => {
         relative w-full rounded-2xl overflow-hidden cursor-pointer
         transition-all duration-200 touch-manipulation
         ${isSelected
-          ? 'bg-gradient-to-br from-[#8B5C9E] to-[#6B4A7E] text-white shadow-xl'
-          : 'bg-white border border-gray-200 hover:border-[#8B5C9E] hover:shadow-md'
+          ? 'bg-gradient-to-br from-soi-navy-500 to-soi-navy-700 text-white shadow-xl'
+          : 'bg-white border border-soi-pink-200 hover:border-soi-pink-400 hover:shadow-md'
         }
       `}
     >
@@ -102,16 +102,16 @@ const DoctorCard = ({ doctor, isSelected, onSelect }: DoctorCardProps) => {
           <div className="flex-1 min-w-0">
             <div className="flex justify-between items-start">
               <div>
-                <h3 className={`text-lg font-semibold tracking-tight ${isSelected ? 'text-white' : 'text-gray-900'}`}>
+                <h3 className={`text-lg font-semibold tracking-tight ${isSelected ? 'text-white' : 'text-soi-navy-800'}`}>
                   {doctor.name}
                 </h3>
-                <p className={`text-sm mt-0.5 ${isSelected ? 'text-white/90' : 'text-gray-600'}`}>
+                <p className={`text-sm mt-0.5 ${isSelected ? 'text-white/90' : 'text-soi-navy-600'}`}>
                   {doctor.speciality}
                 </p>
               </div>
               <div className="text-right">
-                <div className={`text-xl font-bold ${isSelected ? 'text-white' : 'text-[#8B5C9E]'}`}>₹{doctor.fee}</div>
-                <div className={`text-xs mt-0.5 ${isSelected ? 'text-white/80' : 'text-gray-500'}`}>Per Visit</div>
+                <div className={`text-xl font-bold ${isSelected ? 'text-white' : 'text-soi-navy-700'}`}>₹{doctor.fee}</div>
+                <div className={`text-xs mt-0.5 ${isSelected ? 'text-white/80' : 'text-soi-navy-500'}`}>Per Visit</div>
               </div>
             </div>
 
@@ -120,15 +120,15 @@ const DoctorCard = ({ doctor, isSelected, onSelect }: DoctorCardProps) => {
               <div className="flex items-center gap-2">
                 <div className={`
                   p-2 rounded-lg
-                  ${isSelected ? 'bg-white/20' : 'bg-[#8B5C9E]/10'}
+                  ${isSelected ? 'bg-white/20' : 'bg-soi-mint-100'}
                 `}>
-                  <Clock className={`w-4 h-4 ${isSelected ? 'text-white' : 'text-[#8B5C9E]'}`} />
+                  <Clock className={`w-4 h-4 ${isSelected ? 'text-white' : 'text-soi-mint-600'}`} />
                 </div>
                 <div>
-                  <p className={`text-sm font-semibold ${isSelected ? 'text-white' : 'text-gray-900'}`}>
+                  <p className={`text-sm font-semibold ${isSelected ? 'text-white' : 'text-soi-navy-800'}`}>
                     Available
                   </p>
-                  <p className={`text-xs font-medium ${isSelected ? 'text-white/90' : 'text-gray-700'}`}>
+                  <p className={`text-xs font-medium ${isSelected ? 'text-white/90' : 'text-soi-navy-600'}`}>
                     {availabilityText}
                   </p>
                 </div>
@@ -137,15 +137,15 @@ const DoctorCard = ({ doctor, isSelected, onSelect }: DoctorCardProps) => {
               <div className="flex items-center gap-2">
                 <div className={`
                   p-2 rounded-lg
-                  ${isSelected ? 'bg-white/20' : 'bg-[#8B5C9E]/10'}
+                  ${isSelected ? 'bg-white/20' : 'bg-soi-pink-100'}
                 `}>
-                  <MapPin className={`w-4 h-4 ${isSelected ? 'text-white' : 'text-[#8B5C9E]'}`} />
+                  <MapPin className={`w-4 h-4 ${isSelected ? 'text-white' : 'text-soi-pink-600'}`} />
                 </div>
                 <div>
-                  <p className={`text-sm font-semibold ${isSelected ? 'text-white' : 'text-gray-900'}`}>
+                  <p className={`text-sm font-semibold ${isSelected ? 'text-white' : 'text-soi-navy-800'}`}>
                     HSR Layout
                   </p>
-                  <p className={`text-xs font-medium ${isSelected ? 'text-white/90' : 'text-gray-700'}`}>
+                  <p className={`text-xs font-medium ${isSelected ? 'text-white/90' : 'text-soi-navy-600'}`}>
                     Location
                   </p>
                 </div>
@@ -250,8 +250,8 @@ const DoctorSelection = ({ onNext }: DoctorSelectionProps = {}) => {
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center py-12">
-        <div className="w-10 h-10 border-4 border-[#8B5C9E] border-t-transparent rounded-full animate-spin" />
-        <p className="mt-4 text-gray-600">Loading doctors...</p>
+        <div className="w-10 h-10 border-4 border-soi-navy-500 border-t-transparent rounded-full animate-spin" />
+        <p className="mt-4 text-soi-navy-600">Loading doctors...</p>
       </div>
     );
   }
@@ -262,11 +262,11 @@ const DoctorSelection = ({ onNext }: DoctorSelectionProps = {}) => {
         <div className="flex items-center justify-center w-16 h-16 rounded-full bg-red-100 mb-4">
           <AlertCircle className="w-8 h-8 text-red-600" />
         </div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">Something went wrong</h3>
-        <p className="text-gray-600 text-center mb-4">{error}</p>
+        <h3 className="text-lg font-semibold text-soi-navy-800 mb-2">Something went wrong</h3>
+        <p className="text-soi-navy-600 text-center mb-4">{error}</p>
         <button
           onClick={() => window.location.reload()}
-          className="px-4 py-2 bg-[#8B5C9E] text-white rounded-lg hover:bg-[#7A4B8D] transition-colors"
+          className="px-4 py-2 bg-soi-navy-500 text-white rounded-lg hover:bg-soi-navy-600 transition-colors"
         >
           Try Again
         </button>
@@ -278,10 +278,10 @@ const DoctorSelection = ({ onNext }: DoctorSelectionProps = {}) => {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-1">
+        <h1 className="text-xl sm:text-2xl font-semibold text-soi-navy-800 mb-1">
           Select a Doctor
         </h1>
-        <p className="text-sm sm:text-base text-gray-600">
+        <p className="text-sm sm:text-base text-soi-navy-600">
           Choose from our experienced medical professionals
         </p>
       </div>
@@ -289,13 +289,13 @@ const DoctorSelection = ({ onNext }: DoctorSelectionProps = {}) => {
       {/* Search and Filter */}
       <div className="flex gap-2">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-soi-navy-400" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search doctors by name or specialty"
-            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#8B5C9E] focus:ring-2 focus:ring-[#8B5C9E]/20 transition-all"
+            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-soi-pink-200 focus:border-soi-pink-500 focus:ring-2 focus:ring-soi-pink-200/50 transition-all text-soi-navy-800 placeholder:text-soi-navy-400"
           />
           {searchQuery && (
             <button
@@ -366,9 +366,9 @@ const DoctorSelection = ({ onNext }: DoctorSelectionProps = {}) => {
               exit={{ opacity: 0, y: -20 }}
               className="flex flex-col items-center justify-center py-8 px-4"
             >
-              <Users className="w-12 h-12 text-gray-400 mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-1">No doctors found</h3>
-              <p className="text-gray-600 text-center">
+              <Users className="w-12 h-12 text-soi-navy-400 mb-4" />
+              <h3 className="text-lg font-semibold text-soi-navy-800 mb-1">No doctors found</h3>
+              <p className="text-soi-navy-600 text-center">
                 Try adjusting your search or filters
               </p>
             </motion.div>
@@ -383,7 +383,7 @@ const DoctorSelection = ({ onNext }: DoctorSelectionProps = {}) => {
             <SheetTitle>Filter Doctors</SheetTitle>
           </SheetHeader>
           <div className="py-6">
-            <h3 className="text-sm font-medium text-gray-900 mb-3">Specialty</h3>
+            <h3 className="text-sm font-medium text-soi-navy-800 mb-3">Specialty</h3>
             <div className="space-y-2">
               {specialties.map((specialty) => (
                 <button
@@ -395,8 +395,8 @@ const DoctorSelection = ({ onNext }: DoctorSelectionProps = {}) => {
                   className={`
                     w-full flex items-center justify-between px-4 py-2 rounded-lg text-left
                     ${specialty === selectedSpecialty
-                      ? 'bg-[#8B5C9E] text-white'
-                      : 'hover:bg-[#F9F5FF] text-gray-700'
+                      ? 'bg-soi-navy-500 text-white'
+                      : 'hover:bg-soi-pink-50 text-soi-navy-700'
                     }
                   `}
                 >

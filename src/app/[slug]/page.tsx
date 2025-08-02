@@ -25,11 +25,11 @@ export default async function LandingPage({ params }: LandingPageProps) {
     // If blog post found, render it
     if (blogPost) {
       return (
-        <div className="min-h-screen bg-white">
+        <div className="min-h-screen bg-tint-expertise">
           <SiteHeader />
           
           {/* Blog Post Hero */}
-          <section className="relative py-20 lg:py-32 overflow-hidden">
+          <section className="relative py-20 lg:py-32 overflow-hidden bg-gradient-to-br from-soi-navy-800 to-soi-purple-800">
             {blogPost.featured_image_url && (
               <div className="absolute inset-0 z-0">
                 <Image
@@ -44,7 +44,7 @@ export default async function LandingPage({ params }: LandingPageProps) {
             
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center">
-                <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
+                <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 drop-shadow-lg">
                   {blogPost.title}
                 </h1>
                 <div className="flex items-center justify-center gap-4 text-white/80">
@@ -73,9 +73,9 @@ export default async function LandingPage({ params }: LandingPageProps) {
           </section>
 
           {/* Blog Content */}
-          <section className="py-16 lg:py-24">
+          <section className="py-16 lg:py-24 bg-white">
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-              <article className="prose prose-lg max-w-none">
+              <article className="prose prose-lg max-w-none prose-headings:text-soi-navy-800 prose-links:text-soi-purple-600 prose-strong:text-soi-navy-700">
                 {blogPost.content_html ? (
                   <div dangerouslySetInnerHTML={{ __html: blogPost.content_html }} />
                 ) : (
@@ -95,11 +95,11 @@ export default async function LandingPage({ params }: LandingPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-tint-authority">
       <SiteHeader />
       
       {/* Hero Section */}
-      <section className="relative py-20 lg:py-32 overflow-hidden">
+      <section className="relative py-20 lg:py-32 overflow-hidden bg-gradient-to-br from-soi-navy-800 to-soi-purple-800">
         {landingPage.featured_image_url && (
           <div className="absolute inset-0 z-0">
             <Image
@@ -114,7 +114,7 @@ export default async function LandingPage({ params }: LandingPageProps) {
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
+            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 drop-shadow-lg">
               {landingPage.title}
             </h1>
             {landingPage.content_text && (
@@ -127,15 +127,15 @@ export default async function LandingPage({ params }: LandingPageProps) {
       </section>
 
       {/* Content Section */}
-      <section className="py-16 lg:py-24">
+      <section className="py-16 lg:py-24 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           {landingPage.content_html ? (
             <div 
-              className="prose prose-lg max-w-none"
+              className="prose prose-lg max-w-none prose-headings:text-soi-navy-800 prose-links:text-soi-purple-600 prose-strong:text-soi-navy-700"
               dangerouslySetInnerHTML={{ __html: landingPage.content_html }}
             />
           ) : (
-            <div className="prose prose-lg max-w-none">
+            <div className="prose prose-lg max-w-none prose-headings:text-soi-navy-800 prose-links:text-soi-purple-600 prose-strong:text-soi-navy-700">
               <p>{landingPage.content_text}</p>
             </div>
           )}

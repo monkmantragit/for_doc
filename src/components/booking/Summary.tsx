@@ -31,7 +31,7 @@ export const Summary = ({
         <button
           type="button"
           onClick={onBack}
-          className="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-[#8B5C9E] hover:text-[#6B4A7E] rounded-md hover:bg-[#8B5C9E]/5 transition-colors touch-manipulation"
+          className="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-soi-navy-600 hover:text-soi-navy-800 rounded-md hover:bg-soi-pink-50 transition-colors touch-manipulation"
         >
           <ChevronLeft className="w-4 h-4" />
           Back
@@ -39,24 +39,24 @@ export const Summary = ({
       </div>
 
       <div>
-        <h2 className="text-xl sm:text-2xl font-semibold text-gray-900">Booking Summary</h2>
-        <p className="mt-1 text-sm text-gray-600">
+        <h2 className="text-xl sm:text-2xl font-semibold text-soi-navy-800">Booking Summary</h2>
+        <p className="mt-1 text-sm text-soi-navy-600">
           Review your appointment details before confirming
         </p>
       </div>
 
-      <div className="bg-white border border-gray-200 rounded-xl p-4 sm:p-6 space-y-4 sm:space-y-5 shadow-sm">
+      <div className="bg-white border border-soi-pink-200 rounded-xl p-4 sm:p-6 space-y-4 sm:space-y-5 shadow-sm">
         {/* Doctor Info */}
         {formData.doctor && (
-          <div className="flex items-start gap-3 sm:gap-4 pb-4 border-b border-gray-100">
-            <div className="flex-shrink-0 w-10 sm:w-12 h-10 sm:h-12 rounded-full bg-[#8B5C9E]/10 flex items-center justify-center">
-              <User className="w-5 sm:w-6 h-5 sm:h-6 text-[#8B5C9E]" />
+          <div className="flex items-start gap-3 sm:gap-4 pb-4 border-b border-soi-pink-100">
+            <div className="flex-shrink-0 w-10 sm:w-12 h-10 sm:h-12 rounded-full bg-soi-pink-100 flex items-center justify-center">
+              <User className="w-5 sm:w-6 h-5 sm:h-6 text-soi-pink-600" />
             </div>
             <div>
-              <p className="text-xs font-medium uppercase tracking-wider text-gray-500">Doctor</p>
-              <p className="font-semibold text-gray-900 text-base sm:text-lg">{formData.doctor.name}</p>
+              <p className="text-xs font-medium uppercase tracking-wider text-soi-navy-500">Doctor</p>
+              <p className="font-semibold text-soi-navy-800 text-base sm:text-lg">{formData.doctor.name}</p>
               <div className="flex flex-wrap items-center gap-2 mt-1">
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#8B5C9E]/10 text-[#8B5C9E]">
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-soi-navy-100 text-soi-navy-700">
                   {formData.doctor.speciality}
                 </span>
               </div>
@@ -65,16 +65,16 @@ export const Summary = ({
         )}
 
         {/* Schedule Info */}
-        <div className="flex flex-col sm:flex-row sm:gap-10 py-4 border-b border-gray-100">
+        <div className="flex flex-col sm:flex-row sm:gap-10 py-4 border-b border-soi-pink-100">
           {/* Date */}
           {formData.selectedDate && (
             <div className="flex items-start gap-3 mb-4 sm:mb-0">
-              <div className="flex-shrink-0 w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center">
-                <Calendar className="w-5 h-5 text-blue-600" />
+              <div className="flex-shrink-0 w-10 h-10 rounded-full bg-soi-navy-50 flex items-center justify-center">
+                <Calendar className="w-5 h-5 text-soi-navy-600" />
               </div>
               <div>
-                <p className="text-xs font-medium uppercase tracking-wider text-gray-500">Date</p>
-                <p className="font-medium text-gray-900 text-sm sm:text-base">
+                <p className="text-xs font-medium uppercase tracking-wider text-soi-navy-500">Date</p>
+                <p className="font-medium text-soi-navy-800 text-sm sm:text-base">
                   {format(formData.selectedDate, 'EEEE, MMMM d, yyyy')}
                 </p>
               </div>
@@ -84,12 +84,12 @@ export const Summary = ({
           {/* Time */}
           {formData.selectedTime && (
             <div className="flex items-start gap-3">
-              <div className="flex-shrink-0 w-10 h-10 rounded-full bg-green-50 flex items-center justify-center">
-                <Clock className="w-5 h-5 text-green-600" />
+              <div className="flex-shrink-0 w-10 h-10 rounded-full bg-soi-mint-50 flex items-center justify-center">
+                <Clock className="w-5 h-5 text-soi-mint-600" />
               </div>
               <div>
-                <p className="text-xs font-medium uppercase tracking-wider text-gray-500">Time</p>
-                <p className="font-medium text-gray-900 text-sm sm:text-base">
+                <p className="text-xs font-medium uppercase tracking-wider text-soi-navy-500">Time</p>
+                <p className="font-medium text-soi-navy-800 text-sm sm:text-base">
                   {(() => {
                     const [hours, minutes] = formData.selectedTime.split(':');
                     const hour = parseInt(hours, 10);
@@ -148,11 +148,11 @@ export const Summary = ({
         {formData.doctor && (
           <div className="pt-2">
             <div className="flex justify-between items-center">
-              <span className="font-medium text-gray-700">Consultation Fee</span>
-              <span className="text-xl font-semibold text-[#8B5C9E]">₹{formData.doctor.fee}</span>
+              <span className="font-medium text-soi-navy-700">Consultation Fee</span>
+              <span className="text-xl font-semibold text-soi-navy-800">₹{formData.doctor.fee}</span>
             </div>
-            <p className="text-sm text-gray-500 mt-1 flex items-center">
-              <Check className="w-4 h-4 mr-1.5 text-green-500" />
+            <p className="text-sm text-soi-navy-500 mt-1 flex items-center">
+              <Check className="w-4 h-4 mr-1.5 text-soi-mint-600" />
               Payment to be made at the clinic
             </p>
           </div>
@@ -181,7 +181,7 @@ export const Summary = ({
           onClick={onSubmit}
           whileTap={{ scale: 0.98 }}
           disabled={isSubmitting}
-          className="w-full sm:w-auto px-6 py-3 text-sm font-medium text-white bg-[#8B5C9E] rounded-lg hover:bg-[#7A4B8D] shadow-sm hover:shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#8B5C9E] transition-colors disabled:opacity-70 disabled:cursor-not-allowed touch-manipulation"
+          className="w-full sm:w-auto px-6 py-3 text-sm font-medium text-white bg-soi-navy-500 rounded-lg hover:bg-soi-navy-600 shadow-sm hover:shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-soi-navy-500 transition-colors disabled:opacity-70 disabled:cursor-not-allowed touch-manipulation"
         >
           {isSubmitting ? (
             <span className="flex items-center justify-center">

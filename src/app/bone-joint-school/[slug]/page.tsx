@@ -300,7 +300,7 @@ const processContentForTOC = (contentHtml: string) => {
 
 // Enhanced Related Topic Card Component
 const RelatedTopicCard = ({ title, slug, imageUrl, summary }: { title: string, slug: string, imageUrl: string, summary?: string }) => (
-  <Link href={`/bone-joint-school/${slug}`} className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border border-gray-200/80 hover:border-[#8B5C9E]/30">
+  <Link href={`/bone-joint-school/${slug}`} className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border border-soi-purple-200/80 hover:border-soi-purple-500/30">
     <div className="relative h-48 w-full">
       {/* Image */}
       <Image 
@@ -328,7 +328,7 @@ const RelatedTopicCard = ({ title, slug, imageUrl, summary }: { title: string, s
 
     {/* Content */}
     <div className="flex flex-1 flex-col p-6 transition-colors duration-300 group-hover:bg-gray-50/50">
-      <h4 className="font-bold text-lg text-gray-900 group-hover:text-[#8B5C9E] transition-colors duration-300 line-clamp-2 mb-2 leading-tight">
+      <h4 className="font-bold text-lg text-soi-navy-800 group-hover:text-soi-purple-600 transition-colors duration-300 line-clamp-2 mb-2 leading-tight">
         {title}
       </h4>
       {summary && (
@@ -336,7 +336,7 @@ const RelatedTopicCard = ({ title, slug, imageUrl, summary }: { title: string, s
           {summary}
         </p>
       )}
-      <div className="flex items-center text-sm font-semibold text-[#8B5C9E] mt-auto pt-4">
+      <div className="flex items-center text-sm font-semibold text-soi-purple-600 mt-auto pt-4">
         <span className="group-hover:underline decoration-2 underline-offset-4">View Topic</span>
         <ArrowRight className="w-4 h-4 ml-1.5 transition-transform duration-300 group-hover:translate-x-1" />
       </div>
@@ -350,11 +350,11 @@ export default async function BoneJointTopicPage({ params }: Props) {
 
   if (!topicData) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="min-h-screen bg-tint-expertise flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Topic Not Found</h1>
-          <p className="text-gray-600 mb-4">The requested topic could not be found.</p>
-          <Link href="/bone-joint-school" className="text-[#8B5C9E] hover:underline">
+          <h1 className="text-2xl font-bold text-soi-navy-800 mb-4">Topic Not Found</h1>
+          <p className="text-soi-navy-600 mb-4">The requested topic could not be found.</p>
+          <Link href="/bone-joint-school" className="text-soi-purple-600 hover:text-soi-navy-600 hover:underline">
             ← Back to Bone & Joint School
           </Link>
         </div>
@@ -366,7 +366,7 @@ export default async function BoneJointTopicPage({ params }: Props) {
   const { processedHtml, tableOfContents } = processContentForTOC(topicData.content_html);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-tint-expertise">
       <SiteHeader />
       
       {/* Enhanced Hero Section */}
@@ -387,7 +387,7 @@ export default async function BoneJointTopicPage({ params }: Props) {
             <div className="max-w-2xl">
               <Breadcrumbs items={topicData.breadcrumbData} className="mb-6" />
               
-              <div className="inline-block bg-[#8B5C9E]/20 text-white px-4 py-2 rounded-full text-sm font-medium mb-6 backdrop-blur-sm border border-[#8B5C9E]/30">
+              <div className="inline-block bg-soi-purple-500/20 text-white px-4 py-2 rounded-full text-sm font-medium mb-6 backdrop-blur-sm border border-soi-purple-500/30">
                 EDUCATIONAL TOPIC
               </div>
               
@@ -460,9 +460,9 @@ export default async function BoneJointTopicPage({ params }: Props) {
               <div className="lg:col-span-1 order-2 lg:order-1">
                 <div className="sticky top-24">
                   <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
-                    <h3 className="font-bold text-gray-900 mb-6 flex items-center text-lg">
-                      <div className="w-8 h-8 bg-[#8B5C9E]/10 rounded-lg flex items-center justify-center mr-3">
-                        <FileText className="w-4 h-4 text-[#8B5C9E]" />
+                    <h3 className="font-bold text-soi-navy-800 mb-6 flex items-center text-lg">
+                      <div className="w-8 h-8 bg-soi-purple-100 rounded-lg flex items-center justify-center mr-3">
+                        <FileText className="w-4 h-4 text-soi-purple-600" />
                       </div>
                       Contents
                     </h3>
@@ -471,8 +471,8 @@ export default async function BoneJointTopicPage({ params }: Props) {
                         <a
                           key={index}
                           href={`#${heading.id}`}
-                          className={`block text-sm hover:text-[#8B5C9E] transition-colors py-2 px-3 rounded-lg hover:bg-[#8B5C9E]/5 ${
-                            heading.level === 2 ? 'font-semibold text-gray-900 border-l-2 border-[#8B5C9E]' : 'text-gray-600 pl-6 border-l-2 border-gray-200'
+                          className={`block text-sm hover:text-soi-purple-600 transition-colors py-2 px-3 rounded-lg hover:bg-soi-purple-50 ${
+                            heading.level === 2 ? 'font-semibold text-soi-navy-800 border-l-2 border-soi-purple-600' : 'text-soi-navy-600 pl-6 border-l-2 border-soi-purple-200'
                           }`}
                         >
                           {heading.text}
@@ -491,13 +491,13 @@ export default async function BoneJointTopicPage({ params }: Props) {
               <article className="bg-white rounded-2xl shadow-lg p-8 md:p-12 border border-gray-100 mb-8">
                 {/* Content Renderer */}
                 <div 
-                  className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-headings:font-bold prose-headings:leading-tight prose-headings:scroll-mt-32 prose-p:text-gray-700 prose-p:leading-relaxed prose-p:mb-6 prose-a:text-[#8B5C9E] prose-a:no-underline hover:prose-a:underline prose-strong:text-gray-900 prose-strong:font-semibold prose-ul:text-gray-700 prose-ol:text-gray-700 prose-li:mb-2 prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6 prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-4 prose-blockquote:border-l-4 prose-blockquote:border-[#8B5C9E] prose-blockquote:bg-[#8B5C9E]/5 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:rounded-r-lg"
+                  className="prose prose-lg max-w-none prose-headings:text-soi-navy-800 prose-headings:font-bold prose-headings:leading-tight prose-headings:scroll-mt-32 prose-p:text-soi-navy-600 prose-p:leading-relaxed prose-p:mb-6 prose-a:text-soi-purple-600 prose-a:no-underline hover:prose-a:underline prose-strong:text-soi-navy-700 prose-strong:font-semibold prose-ul:text-soi-navy-600 prose-ol:text-soi-navy-600 prose-li:mb-2 prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6 prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-4 prose-blockquote:border-l-4 prose-blockquote:border-soi-purple-600 prose-blockquote:bg-soi-purple-50 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:rounded-r-lg"
                   dangerouslySetInnerHTML={{ __html: processedHtml }} 
                 />
               </article>
 
               {/* Expert Care CTA */}
-              <div className="bg-gradient-to-br from-[#8B5C9E] via-[#7A4F8C] to-[#6B3E7C] rounded-2xl p-8 md:p-12 text-center shadow-2xl">
+              <div className="bg-gradient-to-br from-soi-purple-600 via-soi-navy-600 to-soi-navy-700 rounded-2xl p-8 md:p-12 text-center shadow-2xl">
                 <div className="max-w-3xl mx-auto">
                   <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6">
                     <User className="w-8 h-8 text-white" />
@@ -513,7 +513,7 @@ export default async function BoneJointTopicPage({ params }: Props) {
                     />
                     <Link 
                       href="/surgeons-staff" 
-                      className="inline-flex items-center justify-center bg-transparent border-2 border-white text-white hover:bg-white hover:text-[#8B5C9E] px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 hover:scale-105 min-w-[240px] shadow-lg hover:shadow-xl"
+                      className="inline-flex items-center justify-center bg-transparent border-2 border-white text-white hover:bg-white hover:text-soi-purple-600 px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 hover:scale-105 min-w-[240px] shadow-lg hover:shadow-xl"
                     >
                       Meet Our Specialists
                     </Link>
@@ -531,10 +531,10 @@ export default async function BoneJointTopicPage({ params }: Props) {
           <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-12">
-                <div className="inline-block bg-[#8B5C9E]/10 text-[#8B5C9E] px-4 py-2 rounded-full text-sm font-medium mb-4">
+                <div className="inline-block bg-soi-purple-100 text-soi-purple-700 px-4 py-2 rounded-full text-sm font-medium mb-4">
                   CONTINUE LEARNING
                 </div>
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                <h2 className="text-3xl md:text-4xl font-bold text-soi-navy-800 mb-4">
                   Related Topics
                 </h2>
                 <p className="text-xl text-gray-600 max-w-2xl mx-auto">
@@ -555,7 +555,7 @@ export default async function BoneJointTopicPage({ params }: Props) {
               <div className="text-center mt-12">
                 <Link 
                   href="/bone-joint-school" 
-                  className="inline-flex items-center bg-[#8B5C9E] text-white px-8 py-4 rounded-full font-semibold hover:bg-[#7A4F8C] transition-all duration-300 hover:scale-105 shadow-lg"
+                  className="inline-flex items-center bg-soi-purple-600 text-white px-8 py-4 rounded-full font-semibold hover:bg-soi-navy-600 transition-all duration-300 hover:scale-105 shadow-lg"
                 >
                   View All Topics
                   <ArrowRight className="ml-2 w-5 h-5" />

@@ -83,7 +83,7 @@ const SocialShare = ({ url, title }: { url: string; title: string }) => {
       </a>
       <a
         href={`mailto:?subject=${encodedTitle}&body=${encodedUrl}`}
-        className="p-2 text-gray-600 hover:text-[#8B5C9E] hover:bg-gray-100 rounded-full transition-colors"
+        className="p-2 text-gray-600 hover:text-soi-purple-600 hover:bg-soi-purple-50 rounded-full transition-colors"
         aria-label="Share via Email"
       >
         <Mail size={18} />
@@ -96,7 +96,7 @@ const SocialShare = ({ url, title }: { url: string; title: string }) => {
 const RelatedPostCard = ({ post }: { post: BlogPost }) => {
   return (
     <Link href={`/${post.slug}`} className="block">
-      <div className="group flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+              <div className="group flex items-start space-x-3 p-3 rounded-lg hover:bg-soi-purple-50 transition-colors">
         <div className="relative w-16 h-16 rounded-md overflow-hidden flex-shrink-0">
           <Image
             src={post.featured_image_url}
@@ -107,7 +107,7 @@ const RelatedPostCard = ({ post }: { post: BlogPost }) => {
           />
         </div>
         <div className="flex-grow min-w-0">
-          <h4 className="text-sm font-medium text-gray-900 line-clamp-2 group-hover:text-[#8B5C9E] transition-colors">
+          <h4 className="text-sm font-medium text-gray-900 line-clamp-2 group-hover:text-soi-purple-600 transition-colors">
             {post.title}
           </h4>
           <div className="flex items-center mt-1 text-xs text-gray-500">
@@ -130,14 +130,14 @@ export default async function PostPage({ params }: Props) {
   if (!post) {
     // Return not found page
     return (
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-tint-expertise">
         <SiteHeader />
         <div className="container mx-auto px-4 py-20 text-center">
           <h1 className="text-3xl font-bold text-gray-900 mb-4">Post Not Found</h1>
           <p className="text-gray-600 mb-6">The blog post you're looking for could not be found.</p>
           <Link 
             href="/blogs" 
-            className="inline-flex items-center text-[#8B5C9E] hover:text-[#7a4f8a] transition-colors"
+            className="inline-flex items-center text-soi-purple-600 hover:text-soi-navy-600 transition-colors"
           >
             <ArrowLeft className="w-4 h-4 mr-1" />
             Back to all posts
@@ -152,7 +152,7 @@ export default async function PostPage({ params }: Props) {
   const relatedPosts = await getRelatedPosts(slug, post.category);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-tint-expertise">
       <SiteHeader />
       
       {/* Hero Section */}
@@ -170,7 +170,7 @@ export default async function PostPage({ params }: Props) {
         </div>
         
         <div className="relative z-10 container mx-auto px-4 text-center">
-          <div className="inline-block bg-[#8B5C9E] text-white text-xs font-bold px-3 py-1 rounded-full mb-4">
+          <div className="inline-block bg-soi-purple-600 text-white text-xs font-bold px-3 py-1 rounded-full mb-4">
             {post.category}
           </div>
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white max-w-4xl mx-auto leading-tight">
@@ -199,7 +199,7 @@ export default async function PostPage({ params }: Props) {
               <div className="mb-8">
                 <Link 
                   href="/blogs" 
-                  className="inline-flex items-center text-[#8B5C9E] hover:text-[#7a4f8a] transition-colors text-sm font-medium"
+                  className="inline-flex items-center text-soi-purple-600 hover:text-soi-navy-600 transition-colors text-sm font-medium"
                 >
                   <ArrowLeft className="w-4 h-4 mr-1" />
                   Back to all posts
@@ -207,7 +207,7 @@ export default async function PostPage({ params }: Props) {
               </div>
 
               {/* Article Content */}
-              <div className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-headings:font-bold prose-a:text-[#8B5C9E] prose-a:no-underline hover:prose-a:underline prose-strong:text-gray-900 prose-blockquote:border-l-[#8B5C9E] prose-blockquote:text-gray-700">
+              <div className="prose prose-lg max-w-none prose-headings:text-soi-navy-800 prose-headings:font-bold prose-a:text-soi-purple-600 prose-a:no-underline hover:prose-a:underline prose-strong:text-soi-navy-700 prose-blockquote:border-l-soi-purple-600 prose-blockquote:text-soi-navy-600">
                 {post.content_html ? (
                   <div dangerouslySetInnerHTML={{ __html: post.content_html }} />
                 ) : (
@@ -225,20 +225,20 @@ export default async function PostPage({ params }: Props) {
             <aside className="lg:w-1/3 mt-12 lg:mt-0">
               <div className="lg:sticky lg:top-8 space-y-8">
                 {/* Call to Action */}
-                <div className="bg-gradient-to-r from-[#8B5C9E] to-[#7a4f8a] text-white p-6 rounded-xl">
+                <div className="bg-gradient-to-r from-soi-purple-600 to-soi-navy-600 text-white p-6 rounded-xl">
                   <h3 className="text-lg font-bold mb-3 text-white">Need Expert Care?</h3>
                   <p className="text-sm mb-4 text-white/90">
                     Get personalized treatment from our orthopedic specialists.
                   </p>
-                  <Button className="w-full bg-white text-[#8B5C9E] hover:bg-gray-100">
+                  <Button className="w-full bg-white text-soi-purple-600 hover:bg-soi-purple-50 border-2 border-soi-pink-400">
                     Book an Appointment
                   </Button>
                 </div>
 
                 {/* Related Posts */}
                 {relatedPosts.length > 0 && (
-                  <div className="bg-gray-50 p-6 rounded-xl">
-                    <h3 className="text-lg font-bold text-gray-900 mb-4">Related Articles</h3>
+                  <div className="bg-white p-6 rounded-xl border border-soi-purple-200">
+                    <h3 className="text-lg font-bold text-soi-navy-800 mb-4">Related Articles</h3>
                     <div className="space-y-1">
                       {relatedPosts.map(relatedPost => (
                         <RelatedPostCard key={relatedPost.id} post={relatedPost} />

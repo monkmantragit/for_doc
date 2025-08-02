@@ -70,10 +70,10 @@ const PageLink = ({ page }: { page: PageData }) => {
   return (
     <Link 
       href={`/pages/${page.slug}`}
-      className="group flex items-center justify-between p-4 border-b border-gray-200 hover:bg-gray-50 transition-colors"
+      className="group flex items-center justify-between p-4 border-b border-soi-purple-200 hover:bg-soi-purple-50 transition-colors"
     >
       <div className="flex items-center gap-4">
-        <div className="w-10 h-10 rounded-md overflow-hidden bg-gray-200 relative shrink-0">
+        <div className="w-10 h-10 rounded-md overflow-hidden bg-soi-purple-100 relative shrink-0">
           <Image
             src={page.featuredImageUrl || '/images/default-page.webp'}
             alt=""
@@ -81,9 +81,9 @@ const PageLink = ({ page }: { page: PageData }) => {
             className="object-cover"
           />
         </div>
-        <span className="text-gray-800 font-medium line-clamp-1">{page.title}</span>
+        <span className="text-soi-navy-800 font-medium line-clamp-1">{page.title}</span>
       </div>
-      <ArrowUpRight className="w-4 h-4 text-gray-400 group-hover:text-[#8B5C9E] transition-colors" />
+      <ArrowUpRight className="w-4 h-4 text-soi-purple-400 group-hover:text-soi-purple-600 transition-colors" />
     </Link>
   );
 };
@@ -93,16 +93,16 @@ export default async function PagesPage() {
   const pages = await getPages();
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-tint-authority">
       <SiteHeader theme="light" />
       
       {/* Simple Header */}
-      <section className="relative py-12 md:py-16 bg-white border-b border-gray-200">
+      <section className="relative py-12 md:py-16 bg-white border-b border-soi-navy-200">
         <div className="container mx-auto px-4">
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">
+          <h1 className="text-3xl sm:text-4xl font-bold text-soi-navy-800 mb-3">
             Quick Links & Information
           </h1>
-          <p className="text-gray-600 max-w-2xl">
+          <p className="text-soi-navy-600 max-w-2xl">
             Find helpful information and resources about various orthopedic procedures, conditions, and treatments.
           </p>
         </div>
@@ -112,15 +112,15 @@ export default async function PagesPage() {
       <main className="container mx-auto px-4 py-8 md:py-12">
         {/* Pages List */}
         {pages.length > 0 ? (
-          <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+          <div className="bg-white rounded-lg shadow-sm overflow-hidden border border-soi-purple-200">
             {pages.map((page) => (
               <PageLink key={page.slug} page={page} />
             ))}
           </div>
         ) : (
-          <div className="bg-white rounded-lg p-8 text-center shadow-sm">
-            <h3 className="text-xl font-medium text-gray-900 mb-2">No information pages found</h3>
-            <p className="text-gray-600">
+          <div className="bg-white rounded-lg p-8 text-center shadow-sm border border-soi-purple-200">
+            <h3 className="text-xl font-medium text-soi-navy-800 mb-2">No information pages found</h3>
+            <p className="text-soi-navy-600">
               Information pages will appear here once added to the database.
             </p>
           </div>

@@ -35,7 +35,7 @@ export function StaffCard({ staff }: StaffCardProps) {
 
   return (
     <motion.div
-      className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-100 max-w-xs mx-auto"
+      className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 border border-soi-pink-200 hover:border-soi-pink-300 max-w-xs mx-auto"
       initial="hidden"
       animate="visible"
       whileHover="hover"
@@ -54,15 +54,15 @@ export function StaffCard({ staff }: StaffCardProps) {
               sizes="(max-width: 768px) 200px, (max-width: 1200px) 200px, 200px"
             />
           ) : (
-            <div className="bg-purple-50 h-full w-full flex items-center justify-center">
-              <UserCircle2 className="w-16 h-16 text-[#8B5C9E]/60" />
+            <div className="bg-soi-pink-50 h-full w-full flex items-center justify-center">
+              <UserCircle2 className="w-16 h-16 text-soi-pink-400" />
             </div>
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#8B5C9E]/60 to-transparent opacity-80"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-soi-pink-600/50 to-transparent opacity-70"></div>
           
           {/* Position tag */}
           {staff.title && (
-            <div className="absolute top-3 right-3 bg-[#8B5C9E] text-white text-xs font-medium px-2 py-1 rounded text-center">
+            <div className="absolute top-3 right-3 bg-soi-navy-500 text-white text-xs font-medium px-2 py-1 rounded text-center">
               {staff.title.includes('Consultant') ? 'Surgeon' : 
                staff.title.includes('Psychologist') ? 'Specialist' : 
                staff.title.includes('Director') ? 'Director' : 'Staff'}
@@ -71,19 +71,19 @@ export function StaffCard({ staff }: StaffCardProps) {
         </div>
         
         <div className="p-4 flex-1 flex flex-col">
-          <h3 className="text-lg font-semibold text-gray-900 mb-1 group-hover:text-[#8B5C9E] transition-colors line-clamp-2">
+          <h3 className="text-lg font-semibold text-soi-navy-800 mb-1 group-hover:text-soi-pink-600 transition-colors line-clamp-2">
             {staff.name}
           </h3>
           
           {staff.title && (
-            <p className="text-sm text-gray-600 font-medium mb-2">{staff.title}</p>
+            <p className="text-sm text-soi-navy-600 font-medium mb-2">{staff.title}</p>
           )}
           
           {staff.qualifications && (
-            <p className="text-xs text-gray-500 line-clamp-2 mb-3 leading-relaxed">{staff.qualifications}</p>
+            <p className="text-xs text-soi-navy-500 line-clamp-2 mb-3 leading-relaxed">{staff.qualifications}</p>
           )}
           
-          <div className="mt-auto pt-2 flex items-center text-[#8B5C9E] text-xs font-medium">
+          <div className="mt-auto pt-2 flex items-center text-soi-pink-600 text-xs font-medium">
             <Award className="w-3 h-3 mr-1" />
             <span>Expert Team Member</span>
           </div>

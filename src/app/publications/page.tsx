@@ -49,7 +49,7 @@ function PublicationCard({ publication }: { publication: Publication }) {
   return (
     <Link 
       href={`/publications/${slug}`}
-      className="group block bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow"
+      className="group block bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow border border-soi-navy-200 hover:border-soi-navy-400"
     >
       <div className="relative h-48 overflow-hidden">
         <div className="absolute inset-0 bg-gray-200">
@@ -65,34 +65,34 @@ function PublicationCard({ publication }: { publication: Publication }) {
       </div>
       
       <div className="p-5">
-        <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-[#8B5C9E] transition-colors leading-tight">
+        <h3 className="text-lg font-bold text-soi-navy-800 mb-2 line-clamp-2 group-hover:text-soi-navy-600 transition-colors leading-tight">
           {displayTitle}
         </h3>
         
-        <div className="flex flex-col space-y-2 text-sm text-gray-600 mb-4">
+        <div className="flex flex-col space-y-2 text-sm text-soi-navy-600 mb-4">
           {authors && (
             <div className="flex items-center min-w-0">
-              <User className="w-4 h-4 mr-1 flex-shrink-0" />
+              <User className="w-4 h-4 mr-1 flex-shrink-0 text-soi-navy-500" />
               <span className="line-clamp-1 truncate">{authors}</span>
             </div>
           )}
           
           {publication_type && (
             <div className="flex items-center min-w-0">
-              <BookOpen className="w-4 h-4 mr-1 flex-shrink-0" />
+              <BookOpen className="w-4 h-4 mr-1 flex-shrink-0 text-soi-navy-500" />
               <span className="line-clamp-1 truncate">{publication_type}</span>
             </div>
           )}
           
           {formattedDate && (
             <div className="flex items-center min-w-0">
-              <Calendar className="w-4 h-4 mr-1 flex-shrink-0" />
+              <Calendar className="w-4 h-4 mr-1 flex-shrink-0 text-soi-navy-500" />
               <span className="truncate">{formattedDate}</span>
             </div>
           )}
         </div>
         
-        <div className="flex items-center mt-auto text-[#8B5C9E]">
+        <div className="flex items-center mt-auto text-soi-navy-600">
           <span className="inline-flex items-center text-sm font-medium">
             Read More
             <ArrowRight className="w-3.5 h-3.5 ml-1 transition-transform group-hover:translate-x-0.5" />
@@ -118,7 +118,7 @@ function PublicationHighlight({ publication }: { publication: Publication }) {
   
   return (
     <div className="mb-10 w-full">
-      <div className="bg-white rounded-xl overflow-hidden shadow-lg flex flex-col md:flex-row w-full">
+      <div className="bg-white rounded-xl overflow-hidden shadow-lg flex flex-col md:flex-row w-full border border-soi-navy-200">
         <div className="md:w-2/5 relative h-64 md:h-auto flex-shrink-0">
           <div className="absolute inset-0 bg-gray-200">
             <ClientImage
@@ -133,25 +133,25 @@ function PublicationHighlight({ publication }: { publication: Publication }) {
         <div className="md:w-3/5 p-6 md:p-8 flex flex-col justify-between min-w-0">
           <div className="min-w-0">
             <div className="flex items-center mb-3">
-              <div className="flex items-center text-sm text-[#8B5C9E] bg-[#8B5C9E]/10 px-3 py-1 rounded-full">
-                <BookOpen className="w-4 h-4 mr-1.5 flex-shrink-0" />
+              <div className="flex items-center text-sm text-soi-navy-700 bg-soi-navy-100 px-3 py-1 rounded-full">
+                <BookOpen className="w-4 h-4 mr-1.5 flex-shrink-0 text-soi-navy-600" />
                 <span className="font-medium">Featured Publication</span>
               </div>
             </div>
             
-            <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-3 leading-tight break-words">
+            <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-soi-navy-800 mb-3 leading-tight break-words">
               {displayTitle}
             </h2>
             
-            <div className="flex items-center mb-4 text-gray-600 min-w-0">
-              <User className="w-4 h-4 mr-1.5 flex-shrink-0" />
+            <div className="flex items-center mb-4 text-soi-navy-600 min-w-0">
+              <User className="w-4 h-4 mr-1.5 flex-shrink-0 text-soi-navy-500" />
               <span className="truncate text-sm md:text-base">{authors}</span>
             </div>
           </div>
           
           <Link 
             href={`/publications/${slug}`}
-            className="inline-flex items-center text-[#8B5C9E] font-medium hover:underline mt-4 self-start"
+            className="inline-flex items-center text-soi-navy-600 font-medium hover:underline mt-4 self-start hover:text-soi-navy-700"
           >
             <span className="break-words">Read full publication</span>
             <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-0.5 flex-shrink-0" />
@@ -179,7 +179,7 @@ export default async function PublicationsPage() {
   const regularPublications = publications.length > 0 ? publications.slice(1) : [];
 
   return (
-    <div className="min-h-screen bg-gray-50 overflow-x-hidden">
+    <div className="min-h-screen bg-tint-authority overflow-x-hidden">
       {/* Use transparent header for image background */}
       <SiteHeader theme="transparent" /> 
       
@@ -188,11 +188,11 @@ export default async function PublicationsPage() {
         className="pt-24 pb-16" // Add top and bottom padding for balance
         variant="color" // Change to color to remove background image 
         height="medium"
-        bgColor="#2E3A59" // Dark background color
+        bgColor="#1e3a5f" // SOI Navy background
         title={
           <div className="max-w-5xl mx-auto px-4">
             {/* Badge */}
-            <div className="inline-block bg-[#8B5C9E]/20 text-white px-4 py-1 rounded-lg text-sm font-medium mb-6 backdrop-blur-sm border border-[#8B5C9E]/30">
+            <div className="inline-block bg-soi-navy-500/30 text-white px-4 py-1 rounded-lg text-sm font-medium mb-6 backdrop-blur-sm border border-soi-navy-400/50">
               ACADEMIC RESEARCH
             </div>
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-[1.1] mb-4">
@@ -221,11 +221,11 @@ export default async function PublicationsPage() {
         {/* Publications Count */}
         <div className="mb-10 w-full">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-8 gap-4 w-full">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 break-words">
+            <h2 className="text-2xl md:text-3xl font-bold text-soi-navy-800 break-words">
               Research Publications
             </h2>
             
-            <div className="text-sm text-gray-500 flex-shrink-0">
+            <div className="text-sm text-soi-navy-500 flex-shrink-0">
               {total} publication{total !== 1 ? 's' : ''}
             </div>
           </div>
@@ -246,9 +246,9 @@ export default async function PublicationsPage() {
             </div>
           ) : (
             !highlightPublication && (
-              <div className="bg-white rounded-lg p-8 text-center shadow-sm">
-                <h3 className="text-xl font-medium text-gray-900 mb-2">No publications found</h3>
-                <p className="text-gray-600">
+              <div className="bg-white rounded-lg p-8 text-center shadow-sm border border-soi-navy-200">
+                <h3 className="text-xl font-medium text-soi-navy-800 mb-2">No publications found</h3>
+                <p className="text-soi-navy-600">
                   Publications will appear here once added to the database.
                 </p>
               </div>

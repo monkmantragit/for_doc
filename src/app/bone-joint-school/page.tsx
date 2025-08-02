@@ -76,13 +76,13 @@ const PaginationControls = ({
       {prevPage ? (
         <Link 
           href={`${baseUrl}?${buildQueryString(prevPage)}`} 
-          className="flex items-center px-4 py-2 rounded-md bg-[#8B5C9E]/10 text-[#8B5C9E] hover:bg-[#8B5C9E]/20 transition-colors"
+          className="flex items-center px-4 py-2 rounded-md bg-soi-purple-100 text-soi-purple-600 hover:bg-soi-purple-200 transition-colors"
         >
           <ChevronLeft className="w-4 h-4 mr-1" />
           <span>Previous</span>
         </Link>
       ) : (
-        <span className="flex items-center px-4 py-2 rounded-md bg-gray-100 text-gray-400 cursor-not-allowed">
+        <span className="flex items-center px-4 py-2 rounded-md bg-soi-navy-100 text-soi-navy-400 cursor-not-allowed">
           <ChevronLeft className="w-4 h-4 mr-1" />
           <span>Previous</span>
         </span>
@@ -96,8 +96,8 @@ const PaginationControls = ({
             className={`
               w-8 h-8 flex items-center justify-center rounded-md text-sm
               ${currentPage === page 
-                ? 'bg-[#8B5C9E] text-white font-medium' 
-                : 'bg-gray-100 text-gray-700 hover:bg-[#8B5C9E]/10 hover:text-[#8B5C9E]'
+                ? 'bg-soi-purple-500 text-white font-medium' 
+                : 'bg-white text-soi-navy-700 hover:bg-soi-purple-50 hover:text-soi-purple-600 border border-soi-purple-200'
               }
             `}
           >
@@ -106,20 +106,20 @@ const PaginationControls = ({
         ))}
       </div>
       
-      <span className="text-gray-600 text-sm sm:hidden">
+      <span className="text-soi-navy-600 text-sm sm:hidden">
         Page {currentPage} of {totalPages}
       </span>
 
       {nextPage ? (
         <Link 
           href={`${baseUrl}?${buildQueryString(nextPage)}`} 
-          className="flex items-center px-4 py-2 rounded-md bg-[#8B5C9E]/10 text-[#8B5C9E] hover:bg-[#8B5C9E]/20 transition-colors"
+          className="flex items-center px-4 py-2 rounded-md bg-soi-purple-100 text-soi-purple-600 hover:bg-soi-purple-200 transition-colors"
         >
           <span>Next</span>
           <ChevronRight className="w-4 h-4 ml-1" />
         </Link>
       ) : (
-        <span className="flex items-center px-4 py-2 rounded-md bg-gray-100 text-gray-400 cursor-not-allowed">
+        <span className="flex items-center px-4 py-2 rounded-md bg-soi-navy-100 text-soi-navy-400 cursor-not-allowed">
           <span>Next</span>
           <ChevronRight className="w-4 h-4 ml-1" />
         </span>
@@ -147,8 +147,8 @@ const CategoryFilter = ({
           className={`
             px-4 py-2 rounded-full text-sm font-medium transition-colors
             ${category === activeCategory || (category === 'All' && !activeCategory)
-              ? 'bg-[#8B5C9E] text-white'
-              : 'bg-gray-100 text-gray-700 hover:bg-[#8B5C9E]/10 hover:text-[#8B5C9E]'
+              ? 'bg-soi-purple-500 text-white'
+              : 'bg-white text-soi-navy-700 hover:bg-soi-purple-50 hover:text-soi-purple-600 border border-soi-purple-200'
             }
           `}
         >
@@ -199,17 +199,17 @@ export default async function BoneJointSchoolPage({
   }
   
   return (
-    <div className="min-h-screen bg-gray-50"> 
+    <div className="min-h-screen bg-tint-expertise"> 
       <SiteHeader theme="transparent" />
       
       <HeroSection
         variant="image"
         height="large"
-        bgColor="#2E3A59"
+        bgColor="#1a1a1a"
         bgImage="https://images.unsplash.com/photo-1588776814546-daab30f310ce?q=80&w=2070&auto=format&fit=crop"
         title={
           <div className="max-w-5xl mx-auto text-center">
-            <div className="inline-block bg-[#8B5C9E]/20 text-white px-4 py-1 rounded-lg text-sm font-medium mb-6 backdrop-blur-sm border border-[#8B5C9E]/30">
+            <div className="inline-block bg-soi-purple-500/20 text-white px-4 py-1 rounded-lg text-sm font-medium mb-6 backdrop-blur-sm border border-soi-purple-500/30">
               BONE & JOINT SCHOOL
             </div>
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-[1.1] mb-4">
@@ -226,7 +226,7 @@ export default async function BoneJointSchoolPage({
             <BookingModalWrapper>
               <Button
                 size="lg"
-                className="bg-[#8B5C9E] hover:bg-[#7A4F8C] text-white rounded-md px-8 sm:px-10 py-6 sm:py-6 text-lg font-medium transition-all duration-300 hover:shadow-lg w-full sm:w-auto"
+                className="bg-soi-navy-500 hover:bg-soi-navy-600 text-white rounded-md px-8 sm:px-10 py-6 sm:py-6 text-lg font-medium transition-all duration-300 hover:shadow-lg w-full sm:w-auto"
                 aria-label="Book an appointment with our specialists"
               >
                 <span className="flex items-center justify-center">
@@ -253,8 +253,8 @@ export default async function BoneJointSchoolPage({
 
       <main id="topics" className="container mx-auto px-4 py-12 md:py-16">
         <div className="mb-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Orthopedic Education Library</h2>
-          <p className="text-gray-600 max-w-3xl">
+          <h2 className="text-2xl md:text-3xl font-bold text-soi-navy-800 mb-4">Orthopedic Education Library</h2>
+          <p className="text-soi-navy-600 max-w-3xl">
             Learn about orthopedic conditions, treatments, recovery, and prevention strategies through our comprehensive educational resources.
           </p>
         </div>
@@ -265,7 +265,7 @@ export default async function BoneJointSchoolPage({
           baseUrl="/bone-joint-school"
         />
         
-        <p className="text-sm text-gray-500 mb-6">
+        <p className="text-sm text-soi-navy-500 mb-6">
           Showing {paginatedTopics.length} of {filteredTopics.length} topics
           {categoryParam ? ` in "${categoryParam}"` : ''}
         </p>
@@ -284,15 +284,15 @@ export default async function BoneJointSchoolPage({
             ))}
           </div>
         ) : (
-          <div className="bg-white rounded-lg p-8 text-center shadow-sm">
-            <h3 className="text-xl font-medium text-gray-900 mb-2">No topics found</h3>
-            <p className="text-gray-600">
+          <div className="bg-white rounded-lg p-8 text-center shadow-sm border border-soi-mint-200">
+            <h3 className="text-xl font-medium text-soi-navy-800 mb-2">No topics found</h3>
+            <p className="text-soi-navy-600">
               {categoryParam 
                 ? `No topics found in the "${categoryParam}" category.`
                 : 'No topics found in the database.'}
             </p>
             {categoryParam && (
-              <Link href="/bone-joint-school" className="mt-4 inline-block text-[#8B5C9E] hover:underline">
+              <Link href="/bone-joint-school" className="mt-4 inline-block text-soi-purple-600 hover:text-soi-purple-700 hover:underline">
                 View all topics
               </Link>
             )}

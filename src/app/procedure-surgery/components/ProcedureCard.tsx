@@ -32,17 +32,17 @@ export const ProcedureCard = ({
   const fallbackSrc = '/images/default-procedure.jpg';
   const href = `/procedure-surgery/${slug}`;
   
-  // Generate a pastel color based on categoryId for the category badge
+  // Generate SOI color based on categoryId for the category badge
   const getCategoryColor = (id: string) => {
     const colors = [
-      'bg-blue-100 text-blue-800',
-      'bg-green-100 text-green-800',
-      'bg-yellow-100 text-yellow-800',
-      'bg-red-100 text-red-800',
-      'bg-purple-100 text-purple-800',
-      'bg-indigo-100 text-indigo-800',
-      'bg-pink-100 text-pink-800',
-      'bg-teal-100 text-teal-800'
+      'bg-soi-navy-100 text-soi-navy-800',
+      'bg-soi-purple-100 text-soi-purple-800',
+      'bg-soi-pink-100 text-soi-pink-800',
+      'bg-soi-mint-100 text-soi-mint-800',
+      'bg-soi-navy-50 text-soi-navy-700',
+      'bg-soi-purple-50 text-soi-purple-700',
+      'bg-soi-pink-50 text-soi-pink-700',
+      'bg-soi-mint-50 text-soi-mint-700'
     ];
     
     // Simple hash function to get consistent color for same category
@@ -54,7 +54,7 @@ export const ProcedureCard = ({
 
   return (
     <Link href={href} className="block h-full">
-      <div className="group relative flex flex-col bg-white rounded-xl hover:translate-y-[-4px] transition-all duration-300 overflow-hidden h-full transform shadow-[0_4px_8px_rgba(0,0,0,0.07)] hover:shadow-[0_8px_16px_rgba(0,0,0,0.1)] cursor-pointer">
+      <div className="group relative flex flex-col bg-white rounded-xl hover:translate-y-[-4px] transition-all duration-300 overflow-hidden h-full transform shadow-[0_4px_8px_rgba(0,0,0,0.07)] hover:shadow-[0_8px_16px_rgba(0,0,0,0.1)] cursor-pointer border border-soi-purple-200 hover:border-soi-purple-400">
         {/* Image Container */}
         <div className="relative w-full h-48 overflow-hidden bg-gray-100">
           <Image 
@@ -75,26 +75,26 @@ export const ProcedureCard = ({
         
         {/* Content Container */}
         <div className="flex-grow p-5 flex flex-col">
-          <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-[#8B5C9E] transition-colors">
+          <h3 className="text-xl font-semibold text-soi-navy-800 mb-2 group-hover:text-soi-purple-600 transition-colors">
             {title}
           </h3>
           
-          <p className="text-gray-600 text-sm mb-4 line-clamp-3 flex-grow">
+          <p className="text-soi-navy-600 text-sm mb-4 line-clamp-3 flex-grow">
             {summary}
           </p>
           
           {/* Procedure Details */}
-          <div className="flex flex-wrap gap-3 mb-4 text-sm text-gray-500">
+          <div className="flex flex-wrap gap-3 mb-4 text-sm text-soi-navy-500">
             {procedureTime && (
               <div className="flex items-center">
-                <Clock className="w-4 h-4 mr-1 text-[#8B5C9E]" />
+                <Clock className="w-4 h-4 mr-1 text-soi-purple-500" />
                 <span>{procedureTime}</span>
               </div>
             )}
             
             {recoveryPeriod && (
               <div className="flex items-center">
-                <Calendar className="w-4 h-4 mr-1 text-[#8B5C9E]" />
+                <Calendar className="w-4 h-4 mr-1 text-soi-purple-500" />
                 <span>{recoveryPeriod}</span>
               </div>
             )}
@@ -108,7 +108,7 @@ export const ProcedureCard = ({
           </div>
           
           {/* Visual Indicator */}
-          <div className="inline-flex items-center text-[#8B5C9E] font-medium text-sm mt-auto">
+          <div className="inline-flex items-center text-soi-purple-600 font-medium text-sm mt-auto">
             Learn More
             <ArrowRight className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" />
           </div>

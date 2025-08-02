@@ -56,6 +56,61 @@ module.exports = {
   				'3': 'hsl(var(--chart-3))',
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
+  			},
+  			// SOI Brand Color System
+  			'soi': {
+  				navy: {
+  					50: '#f0f4f8',
+  					100: '#d9e6f2', 
+  					200: '#b3cce5',
+  					300: '#8db3d8',
+  					400: '#6799cb',
+  					500: '#4180be',
+  					600: '#356691',
+  					700: '#2a4d6b',
+  					800: '#1e3a5f',  // PRIMARY SOI NAVY
+  					900: '#162d47',
+  					950: '#0f1f33'
+  				},
+  				purple: {
+  					50: '#f7f4f9',
+  					100: '#ede6f0',
+  					200: '#dbd0e1',
+  					300: '#c3b1cc',
+  					400: '#a68bb3',
+  					500: '#8B5C9E',  // PRIMARY SOI PURPLE
+  					600: '#7a4f8c',
+  					700: '#684274',
+  					800: '#563760',
+  					900: '#472f50',
+  					950: '#2d1e32'
+  				},
+  				pink: {
+  					50: '#faf7f8',
+  					100: '#f4ecf1',
+  					200: '#ead9e3',
+  					300: '#dbc0cd',
+  					400: '#c79db0',
+  					500: '#d4a5b8',  // PRIMARY SOI PINK
+  					600: '#b88ca0',
+  					700: '#9d7487',
+  					800: '#836071',
+  					900: '#6d505e',
+  					950: '#422f37'
+  				},
+  				mint: {
+  					50: '#f4f8f4',
+  					100: '#e6f2e6',
+  					200: '#cde5cd',
+  					300: '#a8d1a8',
+  					400: '#7db87d',
+  					500: '#a8c4a2',  // PRIMARY SOI MINT
+  					600: '#8fb089',
+  					700: '#769670',
+  					800: '#5f7a5f',
+  					900: '#4f644f',
+  					950: '#2a362a'
+  				}
   			}
   		},
   		borderRadius: {
@@ -126,6 +181,31 @@ module.exports = {
   				'100%': {
   					transform: 'translateY(0)'
   				}
+  			},
+  			// SOI Brand Animation Enhancements
+  			'float-slow': {
+  				'0%, 100%': {
+  					transform: 'translateY(0px) rotate(0deg)'
+  				},
+  				'50%': {
+  					transform: 'translateY(-20px) rotate(5deg)'
+  				}
+  			},
+  			'float-medium': {
+  				'0%, 100%': {
+  					transform: 'translateY(0px) rotate(0deg)'
+  				},
+  				'50%': {
+  					transform: 'translateY(-15px) rotate(-3deg)'
+  				}
+  			},
+  			'float-fast': {
+  				'0%, 100%': {
+  					transform: 'translateY(0px) rotate(0deg)'
+  				},
+  				'50%': {
+  					transform: 'translateY(-10px) rotate(2deg)'
+  				}
   			}
   		},
   		animation: {
@@ -136,7 +216,11 @@ module.exports = {
   			'pulse-soft': 'pulse-soft 2s ease-in-out infinite',
   			'scale-in': 'scale-in 0.2s ease-out',
   			'slide-up': 'slide-up 0.3s ease-out',
-  			'slide-down': 'slide-down 0.3s ease-out'
+  			'slide-down': 'slide-down 0.3s ease-out',
+  			// SOI Brand Animations
+  			'float-slow': 'float-slow 6s ease-in-out infinite',
+  			'float-medium': 'float-medium 4s ease-in-out infinite',
+  			'float-fast': 'float-fast 3s ease-in-out infinite'
   		}
   	}
   },

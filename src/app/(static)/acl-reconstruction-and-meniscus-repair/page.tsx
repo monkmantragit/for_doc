@@ -13,14 +13,14 @@ import { StaticImageData } from "next/image";
 import CallToAction from '@/components/CallToAction';
 import Breadcrumbs from '@/components/Breadcrumbs';
 
-// Use common brand colors
+// SOI Brand Colors - Medical Authority Theme
 const brandColors = {
-  primary: '#2E3A59', 
-  accent: '#8B5C9E',  
-  text: '#333333',    
-  lightText: '#555555', 
-  background: '#FFFFFF',
-  lightGray: '#F7FAFC', 
+  primary: '#1e3a5f',    // SOI Navy - Medical Authority
+  accent: '#8B5C9E',     // SOI Purple - Medical Expertise  
+  text: '#1e3a5f',       // SOI Navy - Professional Text
+  lightText: '#2a4d6b',  // SOI Navy 700 - Readable Content
+  background: '#FFFFFF', // Clean White
+  lightGray: '#f0f4f8',  // SOI Navy 50 - Light Background
 };
 
 // Metadata for the page
@@ -627,10 +627,10 @@ const ACLReconstructionAndMeniscusRepairPage = () => {
       {/* Breadcrumbs can be rendered here if desired */}
       {/* <Breadcrumbs items={breadcrumbsData} /> */}
 
-      <main className="container mx-auto px-4 py-8 sm:py-12" style={{ color: brandColors.text, backgroundColor: brandColors.background }}>
+      <main className="container mx-auto px-4 py-8 sm:py-12 bg-tint-authority" style={{ color: brandColors.text }}>
         
         {/* Hero Image */}
-        <div className="mb-8 sm:mb-12 md:mb-16 relative w-full aspect-[16/9] rounded-lg overflow-hidden shadow-lg">
+        <div className="mb-8 sm:mb-12 md:mb-16 relative w-full aspect-[16/9] rounded-lg overflow-hidden shadow-lg border border-soi-navy-200">
           <Image 
             src="https://73n.0c8.myftpupload.com/wp-content/uploads/2025/04/New-Project-2.jpg" 
             alt="ACL reconstruction and meniscus repair" 
@@ -652,7 +652,7 @@ const ACLReconstructionAndMeniscusRepairPage = () => {
 
         {/* FAQ Section - using the standard accordion approach */}
         {faqs && faqs.length > 0 && (
-          <section className="mt-12 sm:mt-16 py-8" style={{ backgroundColor: brandColors.lightGray }}>
+          <section className="mt-12 sm:mt-16 py-8 bg-white border border-soi-navy-200 rounded-lg">
             <div className="container mx-auto px-4">
               <h2 className="text-2xl sm:text-3xl font-semibold mb-6 sm:mb-8 text-center" style={{ color: brandColors.primary }}>
                 Frequently Asked Questions

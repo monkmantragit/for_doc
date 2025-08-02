@@ -92,8 +92,8 @@ export const CategoryFilter = ({
   const getCategoryColor = (category: CategoryItem) => {
     if (category.color) return category.color;
 
-    // Use brand color shades for consistency
-    return 'from-[#8B5C9E] to-[#A174B5]';
+    // Use SOI purple expertise colors for consistency
+    return 'from-soi-purple-500 to-soi-purple-600';
   };
 
   const handleMobileCategoryChange = (categoryId: string | null) => {
@@ -113,11 +113,11 @@ export const CategoryFilter = ({
       <div className="md:hidden relative">
         <button
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          className="w-full flex items-center justify-between px-4 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors duration-200 font-medium"
+          className="w-full flex items-center justify-between px-4 py-3 bg-white hover:bg-soi-purple-50 text-soi-navy-700 rounded-lg transition-colors duration-200 font-medium border border-soi-purple-200"
         >
           <span>{getActiveCategoryName()}</span>
           <ChevronDown 
-            className={`w-5 h-5 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`}
+            className={`w-5 h-5 transition-transform duration-200 text-soi-purple-500 ${isDropdownOpen ? 'rotate-180' : ''}`}
           />
         </button>
         <AnimatePresence>
@@ -127,11 +127,11 @@ export const CategoryFilter = ({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
-              className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg shadow-lg z-20 border border-gray-100 overflow-hidden"
+              className="absolute top-full left-0 right-0 mt-1 bg-white rounded-lg shadow-lg z-20 border border-soi-purple-200 overflow-hidden"
             >
               <button
                 onClick={() => handleMobileCategoryChange(null)}
-                className={`block w-full text-left px-4 py-3 transition-colors duration-150 ${activeCategory === null ? 'bg-[#8B5C9E] text-white font-semibold' : 'text-gray-700 hover:bg-gray-100'}`}
+                className={`block w-full text-left px-4 py-3 transition-colors duration-150 ${activeCategory === null ? 'bg-soi-purple-500 text-white font-semibold' : 'text-soi-navy-700 hover:bg-soi-purple-50'}`}
               >
                 All Procedures
               </button>
@@ -139,7 +139,7 @@ export const CategoryFilter = ({
                 <button
                   key={category.id}
                   onClick={() => handleMobileCategoryChange(category.id)}
-                  className={`block w-full text-left px-4 py-3 transition-colors duration-150 ${activeCategory === category.id ? 'bg-[#8B5C9E] text-white font-semibold' : 'text-gray-700 hover:bg-gray-100'}`}
+                  className={`block w-full text-left px-4 py-3 transition-colors duration-150 ${activeCategory === category.id ? 'bg-soi-purple-500 text-white font-semibold' : 'text-soi-navy-700 hover:bg-soi-purple-50'}`}
                 >
                   {category.name}
                   {category.count > 0 && (
@@ -158,10 +158,10 @@ export const CategoryFilter = ({
         {showLeftArrow && (
           <button 
             onClick={() => scroll('left')}
-            className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full shadow-md p-2 hover:bg-gray-50 transition-colors"
+            className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full shadow-md p-2 hover:bg-soi-purple-50 transition-colors border border-soi-purple-200"
             aria-label="Scroll left"
           >
-            <ChevronLeft className="h-6 w-6 text-gray-600" />
+            <ChevronLeft className="h-6 w-6 text-soi-purple-600" />
           </button>
         )}
 
@@ -176,8 +176,8 @@ export const CategoryFilter = ({
             onClick={() => handleCategoryChange(null)}
             className={`flex-shrink-0 px-5 py-2.5 rounded-full transition-all duration-200 whitespace-nowrap ${
               activeCategory === null 
-                ? 'bg-gradient-to-r from-[#8B5C9E] to-[#A174B5] text-white shadow-md font-semibold'
-                : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                ? 'bg-gradient-to-r from-soi-purple-500 to-soi-purple-600 text-white shadow-md font-semibold'
+                : 'bg-white hover:bg-soi-purple-50 text-soi-navy-700 border border-soi-purple-200'
             }`}
           >
             All Procedures
@@ -191,7 +191,7 @@ export const CategoryFilter = ({
               className={`flex-shrink-0 px-5 py-2.5 rounded-full transition-all duration-200 whitespace-nowrap ${
                 activeCategory === category.id
                   ? `bg-gradient-to-r ${getCategoryColor(category)} text-white shadow-md font-semibold`
-                  : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                  : 'bg-white hover:bg-soi-purple-50 text-soi-navy-700 border border-soi-purple-200'
               }`}
             >
               {category.name}
@@ -208,10 +208,10 @@ export const CategoryFilter = ({
         {showRightArrow && (
           <button 
             onClick={() => scroll('right')}
-            className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full shadow-md p-2 hover:bg-gray-50 transition-colors"
+            className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full shadow-md p-2 hover:bg-soi-purple-50 transition-colors border border-soi-purple-200"
             aria-label="Scroll right"
           >
-            <ChevronRight className="h-6 w-6 text-gray-600" />
+            <ChevronRight className="h-6 w-6 text-soi-purple-600" />
           </button>
         )}
       </div>
