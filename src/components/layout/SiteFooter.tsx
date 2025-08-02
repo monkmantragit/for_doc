@@ -20,7 +20,7 @@ export default function SiteFooter(/*{ onBookAppointmentClick }: SiteFooterProps
   // };
 
   return (
-    <footer className="bg-gray-100 pt-16 pb-8">
+    <footer className="bg-soi-navy-700 text-white pt-16 pb-8">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           {/* Google Map */}
@@ -40,9 +40,9 @@ export default function SiteFooter(/*{ onBookAppointmentClick }: SiteFooterProps
 
           {/* Useful Links */}
           <div className="space-y-6">
-            <h3 className="text-xl font-bold text-gray-900 mb-6 relative inline-block">
+            <h3 className="text-xl font-bold text-white mb-6 relative inline-block">
               Useful Links
-              <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-[#8B5C9E] to-transparent"></div>
+              <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-soi-mint-400 to-transparent"></div>
             </h3>
             <ul className="space-y-4">
               {[
@@ -60,9 +60,9 @@ export default function SiteFooter(/*{ onBookAppointmentClick }: SiteFooterProps
                 <li key={link.name}>
                   <Link 
                     href={link.href}
-                    className="text-gray-700 hover:text-[#8B5C9E] transition-colors duration-300 flex items-center"
+                    className="text-gray-300 hover:text-soi-mint-400 transition-colors duration-300 flex items-center"
                   >
-                    <ArrowRight className="w-4 h-4 mr-2 text-[#8B5C9E]" />
+                    <ArrowRight className="w-4 h-4 mr-2 text-soi-mint-400" />
                     {link.name}
                   </Link>
                 </li>
@@ -72,57 +72,57 @@ export default function SiteFooter(/*{ onBookAppointmentClick }: SiteFooterProps
 
           {/* Contact */}
           <div className="space-y-6">
-            <h3 className="text-xl font-bold text-gray-900 mb-6 relative inline-block">
+            <h3 className="text-xl font-bold text-white mb-6 relative inline-block">
               Contact
-              <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-[#8B5C9E] to-transparent"></div>
+              <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-soi-mint-400 to-transparent"></div>
             </h3>
             <div className="space-y-5">
               <div className="flex items-start">
-                <MapPin className="w-5 h-5 text-[#8B5C9E] mr-3 mt-1 flex-shrink-0" />
-                <p className="text-gray-700">
+                <MapPin className="w-5 h-5 text-soi-mint-400 mr-3 mt-1 flex-shrink-0" />
+                <p className="text-gray-300">
                   1084, 2nd Floor, Shirish Foundation, 14th Main, 18th Cross, Sector 3, HSR Layout, Bengaluru - 560102
                 </p>
               </div>
               <div className="space-y-2">
                 <div className="flex items-center">
-                  <Phone className="w-5 h-5 text-[#8B5C9E] mr-3 flex-shrink-0" />
-                  <a href="tel:+916364538660" className="text-gray-700 hover:text-[#8B5C9E] transition-colors duration-300">
+                  <Phone className="w-5 h-5 text-soi-mint-400 mr-3 flex-shrink-0" />
+                  <a href="tel:+916364538660" className="text-gray-300 hover:text-soi-mint-400 transition-colors duration-300">
                     +91 6364538660
                   </a>
                 </div>
                 <div className="flex items-center">
                   <Phone className="w-5 h-5 text-transparent mr-3 flex-shrink-0" />{/* Spacer */}
-                  <a href="tel:+919008520831" className="text-gray-700 hover:text-[#8B5C9E] transition-colors duration-300">
+                  <a href="tel:+919008520831" className="text-gray-300 hover:text-soi-mint-400 transition-colors duration-300">
                     +91 9008520831
                   </a>
                 </div>
                 <div className="flex items-center">
                   <Phone className="w-5 h-5 text-transparent mr-3 flex-shrink-0" />{/* Spacer */}
-                  <a href="tel:+918041276853" className="text-gray-700 hover:text-[#8B5C9E] transition-colors duration-300">
+                  <a href="tel:+918041276853" className="text-gray-300 hover:text-soi-mint-400 transition-colors duration-300">
                     +91 80 41276853
                   </a>
                 </div>
               </div>
               <div className="flex items-center">
-                <Mail className="w-5 h-5 text-[#8B5C9E] mr-3 flex-shrink-0" />
-                <a href="mailto:sportsorthopedics.in@gmail.com" className="text-gray-700 hover:text-[#8B5C9E] transition-colors duration-300">
+                <Mail className="w-5 h-5 text-soi-mint-400 mr-3 flex-shrink-0" />
+                <a href="mailto:sportsorthopedics.in@gmail.com" className="text-gray-300 hover:text-soi-mint-400 transition-colors duration-300">
                   sportsorthopedics.in@gmail.com
                 </a>
               </div>
               
               {/* Social Media Links */}
               <div className="flex space-x-4 pt-4">
-                <a href="https://www.instagram.com/drnaveenkumarlv" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-10 h-10 rounded-full bg-[#8B5C9E]/10 flex items-center justify-center hover:bg-[#8B5C9E] group transition-colors duration-300">
-                  <Instagram className="w-5 h-5 text-[#8B5C9E] group-hover:text-white transition-colors duration-300" />
+                <a href="https://www.instagram.com/drnaveenkumarlv" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-10 h-10 rounded-full bg-soi-navy-600 flex items-center justify-center hover:bg-soi-mint-500 group transition-colors duration-300">
+                  <Instagram className="w-5 h-5 text-soi-mint-400 group-hover:text-white transition-colors duration-300" />
                 </a>
-                <a href="https://www.facebook.com/profile.php?id=100064057982646" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="w-10 h-10 rounded-full bg-[#8B5C9E]/10 flex items-center justify-center hover:bg-[#8B5C9E] group transition-colors duration-300">
-                  <Facebook className="w-5 h-5 text-[#8B5C9E] group-hover:text-white transition-colors duration-300" />
+                <a href="https://www.facebook.com/profile.php?id=100064057982646" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="w-10 h-10 rounded-full bg-soi-navy-600 flex items-center justify-center hover:bg-soi-mint-500 group transition-colors duration-300">
+                  <Facebook className="w-5 h-5 text-soi-mint-400 group-hover:text-white transition-colors duration-300" />
                 </a>
-                <a href="https://x.com/Naveen_Lokikere" target="_blank" rel="noopener noreferrer" aria-label="Twitter" className="w-10 h-10 rounded-full bg-[#8B5C9E]/10 flex items-center justify-center hover:bg-[#8B5C9E] group transition-colors duration-300">
-                  <Twitter className="w-5 h-5 text-[#8B5C9E] group-hover:text-white transition-colors duration-300" />
+                <a href="https://x.com/Naveen_Lokikere" target="_blank" rel="noopener noreferrer" aria-label="Twitter" className="w-10 h-10 rounded-full bg-soi-navy-600 flex items-center justify-center hover:bg-soi-mint-500 group transition-colors duration-300">
+                  <Twitter className="w-5 h-5 text-soi-mint-400 group-hover:text-white transition-colors duration-300" />
                 </a>
-                <a href="https://www.linkedin.com/in/dr-naveen-kumar-lv/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="w-10 h-10 rounded-full bg-[#8B5C9E]/10 flex items-center justify-center hover:bg-[#8B5C9E] group transition-colors duration-300">
-                  <Linkedin className="w-5 h-5 text-[#8B5C9E] group-hover:text-white transition-colors duration-300" />
+                <a href="https://www.linkedin.com/in/dr-naveen-kumar-lv/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="w-10 h-10 rounded-full bg-soi-navy-600 flex items-center justify-center hover:bg-soi-mint-500 group transition-colors duration-300">
+                  <Linkedin className="w-5 h-5 text-soi-mint-400 group-hover:text-white transition-colors duration-300" />
                 </a>
               </div>
             </div>
@@ -130,8 +130,8 @@ export default function SiteFooter(/*{ onBookAppointmentClick }: SiteFooterProps
         </div>
         
         {/* Copyright */}
-        <div className="pt-8 border-t border-gray-200 text-center">
-          <p className="text-gray-600 text-sm">
+        <div className="pt-8 border-t border-soi-navy-600 text-center">
+          <p className="text-gray-400 text-sm">
             © 2018-{new Date().getFullYear()} Sports Orthopedics Institute and Research Foundation. All Rights Reserved
           </p>
         </div>

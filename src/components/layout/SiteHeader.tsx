@@ -359,19 +359,12 @@ export default function SiteHeader({ theme = 'default', className = '' }: SiteHe
 
   // Helper function to get text and icon colors based on scroll position
   const getTextColor = (baseScrolled = scrolled) => {
-    // For mobile with transparent theme, quickly switch to brand color on scroll
-    if (isMobile.current && isTransparent) {
-      return scrolled ? 'text-[#8B5C9E]' : 'text-white';
-    }
-    
-    // Desktop can keep more nuanced transitions
+    // With the new dark header, the text should be white unless it's transparent and not scrolled.
     if (isTransparent && !baseScrolled) {
       return 'text-white';
     }
-    if (isTransparent && scrollY < 150) {
-      return scrollY > 100 ? 'text-[#8B5C9E]' : 'text-white';
-    }
-    return 'text-[#8B5C9E]';
+    // All other cases (scrolled, fixed, default theme) will have a dark background.
+    return 'text-white';
   };
 
   // Fallback categories if API data isn't loading
@@ -385,14 +378,14 @@ export default function SiteHeader({ theme = 'default', className = '' }: SiteHe
         className={`w-full z-50 transition-all duration-300 flex items-center ${
           isFixed ? 'fixed top-0 left-0 right-0' : 'absolute top-0 left-0 right-0'
         } ${
-          isTransparent ? 'bg-opacity-var backdrop-blur-var' : 'bg-white'
+          isTransparent ? 'bg-opacity-var backdrop-blur-var' : 'bg-soi-navy-700'
         } ${className}`}
         style={{
           // CSS variables will be set via JS for dynamic opacity and blur
           '--header-bg-opacity': '0',
           '--header-blur': '0px',
           height: scrolled ? 'var(--header-height-scrolled, 72px)' : 'var(--header-height, 88px)',
-          backgroundColor: isTransparent ? `rgba(46, 58, 89, var(--header-bg-opacity))` : '',
+          backgroundColor: isTransparent ? `rgba(42, 77, 107, var(--header-bg-opacity))` : '',
           backdropFilter: isTransparent ? `blur(var(--header-blur))` : '',
           boxShadow: scrolled ? '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)' : 'none'
         } as CSSProperties}
@@ -430,9 +423,9 @@ export default function SiteHeader({ theme = 'default', className = '' }: SiteHe
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center">
               <nav className={`px-8 py-2 rounded-full transition-all duration-300 ${
-                isTransparent && !scrolled 
-                  ? 'bg-white/10 backdrop-blur-sm' 
-                  : scrollY > 50 ? 'bg-white/80 backdrop-blur-sm' : 'bg-gray-50'
+                isTransparent && !scrolled
+                  ? 'bg-white/10 backdrop-blur-sm'
+                  : 'bg-soi-navy-900/50 backdrop-blur-sm'
               }`}>
                 <ul className="flex items-center">
                   {mainNavLinks.map((item) => (
@@ -440,46 +433,46 @@ export default function SiteHeader({ theme = 'default', className = '' }: SiteHe
                       <button
                         onClick={() => handleNavigation(item.href)}
                         className={`font-medium transition-colors duration-300 relative group ${
-                          isTransparent && !scrolled 
-                            ? 'text-white hover:text-white/80' 
-                            : 'text-gray-800 hover:text-[#8B5C9E]'
+                          isTransparent && !scrolled
+                            ? 'text-white hover:text-white/80'
+                            : 'text-gray-200 hover:text-soi-mint-400'
                         } py-2 block`}
                       >
                         {item.name}
                         <span className={`absolute bottom-0 left-0 w-0 h-0.5 ${
-                          isTransparent && !scrolled ? 'bg-white' : 'bg-[#8B5C9E]'
+                          isTransparent && !scrolled ? 'bg-white' : 'bg-soi-mint-400'
                         } group-hover:w-full transition-all duration-300`}></span>
                       </button>
                     </li>
                   ))}
                   
                   {/* Procedures Dropdown */}
-                  <li 
+                  <li
                     className="relative mr-8"
                     onMouseEnter={() => handleMouseEnter('procedures')}
                     onMouseLeave={handleMouseLeave}
                   >
                     <button
                       className={`font-medium transition-colors duration-300 flex items-center group ${
-                        isTransparent && !scrolled 
-                          ? 'text-white hover:text-white/80' 
-                          : 'text-gray-800 hover:text-[#8B5C9E]'
+                        isTransparent && !scrolled
+                          ? 'text-white hover:text-white/80'
+                          : 'text-gray-200 hover:text-soi-mint-400'
                       } py-2`}
                       aria-expanded={activeDropdown === 'procedures'}
                       aria-haspopup="true"
                     >
                       Procedures
                       <span className={`flex items-center justify-center ml-2 w-5 h-5 ${
-                        isTransparent && !scrolled 
-                          ? 'bg-white/20 group-hover:bg-white/30' 
-                          : 'bg-gray-100 group-hover:bg-[#8B5C9E]/10'
+                        isTransparent && !scrolled
+                          ? 'bg-white/20 group-hover:bg-white/30'
+                          : 'bg-soi-navy-600 group-hover:bg-soi-navy-500'
                       } rounded-full transition-all duration-150 ${activeDropdown === 'procedures' ? 'rotate-180' : ''}`}>
                         <ChevronDown className={`w-3.5 h-3.5 ${
-                          isTransparent && !scrolled ? 'text-white' : 'text-[#8B5C9E]'
+                          isTransparent && !scrolled ? 'text-white' : 'text-soi-mint-400'
                         }`} />
                       </span>
                       <span className={`absolute bottom-0 left-0 w-0 h-0.5 ${
-                        isTransparent && !scrolled ? 'bg-white' : 'bg-[#8B5C9E]'
+                        isTransparent && !scrolled ? 'bg-white' : 'bg-soi-mint-400'
                       } group-hover:w-full transition-all duration-300`}></span>
                     </button>
                     
@@ -591,15 +584,15 @@ export default function SiteHeader({ theme = 'default', className = '' }: SiteHe
                   </li>
                   
                   {/* Bone Joint School Dropdown */}
-                  <div 
+                  <div
                     className="relative group"
                     onMouseEnter={() => handleMouseEnter('education')}
                     onMouseLeave={handleMouseLeave}
                   >
                     <button className={`inline-flex items-center gap-1 px-4 py-2 text-sm font-medium transition-colors ${
-                      isTransparent && !scrolled 
-                        ? 'text-white hover:text-white/80' 
-                        : 'text-gray-800 hover:text-[#8B5C9E]'
+                      isTransparent && !scrolled
+                        ? 'text-white hover:text-white/80'
+                        : 'text-gray-200 hover:text-soi-mint-400'
                     }`}>
                       Bone Joint School
                       <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${
@@ -691,32 +684,32 @@ export default function SiteHeader({ theme = 'default', className = '' }: SiteHe
                   </div>
                   
                   {/* Resources Dropdown - Using hover with delay */}
-                  <li 
+                  <li
                     className="relative mr-8"
                     onMouseEnter={() => handleMouseEnter('resources')}
                     onMouseLeave={handleMouseLeave}
                   >
                     <button
                       className={`font-medium transition-colors duration-300 flex items-center group ${
-                        isTransparent && !scrolled 
-                          ? 'text-white hover:text-white/80' 
-                          : 'text-gray-800 hover:text-[#8B5C9E]'
+                        isTransparent && !scrolled
+                          ? 'text-white hover:text-white/80'
+                          : 'text-gray-200 hover:text-soi-mint-400'
                       } py-2`}
                       aria-expanded={activeDropdown === 'resources'}
                       aria-haspopup="true"
                     >
                       Resources
                       <span className={`flex items-center justify-center ml-2 w-5 h-5 ${
-                        isTransparent && !scrolled 
-                          ? 'bg-white/20 group-hover:bg-white/30' 
-                          : 'bg-gray-100 group-hover:bg-[#8B5C9E]/10'
+                        isTransparent && !scrolled
+                          ? 'bg-white/20 group-hover:bg-white/30'
+                          : 'bg-soi-navy-600 group-hover:bg-soi-navy-500'
                       } rounded-full transition-all duration-150 ${activeDropdown === 'resources' ? 'rotate-180' : ''}`}>
                         <ChevronDown className={`w-3.5 h-3.5 ${
-                          isTransparent && !scrolled ? 'text-white' : 'text-[#8B5C9E]'
+                          isTransparent && !scrolled ? 'text-white' : 'text-soi-mint-400'
                         }`} />
                       </span>
                       <span className={`absolute bottom-0 left-0 w-0 h-0.5 ${
-                        isTransparent && !scrolled ? 'bg-white' : 'bg-[#8B5C9E]'
+                        isTransparent && !scrolled ? 'bg-white' : 'bg-soi-mint-400'
                       } group-hover:w-full transition-all duration-300`}></span>
                     </button>
                     
@@ -742,32 +735,32 @@ export default function SiteHeader({ theme = 'default', className = '' }: SiteHe
                   </li>
                   
                   {/* Media Dropdown - Using hover with delay */}
-                  <li 
+                  <li
                     className="relative"
                     onMouseEnter={() => handleMouseEnter('media')}
                     onMouseLeave={handleMouseLeave}
                   >
                     <button
                       className={`font-medium transition-colors duration-300 flex items-center group ${
-                        isTransparent && !scrolled 
-                          ? 'text-white hover:text-white/80' 
-                          : 'text-gray-800 hover:text-[#8B5C9E]'
+                        isTransparent && !scrolled
+                          ? 'text-white hover:text-white/80'
+                          : 'text-gray-200 hover:text-soi-mint-400'
                       } py-2`}
                       aria-expanded={activeDropdown === 'media'}
                       aria-haspopup="true"
                     >
                       Media
                       <span className={`flex items-center justify-center ml-2 w-5 h-5 ${
-                        isTransparent && !scrolled 
-                          ? 'bg-white/20 group-hover:bg-white/30' 
-                          : 'bg-gray-100 group-hover:bg-[#8B5C9E]/10'
+                        isTransparent && !scrolled
+                          ? 'bg-white/20 group-hover:bg-white/30'
+                          : 'bg-soi-navy-600 group-hover:bg-soi-navy-500'
                       } rounded-full transition-all duration-150 ${activeDropdown === 'media' ? 'rotate-180' : ''}`}>
                         <ChevronDown className={`w-3.5 h-3.5 ${
-                          isTransparent && !scrolled ? 'text-white' : 'text-[#8B5C9E]'
+                          isTransparent && !scrolled ? 'text-white' : 'text-soi-mint-400'
                         }`} />
                       </span>
                       <span className={`absolute bottom-0 left-0 w-0 h-0.5 ${
-                        isTransparent && !scrolled ? 'bg-white' : 'bg-[#8B5C9E]'
+                        isTransparent && !scrolled ? 'bg-white' : 'bg-soi-mint-400'
                       } group-hover:w-full transition-all duration-300`}></span>
                     </button>
                     
@@ -821,17 +814,17 @@ export default function SiteHeader({ theme = 'default', className = '' }: SiteHe
               />
               
               {/* Mobile Menu Button - with consistent styling */}
-              <button 
+              <button
                 className={`p-2 rounded-full transition-colors duration-300 ${
                   isTransparent && !scrolled
                     ? 'bg-white/20 hover:bg-white/30'
-                    : 'bg-gray-100 hover:bg-gray-200'
+                    : 'bg-soi-navy-600 hover:bg-soi-navy-500'
                 }`}
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
               >
                 <Menu className={`transition-colors duration-300 ${
-                  isTransparent && !scrolled ? 'text-white' : 'text-[#8B5C9E]'
+                  isTransparent && !scrolled ? 'text-white' : 'text-soi-mint-400'
                 }`} size={20} />
               </button>
             </div>
