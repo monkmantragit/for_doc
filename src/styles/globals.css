@@ -208,4 +208,31 @@ h2, h3, h4 {
       transform: rotate(360deg);
     }
   }
+
+  /* Infinite scroll animation for affiliations slider */
+  .animate-infinite-scroll {
+    animation: infiniteScroll linear infinite;
+  }
+  
+  @keyframes infiniteScroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  
+  /* Animation pause utility */
+  .animation-paused {
+    animation-play-state: paused !important;
+  }
+
+  /* Line clamp utilities for logo names */
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
 }

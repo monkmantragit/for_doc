@@ -12,6 +12,7 @@ import SiteFooter from '@/components/layout/SiteFooter';
 import { cn } from '@/lib/utils';
 import { Metadata } from 'next';
 import HeroSection from '@/components/ui/HeroSection';
+import AffiliationsSlider from '@/components/ui/AffiliationsSlider';
 import { AnimatePresence } from 'framer-motion';
 
 const specialties = [
@@ -603,52 +604,94 @@ export default function HomePage() {
       </section>
 
       {/* Affiliations & Partnerships Section */}
-      <section id="affiliations" className="py-24 bg-tint-authority">
-        <div className="container mx-auto px-4">
+      <section id="affiliations" className="py-24 bg-tint-authority relative overflow-hidden">
+        {/* Enhanced Background Elements */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-3" />
+          <div className="absolute top-0 right-0 w-1/4 h-1/2 bg-gradient-to-bl from-soi-navy-500/5 to-transparent blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-1/3 h-1/2 bg-gradient-to-tr from-soi-purple-500/5 to-transparent blur-3xl" />
+          {/* Floating accent elements */}
+          <div className="absolute top-1/3 left-1/5 w-3 h-3 rounded-full bg-soi-mint-500/15 animate-float-slow" />
+          <div className="absolute bottom-1/3 right-1/4 w-2 h-2 rounded-full bg-soi-pink-500/20 animate-float-medium" />
+        </div>
+
+        <div className="container mx-auto px-4 relative">
            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className="text-center mb-16"
+              className="text-center mb-16 relative"
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-soi-navy-800 mb-4">
-                Affiliations & Partnerships
+              {/* Enhanced section badge */}
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                whileInView={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="inline-block mb-6 relative"
+              >
+                <div className="absolute inset-0 bg-soi-navy-500/10 blur-xl animate-pulse" />
+                <span className="relative bg-soi-navy-100 text-soi-navy-700 px-6 py-3 rounded-full text-sm font-medium border border-soi-navy-200 backdrop-blur-sm shadow-lg">
+                  Professional Associations
+                </span>
+              </motion.div>
+
+              <h2 className="text-3xl md:text-5xl font-bold text-soi-navy-800 mb-6 relative">
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-soi-navy-800 via-soi-purple-600 to-soi-navy-700">
+                  Affiliations & Partnerships
+                </span>
+                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 w-16 h-16 bg-soi-purple-500/5 rounded-full blur-2xl animate-pulse" />
               </h2>
-              <p className="text-xl text-soi-navy-600 max-w-2xl mx-auto">
-                Proudly associated with leading institutions and organizations.
+              <p className="text-xl text-soi-navy-600 max-w-3xl mx-auto leading-relaxed">
+                Proudly associated with leading medical institutions, universities, and professional organizations worldwide.
               </p>
+              {/* Decorative line */}
+              <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-gradient-to-r from-transparent via-soi-navy-400 to-transparent" />
             </motion.div>
             
+            {/* Premium Logo Slider */}
             <motion.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
               viewport={{ once: true }}
-              className="space-y-12"
+              className="relative"
             >
-              {/* Using local image paths for logos */}
-               <div className="flex justify-center items-center bg-gray-50 p-8 rounded-lg shadow-sm">
-                 <div style={{position: 'relative', width: '852px', height: '174px', maxWidth: '100%'}}>
-                   <Image
-                      src="/images/orthopedics/alma-mater-logos.webp"
-                      alt="Alma Mater Logos"
-                      fill
-                      className="object-contain"
-                   />
-                 </div>
-               </div>
-                <div className="flex justify-center items-center bg-gray-50 p-8 rounded-lg shadow-sm">
-                  <div style={{position: 'relative', width: '833px', height: '166px', maxWidth: '100%'}}>
-                    <Image
-                      src="/images/orthopedics/affiliation-logos.webp"
-                      alt="Affiliation Logos"
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-                </div>
-             </motion.div>
+              {/* Subtle decorative frame */}
+              <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-soi-purple-500/5 via-transparent to-soi-mint-500/5 p-px">
+                <div className="h-full w-full rounded-3xl bg-tint-authority" />
+              </div>
+              
+              {/* Enhanced container with glassmorphic styling */}
+              <div className="relative bg-white/10 backdrop-blur-md rounded-3xl border border-white/20 shadow-2xl p-4 md:p-8 overflow-hidden">
+                {/* Subtle inner glow */}
+                <div className="absolute inset-0 bg-gradient-to-r from-soi-navy-500/5 via-transparent to-soi-purple-500/5 rounded-3xl" />
+                
+                <AffiliationsSlider 
+                  speed="slow"
+                  pauseOnHover={true}
+                  showNames={true}
+                  variant="glassmorphic"
+                  className="relative z-10"
+                />
+                
+                {/* Bottom accent line */}
+                <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1/3 h-px bg-gradient-to-r from-transparent via-soi-purple-400/40 to-transparent" />
+              </div>
+            </motion.div>
+            
+            {/* Optional: Trust statement below slider */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              viewport={{ once: true }}
+              className="text-center mt-12"
+            >
+              <p className="text-sm text-soi-navy-600/80 italic max-w-2xl mx-auto">
+                Our partnerships with globally renowned institutions ensure we deliver world-class orthopedic care backed by the latest medical research and educational excellence.
+              </p>
+            </motion.div>
         </div>
       </section>
 
