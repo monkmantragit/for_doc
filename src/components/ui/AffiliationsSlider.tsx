@@ -123,8 +123,6 @@ const AffiliationsSlider = ({
     <div 
       className={cn(
         "w-full overflow-hidden relative",
-        "before:absolute before:left-0 before:top-0 before:z-10 before:h-full before:w-24 before:bg-gradient-to-r before:from-tint-authority before:to-transparent before:content-['']",
-        "after:absolute after:right-0 after:top-0 after:z-10 after:h-full after:w-24 after:bg-gradient-to-l after:from-tint-authority after:to-transparent after:content-['']",
         className
       )}
       onMouseEnter={handleMouseEnter}
@@ -161,17 +159,18 @@ const AffiliationsSlider = ({
               "hover:scale-105 hover:z-20",
               variant === 'glassmorphic' 
                 ? "bg-white/80 backdrop-blur-md border border-white/20 rounded-2xl p-6 shadow-lg hover:shadow-2xl hover:bg-white/90" 
-                : "bg-white rounded-xl p-4 shadow-md hover:shadow-lg",
-              "w-32 h-32 md:w-40 md:h-40 flex flex-col items-center justify-center",
-              "hover:border-soi-purple-500/30 hover:shadow-soi-purple-500/10"
+                : "bg-white/90 rounded-xl p-4 hover:bg-white transition-colors duration-300",
+              "w-32 h-32 md:w-40 md:h-40 flex flex-col items-center justify-center"
             )}
             style={{
               minWidth: '8rem',
               minHeight: '8rem'
             }}
           >
-            {/* Glow effect on hover */}
-            <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-soi-purple-500/0 via-soi-mint-500/0 to-soi-pink-500/0 group-hover:from-soi-purple-500/10 group-hover:via-soi-mint-500/5 group-hover:to-soi-pink-500/10 transition-all duration-500" />
+            {/* Subtle glow effect on hover - only for glassmorphic variant */}
+            {variant === 'glassmorphic' && (
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-soi-purple-500/0 via-soi-mint-500/0 to-soi-pink-500/0 group-hover:from-soi-purple-500/10 group-hover:via-soi-mint-500/5 group-hover:to-soi-pink-500/10 transition-all duration-500" />
+            )}
             
             {/* Image container */}
             <div className="relative w-20 h-20 md:w-24 md:h-24 flex items-center justify-center">
@@ -198,12 +197,17 @@ const AffiliationsSlider = ({
               </div>
             )}
             
-            {/* Hover border animation */}
-            <div className="absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-soi-purple-500/20 transition-all duration-300" />
-            
-            {/* Corner accents */}
-            <div className="absolute top-2 left-2 w-3 h-3 border-l-2 border-t-2 border-soi-mint-500/0 group-hover:border-soi-mint-500/40 transition-all duration-300 rounded-tl-lg" />
-            <div className="absolute bottom-2 right-2 w-3 h-3 border-r-2 border-b-2 border-soi-pink-500/0 group-hover:border-soi-pink-500/40 transition-all duration-300 rounded-br-lg" />
+            {/* Hover effects - only for glassmorphic variant */}
+            {variant === 'glassmorphic' && (
+              <>
+                {/* Hover border animation */}
+                <div className="absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-soi-purple-500/20 transition-all duration-300" />
+                
+                {/* Corner accents */}
+                <div className="absolute top-2 left-2 w-3 h-3 border-l-2 border-t-2 border-soi-mint-500/0 group-hover:border-soi-mint-500/40 transition-all duration-300 rounded-tl-lg" />
+                <div className="absolute bottom-2 right-2 w-3 h-3 border-r-2 border-b-2 border-soi-pink-500/0 group-hover:border-soi-pink-500/40 transition-all duration-300 rounded-br-lg" />
+              </>
+            )}
           </div>
         ))}
       </div>

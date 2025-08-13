@@ -649,7 +649,7 @@ export default function HomePage() {
               <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-gradient-to-r from-transparent via-soi-navy-400 to-transparent" />
             </motion.div>
             
-            {/* Premium Logo Slider */}
+            {/* Clean Logo Slider */}
             <motion.div
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
@@ -657,27 +657,13 @@ export default function HomePage() {
               viewport={{ once: true }}
               className="relative"
             >
-              {/* Subtle decorative frame */}
-              <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-soi-purple-500/5 via-transparent to-soi-mint-500/5 p-px">
-                <div className="h-full w-full rounded-3xl bg-tint-authority" />
-              </div>
-              
-              {/* Enhanced container with glassmorphic styling */}
-              <div className="relative bg-white/10 backdrop-blur-md rounded-3xl border border-white/20 shadow-2xl p-4 md:p-8 overflow-hidden">
-                {/* Subtle inner glow */}
-                <div className="absolute inset-0 bg-gradient-to-r from-soi-navy-500/5 via-transparent to-soi-purple-500/5 rounded-3xl" />
-                
-                <AffiliationsSlider 
-                  speed="slow"
-                  pauseOnHover={true}
-                  showNames={true}
-                  variant="glassmorphic"
-                  className="relative z-10"
-                />
-                
-                {/* Bottom accent line */}
-                <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1/3 h-px bg-gradient-to-r from-transparent via-soi-purple-400/40 to-transparent" />
-              </div>
+              <AffiliationsSlider 
+                speed="slow"
+                pauseOnHover={true}
+                showNames={true}
+                variant="minimal"
+                className=""
+              />
             </motion.div>
             
             {/* Optional: Trust statement below slider */}
