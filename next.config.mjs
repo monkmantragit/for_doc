@@ -4,6 +4,8 @@ console.log('--- Loading next.config.mjs ---');
 const nextConfig = {
   env: {
     DATABASE_URL: process.env.DATABASE_URL,
+    // Force environment variable refresh
+    NEXT_PUBLIC_DIRECTUS_URL: process.env.NEXT_PUBLIC_DIRECTUS_URL,
   },
   
   // Image configuration
