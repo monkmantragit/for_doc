@@ -8,13 +8,6 @@ import { Publication } from '@/types/publications';
 
 const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL;
 
-// Debug logging to see what URL is being used
-console.log('=== DIRECTUS CONFIG DEBUG ===');
-console.log('NEXT_PUBLIC_DIRECTUS_URL:', process.env.NEXT_PUBLIC_DIRECTUS_URL);
-console.log('directusUrl variable:', directusUrl);
-console.log('NODE_ENV:', process.env.NODE_ENV);
-console.log('========================');
-
 // Prefer dedicated admin token on the server, but gracefully fall back to the
 // public token (read-only) if that is all we have. This makes local/dev
 // setups easier because we often only configure a public token.
