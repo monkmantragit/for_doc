@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   },
   description: "Sports Orthopedics Institute offers specialized orthopedic care for sports injuries, joint reconstruction, and comprehensive treatment of musculoskeletal conditions.",
   keywords: ["orthopedics", "sports medicine", "joint reconstruction", "bone", "joint", "surgery", "knee", "shoulder", "hip", "treatment"],
-  authors: [{ name: "Sports Orthopedics Institute", url: "https://fordoc-production.up.railway.app" }],
+  authors: [{ name: "Sports Orthopedics Institute", url: "https://sportsorthopedics.in" }],
   creator: "Sports Orthopedics Institute",
   publisher: "Sports Orthopedics Institute",
   verification: {
@@ -31,14 +31,14 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://fordoc-production.up.railway.app"),
+  metadataBase: new URL("https://sportsorthopedics.in"),
   alternates: {
     canonical: "/",
   },
   openGraph: {
     title: "Sports Orthopedics Institute | Excellence in Motion",
     description: "Specialized orthopedic care for sports injuries, joint reconstruction, and treatment of musculoskeletal conditions.",
-    url: "https://fordoc-production.up.railway.app",
+    url: "https://sportsorthopedics.in",
     siteName: "Sports Orthopedics Institute",
     locale: "en_US",
     type: "website",
