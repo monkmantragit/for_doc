@@ -7,6 +7,8 @@ import type { BlogPost } from '@/lib/directus';
 import { getPostBySlug, getRelatedPosts } from '@/lib/directus';
 import { Button } from '@/components/ui/button';
 import { Metadata } from 'next';
+import SchemaMarkup from '@/components/SchemaMarkup';
+import { createArticleSchema, createBreadcrumbSchema, sanitizeForSchema } from '@/lib/schema/utils';
 
 // Define props for the dynamic page
 type Props = {
@@ -151,8 +153,33 @@ export default async function PostPage({ params }: Props) {
   // Fetch related posts - now we know post is not null
   const relatedPosts = await getRelatedPosts(slug, post.category);
 
+  // Create schema markup for the blog post
+  const baseUrl = process.env.NEXT_PUBLIC_DOMAIN || 'https://sportsorthopedics.in';
+  const schemas = [
+    createArticleSchema({
+      headline: post.title,
+      description: post.excerpt || sanitizeForSchema(post.content_text),
+      image: post.featured_image_url,
+      datePublished: post.date_created,
+      dateModified: post.date_created,
+      articleBody: sanitizeForSchema(post.content_text),
+      keywords: post.category ? [post.category] : undefined,
+      url: `${baseUrl}/blogs/${post.slug}`,
+      author: {
+        name: 'Sports Orthopedics Institute',
+        url: baseUrl
+      }
+    }),
+    createBreadcrumbSchema([
+      { name: 'Home', url: baseUrl },
+      { name: 'Blog', url: `${baseUrl}/blogs` },
+      { name: post.title }
+    ])
+  ];
+
   return (
     <div className="min-h-screen bg-tint-expertise">
+      <SchemaMarkup schema={schemas} />
       <SiteHeader />
       
       {/* Hero Section */}

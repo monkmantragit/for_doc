@@ -9,6 +9,8 @@ import { getProcedureSurgeryBySlug, getRelatedProcedures, getImageUrl } from '@/
 import BookingSection from '../components/BookingSection';
 import { Calendar, CheckCircle } from 'lucide-react';
 import ContentRenderer from '@/components/shared/ContentRenderer';
+import SchemaMarkup from '@/components/SchemaMarkup';
+import { createMedicalProcedureSchema, createBreadcrumbSchema, sanitizeForSchema } from '@/lib/schema/utils';
 // Metadata is now handled in the separate metadata.ts file
 
 interface ProcedurePageProps {
@@ -46,8 +48,27 @@ export default async function ProcedurePage({ params }: ProcedurePageProps) {
     3
   );
 
+  // Create schema markup for the medical procedure
+  const baseUrl = process.env.NEXT_PUBLIC_DOMAIN || 'https://sportsorthopedics.in';
+  const schemas = [
+    createMedicalProcedureSchema({
+      name: procedure.title,
+      description: sanitizeForSchema(procedure.content_text),
+      procedureType: procedure.procedure_type || 'SurgicalProcedure',
+      bodyLocation: procedure.category,
+      followup: procedure.recovery_time ? `Recovery time: ${procedure.recovery_time}` : undefined,
+      preparation: undefined
+    }),
+    createBreadcrumbSchema([
+      { name: 'Home', url: baseUrl },
+      { name: 'Procedures & Surgery', url: `${baseUrl}/procedure-surgery` },
+      { name: procedure.title }
+    ])
+  ];
+
   return (
     <div className="min-h-screen bg-tint-authority">
+      <SchemaMarkup schema={schemas} />
       <SiteHeader theme="light" />
       
       <main>

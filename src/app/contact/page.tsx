@@ -5,6 +5,8 @@ import { Phone, Mail, MapPin, Clock, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import ContactForm from './components/ContactForm';
+import SchemaMarkup from '@/components/SchemaMarkup';
+import { createMedicalClinicSchema, createBreadcrumbSchema, createLocalBusinessSchema } from '@/lib/schema/utils';
 
 export const metadata: Metadata = {
   title: 'Contact Us | Sports Orthopedics',
@@ -12,8 +14,20 @@ export const metadata: Metadata = {
 };
 
 export default function ContactPage() {
+  // Create schema markup for the contact page
+  const baseUrl = process.env.NEXT_PUBLIC_DOMAIN || 'https://sportsorthopedics.in';
+  const schemas = [
+    createMedicalClinicSchema(),
+    createLocalBusinessSchema(),
+    createBreadcrumbSchema([
+      { name: 'Home', url: baseUrl },
+      { name: 'Contact Us' }
+    ])
+  ];
+
   return (
     <div className="min-h-screen bg-tint-care">
+      <SchemaMarkup schema={schemas} />
       <SiteHeader theme="light" />
       
       <main className="pt-24 md:pt-32 pb-16">

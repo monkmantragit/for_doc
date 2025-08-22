@@ -10,6 +10,8 @@ import BookingButton from '@/components/BookingButton';
 import { StaffCard } from '@/app/surgeons-staff/components/StaffCard';
 import { getStaffMemberBySlugAction, getRelatedStaffAction } from '../actions';
 import { StaffMember } from '@/types/staff';
+import SchemaMarkup from '@/components/SchemaMarkup';
+import { createPhysicianSchema, createBreadcrumbSchema, sanitizeForSchema } from '@/lib/schema/utils';
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const staffMember = await getStaffMemberBySlugAction(params.slug);
@@ -104,8 +106,29 @@ export default async function StaffMemberPage({ params }: { params: { slug: stri
   const heroDescription = staffMember.excerpt || 
     (staffMember.content_text ? staffMember.content_text.slice(0, 150) + '...' : null);
 
+  // Create schema markup for the physician/staff member
+  const baseUrl = process.env.NEXT_PUBLIC_DOMAIN || 'https://sportsorthopedics.in';
+  const schemas = [
+    createPhysicianSchema({
+      name: name,
+      url: `${baseUrl}/surgeons-staff/${params.slug}`,
+      image: imageUrl.startsWith('http') ? imageUrl : `${baseUrl}${imageUrl}`,
+      jobTitle: position,
+      description: sanitizeForSchema(staffMember.content_text || heroDescription),
+      medicalSpecialty: ['Orthopedic', 'SportsMedicine'],
+      hospitalAffiliation: undefined,
+      alumniOf: undefined
+    }),
+    createBreadcrumbSchema([
+      { name: 'Home', url: baseUrl },
+      { name: 'Our Team', url: `${baseUrl}/surgeons-staff` },
+      { name: name }
+    ])
+  ];
+
   return (
     <div className="min-h-screen bg-tint-care">
+      <SchemaMarkup schema={schemas} />
       <SiteHeader theme="transparent" />
       
       <main>

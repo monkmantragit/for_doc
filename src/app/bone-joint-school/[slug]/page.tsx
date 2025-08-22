@@ -11,6 +11,8 @@ import BookingButton from './components/BookingButton';
 import ShareButton from './components/ShareButton';
 import HeroSection from '@/components/ui/HeroSection';
 import { getBoneJointContentBySlug, getRelatedBoneJointContent, getImageUrl } from '@/lib/directus';
+import SchemaMarkup from '@/components/SchemaMarkup';
+import { createEducationalProgramSchema, createArticleSchema, createBreadcrumbSchema, sanitizeForSchema } from '@/lib/schema/utils';
 
 // --- Constants ---
 const DEFAULT_FALLBACK_IMAGE = '/images_bone_joint/doctor-holding-tablet-e-health-concept-business-concept.webp';
@@ -365,8 +367,35 @@ export default async function BoneJointTopicPage({ params }: Props) {
   const relatedTopics = await getRelatedTopics(params.slug, topicData.category);
   const { processedHtml, tableOfContents } = processContentForTOC(topicData.content_html);
 
+  // Create schema markup for the educational content
+  const baseUrl = process.env.NEXT_PUBLIC_DOMAIN || 'https://sportsorthopedics.in';
+  const schemas = [
+    createEducationalProgramSchema({
+      name: topicData.title,
+      description: sanitizeForSchema(topicData.content_text),
+      url: `${baseUrl}/bone-joint-school/${params.slug}`,
+      programType: 'Educational Content'
+    }),
+    createArticleSchema({
+      headline: topicData.title,
+      description: topicData.metaDescription || sanitizeForSchema(topicData.content_text),
+      image: topicData.featuredImageUrl,
+      datePublished: topicData.publishDate || new Date().toISOString(),
+      articleBody: sanitizeForSchema(topicData.content_text),
+      keywords: topicData.keywords?.split(',').map(k => k.trim()),
+      url: `${baseUrl}/bone-joint-school/${params.slug}`
+    }),
+    createBreadcrumbSchema(
+      topicData.breadcrumbData.map(item => ({
+        name: item.name,
+        url: item.url ? (item.url.startsWith('http') ? item.url : `${baseUrl}${item.url}`) : undefined
+      }))
+    )
+  ];
+
   return (
     <div className="min-h-screen bg-tint-expertise">
+      <SchemaMarkup schema={schemas} />
       <SiteHeader />
       
       {/* Enhanced Hero Section */}

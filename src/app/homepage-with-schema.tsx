@@ -1,3 +1,5 @@
+import { Metadata } from 'next';
+import HomePage from './homepage/page';
 import SchemaMarkup from '@/components/SchemaMarkup';
 import {
   createOrganizationSchema,
@@ -5,9 +7,13 @@ import {
   createWebSiteSchema,
   createBreadcrumbSchema,
 } from '@/lib/schema/utils';
-import HomePage from './homepage/page';
 
-export default function RootPage() {
+export const metadata: Metadata = {
+  title: 'Sports Orthopedics Institute | Excellence in Motion',
+  description: 'Sports Orthopedics Institute offers specialized orthopedic care for sports injuries, joint reconstruction, and comprehensive treatment of musculoskeletal conditions.',
+};
+
+export default function HomePageWithSchema() {
   const schemas = [
     createOrganizationSchema(),
     createMedicalClinicSchema(),
