@@ -44,17 +44,17 @@ export function StaffCard({ staff }: StaffCardProps) {
       <div className="block group flex flex-col">
         <div className="relative overflow-hidden">
           {staff.imageUrl ? (
-            <Image
-              src={getPublicImageUrl(staff.imageUrl) || '/placeholder-staff.jpg'}
-              alt={staff.name}
-              width={200}
-              height={0}
-              className="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-500"
-              style={{ height: 'auto' }}
-              sizes="(max-width: 768px) 200px, (max-width: 1200px) 200px, 200px"
-            />
+           <div className="relative w-full h-64">
+              <Image
+                src={getPublicImageUrl(staff.imageUrl) || '/placeholder-staff.jpg'}
+                alt={staff.name}
+                fill
+                className="object-cover group-hover:scale-105 transition-transform duration-500"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              />
+            </div>
           ) : (
-            <div className="bg-soi-pink-50 h-full w-full flex items-center justify-center">
+            <div className="bg-purple-50 w-full h-64 flex items-center justify-center">
               <UserCircle2 className="w-16 h-16 text-soi-pink-400" />
             </div>
           )}
@@ -91,4 +91,4 @@ export function StaffCard({ staff }: StaffCardProps) {
       </div>
     </motion.div>
   );
-} 
+}

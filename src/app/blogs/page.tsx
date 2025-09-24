@@ -143,8 +143,24 @@ export const revalidate = 0;
 export default async function BlogPage() {
   const { posts: blogPosts, total } = await getBlogPostsAction();
 
-  const featuredPost = blogPosts[0]; // First post as featured
-  const regularPosts = blogPosts.slice(1); // Rest as regular cards
+  // Add physiotherapy blog post manually since it's not in Directus yet
+  const physiotherapyPost = {
+    id: "physiotherapy-recovery",
+    title: "Beyond the Knife: Empowering Your Recovery and Performance with Physiotherapy",
+    author: "Dr. Atharva Mishra PT",
+    date_created: "2023-09-15",
+    reading_time: 8,
+    category: "Rehabilitation",
+    featured_image_url: "/images_bone_joint/sportsman-having-knee-injury-problem.webp",
+    excerpt: "Discover how physiotherapy serves as the crucial bridge between healing and thriving after injury or surgery. Learn about our multifaceted approach to rehabilitation at Sports Orthopedic Institute.",
+    slug: "blogs/physiotherapy-recovery"
+  };
+  
+  // Add the physiotherapy post to the blog posts array
+  const allBlogPosts = [physiotherapyPost, ...blogPosts];
+  
+  const featuredPost = allBlogPosts[0]; // First post as featured
+  const regularPosts = allBlogPosts.slice(1); // Rest as regular cards
 
   return (
     <div className="bg-tint-expertise">

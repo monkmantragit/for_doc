@@ -211,6 +211,7 @@ export default function SiteHeader({ theme = 'default', className = '' }: SiteHe
   const resourcesLinks = [
     { name: 'Clinical Videos', href: '/clinical-videos' },
     { name: 'Publications', href: '/publications' },
+    { name: 'Sports Rehabilitation Centre', href: '/physiotherapy' },
   ];
 
   // Media dropdown items
