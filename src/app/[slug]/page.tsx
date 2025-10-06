@@ -154,10 +154,10 @@ export async function generateMetadata({ params }: LandingPageProps) {
 
   if (landingPage) {
     return {
-      title: landingPage.meta_title,
+      title: landingPage.meta_title || landingPage.title,
       description: landingPage.meta_description || landingPage.content_text?.substring(0, 160),
       openGraph: {
-        title: landingPage.meta_title,
+        title: landingPage.meta_title || landingPage.title,
         description: landingPage.meta_description || landingPage.content_text?.substring(0, 160),
         images: landingPage.featured_image_url ? [getImageUrl(landingPage.featured_image_url)] : [],
       },
@@ -169,10 +169,10 @@ export async function generateMetadata({ params }: LandingPageProps) {
   
   if (blogPost) {
     return {
-      title: blogPost.meta_title,
+      title: blogPost.meta_title || blogPost.title,
       description: blogPost.meta_description || blogPost.excerpt || blogPost.content_text?.substring(0, 160),
       openGraph: {
-        title: blogPost.meta_title,
+        title: blogPost.meta_title || blogPost.title,
         description: blogPost.meta_description || blogPost.excerpt || blogPost.content_text?.substring(0, 160),
         images: blogPost.featured_image_url ? [blogPost.featured_image_url] : [],
       },

@@ -16,7 +16,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: {
     default: "Sports Orthopedics Institute | Excellence in Motion",
-    template: "%s | Sports Orthopedics Institute"
+    template: "%s"
   },
   description: "Sports Orthopedics Institute offers specialized orthopedic care for sports injuries, joint reconstruction, and comprehensive treatment of musculoskeletal conditions.",
   keywords: ["orthopedics", "sports medicine", "joint reconstruction", "bone", "joint", "surgery", "knee", "shoulder", "hip", "treatment"],
