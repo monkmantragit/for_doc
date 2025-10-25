@@ -83,17 +83,36 @@ const DayAppointmentsDrawer = ({
       .sort((a, b) => parseTime(a.time) - parseTime(b.time)); // Sort by time ascending
   }, [allAppointments, selectedDate]);
 
-  // Generate time slots for the day, extending to latest appointment if needed
+  // Generate time slots for the day, extending to earliest and latest appointments if needed
   const timeSlots = useMemo(() => {
+    let effectiveStart = workingHoursStart;
     let effectiveEnd = workingHoursEnd;
+    
     if (todaysAppointments.length > 0) {
+      // Find the earliest appointment time in minutes from midnight
+      const earliestAppMinutes = Math.min(
+        ...todaysAppointments
+          .map(app => parseTime(app.time))
+          .filter(mins => mins >= 0)
+      );
+      
       // Find the latest appointment time in minutes from midnight
       const latestAppMinutes = Math.max(
         ...todaysAppointments
           .map(app => parseTime(app.time))
           .filter(mins => mins >= 0)
       );
-      // Calculate the end boundary in minutes from midnight
+      
+      // Adjust start time if there are appointments before working hours
+      const startBoundaryMinutes = workingHoursStart * 60;
+      if (earliestAppMinutes < startBoundaryMinutes) {
+        // Round down to the nearest slot interval
+        const slotInterval = timeSlotIntervalMinutes;
+        const roundedStart = Math.floor(earliestAppMinutes / slotInterval) * slotInterval;
+        effectiveStart = Math.min(workingHoursStart, Math.floor(roundedStart / 60));
+      }
+      
+      // Adjust end time if there are appointments after working hours
       const endBoundaryMinutes = workingHoursEnd * 60;
       if (latestAppMinutes + 1 > endBoundaryMinutes) {
         // Round up to the next slot interval
@@ -102,7 +121,8 @@ const DayAppointmentsDrawer = ({
         effectiveEnd = Math.max(workingHoursEnd, Math.ceil(roundedEnd / 60));
       }
     }
-    return generateTimeSlots(workingHoursStart, effectiveEnd, timeSlotIntervalMinutes);
+    
+    return generateTimeSlots(effectiveStart, effectiveEnd, timeSlotIntervalMinutes);
   }, [workingHoursStart, workingHoursEnd, timeSlotIntervalMinutes, todaysAppointments]);
 
   // Map appointments to the time slot they fall *within*
