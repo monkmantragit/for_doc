@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | Procedure Surgery',
+    template: '%s',
     default: 'Surgical Procedures | Orthopedic Surgery Options'
   },
   description: 'Explore our specialized surgical procedures for joint, bone, and muscle conditions. Learn about recovery times, benefits, and treatment options.',
