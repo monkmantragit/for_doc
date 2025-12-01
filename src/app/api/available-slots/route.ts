@@ -111,13 +111,15 @@ function getISTDateRange(date: Date) {
 }
 
 export async function GET(request: Request) {
+  // LOUD DEBUG LOG: Confirm this endpoint is being called
+  const url = new URL(request.url);
+  const doctorIdParam = url.searchParams.get('doctorId');
+  const dateParam = url.searchParams.get('date');
+
+  const doctorId = doctorIdParam;
+  console.log(`[Available Slots API] === HIT ENDPOINT === doctorId=${doctorId} date=${dateParam}`);
+
   try {
-    const url = new URL(request.url);
-    const doctorIdParam = url.searchParams.get('doctorId');
-    const dateParam = url.searchParams.get('date');
-
-    const doctorId = doctorIdParam;
-
     if (!doctorId) {
       return NextResponse.json({ disabledDates: null, error: 'Doctor ID is required' }, { status: 400 });
     }
@@ -440,6 +442,25 @@ export async function GET(request: Request) {
       return !isBooked;
     });
 
+    // Custom override: remove specific slots only for the given doctor ID
+    try {
+      const targetDoctorId = '2e3de056-4948-4038-982f-74338d1f1e62';
+      if (doctorId === targetDoctorId) {
+        console.log(`[Available Slots API] === FILTERING SLOTS FOR Dr. Naveen & team ===`);
+        const blockedTimes = new Set(['11:35', '11:45', '11:55']);
+        const originalLength = availableSlots.length;
+        for (let i = availableSlots.length - 1; i >= 0; i--) {
+          if (blockedTimes.has(availableSlots[i].time)) {
+            console.log(`[Available Slots API] REMOVING slot: ${availableSlots[i].time}`);
+            availableSlots.splice(i, 1);
+          }
+        }
+        console.log(`[Available Slots API] Removed ${originalLength - availableSlots.length} blocked slots for Dr. Naveen & team`);
+      }
+    } catch (e) {
+      console.error('[Available Slots API] Failed to apply custom slot filter for target doctor:', e);
+    }
+
     console.log(`[Available Slots API] Generated ${availableSlots.length} available slots for ${dateStringForCheck}`);
     if (availableSlots.length === 0) {
       console.log(`[Available Slots API] WARNING: No slots generated! Schedule:`, schedule);
@@ -457,4 +478,4 @@ export async function GET(request: Request) {
     const message = error instanceof Error ? error.message : 'An unexpected error occurred';
     return NextResponse.json({ error: 'Internal Server Error', details: message }, { status: 500 });
   }
-} 
+}

@@ -269,7 +269,7 @@ export async function fetchAvailableSlots(doctorId: string, date: Date): Promise
     // 1. Are already booked
     // 2. Fall within a time block
     // 3. Would overlap with a break
-    const availableSlots = slots.filter(slot => {
+    let availableSlots = slots.filter(slot => {
       // Check 1: Already booked?
       if (bookedSlots.has(slot)) {
         return false;
@@ -327,6 +327,18 @@ export async function fetchAvailableSlots(doctorId: string, date: Date): Promise
       
       return true;
     });
+
+    // Custom override: remove specific slots only for the given doctor ID
+    try {
+      const targetDoctorId = '2e3de056-4948-4038-982f-74338d1f1e62';
+      if (doctorId === targetDoctorId) {
+        const blockedTimes = new Set(['11:35', '11:45', '11:55']);
+        availableSlots = availableSlots.filter(slot => !blockedTimes.has(slot));
+        console.log(`[fetchAvailableSlots] Removed blocked times for doctor ${doctorId}: ${blockedTimes}`);
+      }
+    } catch (e) {
+      console.error('[fetchAvailableSlots] Failed to apply custom slot filter for target doctor:', e);
+    }
     
     console.log(`[fetchAvailableSlots] Found ${availableSlots.length} available slots for doctor ${doctorId} on ${dateStr}`);
     return { success: true, data: availableSlots };

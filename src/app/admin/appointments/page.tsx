@@ -557,8 +557,8 @@ export default function AppointmentsPage() {
             onAppointmentClick={handleDrawerAppointmentClick}
             onAddSlotClick={handleDrawerAddSlotClick}
             getStatusColorClass={() => ''}
-            workingHoursStart={9}
-            workingHoursEnd={17}
+            workingHoursStart={8}
+            workingHoursEnd={20}
             timeSlotIntervalMinutes={30}
           />
           {isModalOpen && (
