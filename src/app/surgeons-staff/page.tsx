@@ -4,7 +4,7 @@ import Link from 'next/link';
 import SiteHeader from '@/components/layout/SiteHeader';
 import SiteFooter from '@/components/layout/SiteFooter';
 import { StaffCard } from '@/app/surgeons-staff/components/StaffCard';
-import { UserPlus, Users, Award, Phone, ArrowRight, Filter, Calendar } from 'lucide-react';
+import { UserPlus, Users, Award, Phone, ArrowRight, Filter, Calendar, Activity } from 'lucide-react';
 import BookingButton from '@/components/BookingButton';
 import HeroSection from '@/components/ui/HeroSection';
 import React from 'react'; 
@@ -62,6 +62,7 @@ export default async function SurgeonsStaffPage({ searchParams }: StaffPageProps
     'Director': { title: 'Director', icon: Award, priority: 1 },
     'Associate Consultant': { title: 'Associate Consultant', icon: Award, priority: 2 }, // MUST be 2nd - using exact category name
     'Consultant': { title: 'Associate Consultant', icon: Award, priority: 2 }, // Backup for different naming
+    'Sports Shoulder Clinic': { title: 'Sports Shoulder Clinic', icon: Activity, priority: 2.5 }, // Specialized sports shoulder department
     'Sports Psychologist': { title: 'Sports Psychologist', icon: UserPlus, priority: 3 },
     'Sports Orthopedics Fellows': { title: 'Sports Orthopedics Fellows', icon: Users, priority: 4 },
     'Physiotherapists': { title: 'Physiotherapists', icon: UserPlus, priority: 5 },
