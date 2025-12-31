@@ -18,6 +18,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import SurgeonDetailsEditor from '@/components/admin/SurgeonDetailsEditor';
 
 interface Doctor {
@@ -109,7 +116,7 @@ export default function DoctorModal({ isOpen, onClose, doctor, onSuccess }: Doct
       });
 
       const responseData = await response.json();
-      
+
       if (!response.ok) {
         console.error("Error response:", responseData);
         throw new Error(responseData.error || 'Failed to save doctor');
@@ -138,12 +145,12 @@ export default function DoctorModal({ isOpen, onClose, doctor, onSuccess }: Doct
             {doctor ? 'Update the doctor\'s information.' : 'Enter the details for the new doctor.'}
           </DialogDescription>
         </DialogHeader>
-        
+
         <Tabs value="basic" className="w-full">
           <TabsList className="mb-4">
             <TabsTrigger value="basic">Doctor Information</TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value="basic">
             <form onSubmit={handleSubmit}>
               <div className="grid gap-4 py-4 space-y-4">
@@ -167,14 +174,26 @@ export default function DoctorModal({ isOpen, onClose, doctor, onSuccess }: Doct
                   <Label htmlFor="speciality" className="text-sm font-medium text-gray-700">
                     Speciality
                   </Label>
-                  <Input
-                    id="speciality"
+                  <Select
                     value={formData.speciality}
-                    onChange={(e) => setFormData({ ...formData, speciality: e.target.value })}
-                    className="h-10 border-gray-300 focus:border-[#8B5C9E] focus:ring-[#8B5C9E]"
-                    required
-                    placeholder="e.g., Orthopedic"
-                  />
+                    onValueChange={(value) => setFormData({ ...formData, speciality: value })}
+                  >
+                    <SelectTrigger className="h-10 border-gray-300 focus:border-[#8B5C9E] focus:ring-[#8B5C9E]">
+                      <SelectValue placeholder="Select a speciality" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white">
+                      <SelectItem value="Sports Shoulder Clinic">Sports Shoulder Clinic</SelectItem>
+                      <SelectItem value="Orthopedic">Orthopedic</SelectItem>
+                      <SelectItem value="Sports Psychologist">Sports Psychologist</SelectItem>
+                      <SelectItem value="Cardiologist">Cardiologist</SelectItem>
+                      <SelectItem value="Pediatrician">Pediatrician</SelectItem>
+                      <SelectItem value="Neurologist">Neurologist</SelectItem>
+                      <SelectItem value="Dermatologist">Dermatologist</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Select the doctor's primary specialty
+                  </p>
                 </div>
 
                 {/* Consultation Fee */}
@@ -223,7 +242,7 @@ export default function DoctorModal({ isOpen, onClose, doctor, onSuccess }: Doct
                     />
                   </div>
                   <p className="text-xs text-gray-500">
-                    {formData.isActive 
+                    {formData.isActive
                       ? "Doctor is currently active and will appear in booking options."
                       : "Doctor is inactive and won't appear in booking options."
                     }

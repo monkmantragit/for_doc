@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { 
-  Plus, 
-  Search, 
-  Filter, 
-  MoreVertical, 
-  Calendar, 
-  Edit3, 
+import {
+  Plus,
+  Search,
+  Filter,
+  MoreVertical,
+  Calendar,
+  Edit3,
   ChevronRight,
   Users,
   Loader2,
@@ -60,6 +60,7 @@ const specialtyColors: { [key: string]: { bg: string; text: string } } = {
   'Orthopedic': { bg: 'bg-green-100', text: 'text-green-800' },
   'Neurologist': { bg: 'bg-purple-100', text: 'text-purple-800' },
   'Dermatologist': { bg: 'bg-pink-100', text: 'text-pink-800' },
+  'Sports Shoulder Clinic': { bg: 'bg-teal-100', text: 'text-teal-800' },
   'default': { bg: 'bg-[#8B5C9E]/10', text: 'text-[#8B5C9E]' }
 };
 
@@ -102,7 +103,7 @@ export default function DoctorsPage() {
 
   const filteredDoctors = doctors.filter(doctor => {
     const matchesSearch = doctor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         doctor.speciality.toLowerCase().includes(searchQuery.toLowerCase());
+      doctor.speciality.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesSpecialty = !selectedSpecialty || doctor.speciality === selectedSpecialty;
     return matchesSearch && matchesSpecialty;
   });
@@ -209,11 +210,10 @@ export default function DoctorsPage() {
                         setSelectedSpecialty(null);
                         setIsFilterOpen(false);
                       }}
-                      className={`w-full px-3 py-2 text-left rounded-lg text-sm transition-colors duration-150 ${
-                        !selectedSpecialty
+                      className={`w-full px-3 py-2 text-left rounded-lg text-sm transition-colors duration-150 ${!selectedSpecialty
                           ? 'bg-[#8B5C9E] text-white'
                           : 'text-gray-700 hover:bg-gray-100'
-                      }`}
+                        }`}
                     >
                       All Specialties
                     </button>
@@ -224,11 +224,10 @@ export default function DoctorsPage() {
                           setSelectedSpecialty(specialty);
                           setIsFilterOpen(false);
                         }}
-                        className={`w-full px-3 py-2 text-left rounded-lg text-sm transition-colors duration-150 ${
-                          selectedSpecialty === specialty
+                        className={`w-full px-3 py-2 text-left rounded-lg text-sm transition-colors duration-150 ${selectedSpecialty === specialty
                             ? 'bg-[#8B5C9E] text-white'
                             : 'text-gray-700 hover:bg-gray-100'
-                        }`}
+                          }`}
                       >
                         {specialty}
                       </button>
@@ -272,9 +271,8 @@ export default function DoctorsPage() {
                             {doctor.name}
                           </h3>
                           <div className="mt-1 flex items-center gap-2">
-                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                              getSpecialtyStyle(doctor.speciality).bg
-                            } ${getSpecialtyStyle(doctor.speciality).text}`}>
+                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getSpecialtyStyle(doctor.speciality).bg
+                              } ${getSpecialtyStyle(doctor.speciality).text}`}>
                               {doctor.speciality}
                             </span>
                             <span className="text-sm text-gray-500">
@@ -299,8 +297,8 @@ export default function DoctorsPage() {
                               Edit
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem 
-                              onClick={() => setDoctorToDelete(doctor)} 
+                            <DropdownMenuItem
+                              onClick={() => setDoctorToDelete(doctor)}
                               className="text-red-600 hover:!bg-red-50 hover:!text-red-700 cursor-pointer"
                             >
                               <Trash2 className="mr-2 h-4 w-4" />
@@ -341,9 +339,9 @@ export default function DoctorsPage() {
           ))}
         </AnimatePresence>
         {filteredDoctors.length === 0 && (
-           <div className="text-center py-12 text-gray-500">
+          <div className="text-center py-12 text-gray-500">
             No doctors found matching your criteria.
-           </div>
+          </div>
         )}
       </div>
 
@@ -366,7 +364,7 @@ export default function DoctorsPage() {
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
               This action cannot be undone. This will permanently delete the doctor
-              <strong className="text-gray-900"> {doctorToDelete?.name} </strong> 
+              <strong className="text-gray-900"> {doctorToDelete?.name} </strong>
               and all associated data (like their schedule).
               Appointments might remain but will reference a deleted doctor.
               Consider reassigning data before deleting.
@@ -376,7 +374,7 @@ export default function DoctorsPage() {
             <AlertDialogCancel onClick={() => setDoctorToDelete(null)} disabled={isDeleting}>
               Cancel
             </AlertDialogCancel>
-            <AlertDialogAction 
+            <AlertDialogAction
               onClick={handleDeleteDoctor}
               disabled={isDeleting}
               className="bg-red-600 hover:bg-red-700 text-white"
