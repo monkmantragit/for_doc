@@ -16,6 +16,7 @@ export interface BookingFormData {
   patientName: string;
   email: string;
   phone: string;
+  hasAcknowledgedNaveen: boolean;
 }
 
 interface BookingFormState extends BookingFormData {
@@ -33,6 +34,7 @@ type BookingFormAction =
   | { type: 'SET_SUBMITTING'; payload: boolean }
   | { type: 'SET_ERROR'; payload: { field: string; message: string } }
   | { type: 'CLEAR_ERROR'; payload: string }
+  | { type: 'SET_ACKNOWLEDGED_NAVEEN'; payload: boolean }
   | { type: 'RESET_FORM' };
 
 const initialState: BookingFormState = {
@@ -45,6 +47,7 @@ const initialState: BookingFormState = {
   isSubmitting: false,
   currentStep: 0,
   errors: {},
+  hasAcknowledgedNaveen: false,
 };
 
 const BookingFormContext = createContext<{
@@ -81,6 +84,8 @@ function bookingFormReducer(state: BookingFormState, action: BookingFormAction):
       const newErrors = { ...state.errors };
       delete newErrors[action.payload];
       return { ...state, errors: newErrors };
+    case 'SET_ACKNOWLEDGED_NAVEEN':
+      return { ...state, hasAcknowledgedNaveen: action.payload };
     case 'RESET_FORM':
       return initialState;
     default:

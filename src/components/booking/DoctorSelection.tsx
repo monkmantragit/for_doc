@@ -238,8 +238,17 @@ const DoctorSelection = ({ onNext }: DoctorSelectionProps = {}) => {
   // Create a handleDoctorSelect function that sets the selected doctor in the context
   const handleDoctorSelect = (doctor: Doctor) => {
     dispatch({ type: 'SET_DOCTOR', payload: doctor });
+    
+    // Reset acknowledgment when a doctor is selected
+    if (state.hasAcknowledgedNaveen) {
+      dispatch({ type: 'SET_ACKNOWLEDGED_NAVEEN', payload: false });
+    }
+
+    // Only auto-advance if it's NOT Dr. Naveen
+    const isNaveen = doctor.name.toLowerCase().includes('naveen');
+    
     // If there's a next button action to trigger, pass it to parent
-    if (onNext) {
+    if (onNext && !isNaveen) {
       onNext();
     }
   };
@@ -349,16 +358,41 @@ const DoctorSelection = ({ onNext }: DoctorSelectionProps = {}) => {
       <div className="space-y-4 overflow-y-auto max-h-[calc(60vh-10rem)] overscroll-contain pb-6 scroll-smooth">
         <AnimatePresence>
           {filteredDoctors.length > 0 ? (
-            filteredDoctors.map((doctor) => (
-              <DoctorCard
-                key={doctor.id}
-                doctor={doctor}
-                isSelected={state.doctor?.id === doctor.id}
-                onSelect={(selectedDoctor) => {
-                  handleDoctorSelect(selectedDoctor);
-                }}
-              />
-            ))
+            filteredDoctors.map((doctor) => {
+              const isSelected = state.doctor?.id === doctor.id;
+              const isNaveen = doctor.name.toLowerCase().includes('naveen');
+              
+              return (
+                <div key={doctor.id} className="space-y-3">
+                  <DoctorCard
+                    doctor={doctor}
+                    isSelected={isSelected}
+                    onSelect={(selectedDoctor) => {
+                      handleDoctorSelect(selectedDoctor);
+                    }}
+                  />
+                  
+                  {isSelected && isNaveen && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      className="bg-soi-pink-50 border border-soi-pink-200 rounded-xl p-4 flex items-start gap-3 mt-2 shadow-sm"
+                    >
+                      <input
+                        type="checkbox"
+                        id={`naveen-ack-${doctor.id}`}
+                        checked={state.hasAcknowledgedNaveen}
+                        onChange={(e) => dispatch({ type: 'SET_ACKNOWLEDGED_NAVEEN', payload: e.target.checked })}
+                        className="mt-0.5 w-5 h-5 rounded border-soi-pink-300 text-soi-navy-600 focus:ring-soi-navy-500 shadow-sm cursor-pointer"
+                      />
+                      <label htmlFor={`naveen-ack-${doctor.id}`} className="text-sm font-medium text-soi-navy-800 cursor-pointer flex-1">
+                        Read and understood that Dr. Naveen doesn&apos;t consult for Back pain/ Neck pain/ Spine Issues
+                      </label>
+                    </motion.div>
+                  )}
+                </div>
+              );
+            })
           ) : (
             <motion.div
               initial={{ opacity: 0, y: 20 }}

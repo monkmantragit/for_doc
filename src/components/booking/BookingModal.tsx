@@ -84,7 +84,9 @@ const BookingModalContent = ({ isOpen, onClose }: BookingModalProps) => {
   const canProceed = () => {
     switch (state.currentStep) {
       case 0: // Doctor Selection
-        return !!state.doctor;
+        if (!state.doctor) return false;
+        if (state.doctor.name.toLowerCase().includes('naveen') && !state.hasAcknowledgedNaveen) return false;
+        return true;
       
       case 1: // Date & Time Selection
         return !!state.selectedDate && !!state.selectedTime;
