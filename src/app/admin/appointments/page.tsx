@@ -5,7 +5,12 @@ import { DataTable } from '@/components/admin/DataTable';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { format } from 'date-fns';
-import { fetchAppointments, updateAppointmentStatus } from '@/app/actions/admin';
+import {
+  fetchAppointments,
+  updateAppointmentStatus,
+  recordCheckIn,
+  recordCheckOut,
+} from '@/app/actions/admin';
 import { toast } from 'react-hot-toast';
 import {
   DropdownMenu,
@@ -13,7 +18,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, LogIn, LogOut, FileText } from 'lucide-react';
+import { AppointmentDetailDrawer } from '@/components/admin/AppointmentDetailDrawer';
 
 interface Doctor {
   name: string;
@@ -30,6 +36,10 @@ interface Appointment {
   doctorId: string;
   customerId: string | null;
   doctor: Doctor;
+  checkInAt: Date | null;
+  checkOutAt: Date | null;
+  visitNotes: string | null;
+  diagnosis: string | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -38,6 +48,9 @@ export default function AppointmentsPage() {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [updatingStatus, setUpdatingStatus] = useState<string | null>(null);
+  const [actingOnId, setActingOnId] = useState<string | null>(null);
+  const [drawerId, setDrawerId] = useState<string | null>(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   useEffect(() => {
     loadAppointments();
@@ -47,7 +60,7 @@ export default function AppointmentsPage() {
     try {
       const result = await fetchAppointments();
       if (result.success && result.data) {
-        setAppointments(result.data);
+        setAppointments(result.data as any);
       } else {
         toast.error(result.error || 'Failed to load appointments');
       }
@@ -59,13 +72,18 @@ export default function AppointmentsPage() {
     }
   };
 
+  const openDrawer = (id: string) => {
+    setDrawerId(id);
+    setDrawerOpen(true);
+  };
+
   const handleStatusChange = async (appointmentId: string, newStatus: string) => {
     try {
       setUpdatingStatus(appointmentId);
       const result = await updateAppointmentStatus(appointmentId, newStatus);
       if (result.success) {
         toast.success('Appointment status updated successfully');
-        loadAppointments(); // Refresh the appointments list
+        loadAppointments();
       } else {
         toast.error(result.error || 'Failed to update status');
       }
@@ -74,6 +92,30 @@ export default function AppointmentsPage() {
       toast.error('Failed to update appointment status');
     } finally {
       setUpdatingStatus(null);
+    }
+  };
+
+  const handleCheckIn = async (appointmentId: string) => {
+    setActingOnId(appointmentId);
+    const res = await recordCheckIn(appointmentId);
+    setActingOnId(null);
+    if (res.success) {
+      toast.success('Checked in');
+      loadAppointments();
+    } else {
+      toast.error(res.error || 'Failed');
+    }
+  };
+
+  const handleCheckOut = async (appointmentId: string) => {
+    setActingOnId(appointmentId);
+    const res = await recordCheckOut(appointmentId);
+    setActingOnId(null);
+    if (res.success) {
+      toast.success('Checked out');
+      loadAppointments();
+    } else {
+      toast.error(res.error || 'Failed');
     }
   };
 
@@ -113,8 +155,10 @@ export default function AppointmentsPage() {
 
   const getAvailableStatuses = (currentStatus: string) => {
     const allStatuses = ['SCHEDULED', 'CONFIRMED', 'COMPLETED', 'CANCELLED', 'NO_SHOW'];
-    return allStatuses.filter(status => status !== currentStatus);
+    return allStatuses.filter((status) => status !== currentStatus);
   };
+
+  const fmtTime = (d: Date | null) => (d ? format(new Date(d), 'h:mm a') : '—');
 
   const columns = [
     {
@@ -152,6 +196,56 @@ export default function AppointmentsPage() {
       sortable: true,
     },
     {
+      header: 'Check-in / out',
+      accessorKey: 'checkInAt',
+      cell: (appointment: Appointment) => (
+        <div className="flex flex-col gap-1">
+          {appointment.checkInAt ? (
+            <span className="text-xs text-green-700">
+              <LogIn className="w-3 h-3 inline mr-1" />
+              {fmtTime(appointment.checkInAt)}
+            </span>
+          ) : (
+            <Button
+              size="sm"
+              variant="outline"
+              className="h-7 text-xs"
+              disabled={
+                actingOnId === appointment.id ||
+                ['CANCELLED', 'NO_SHOW'].includes(appointment.status)
+              }
+              onClick={() => handleCheckIn(appointment.id)}
+            >
+              <LogIn className="w-3 h-3 mr-1" />
+              Check in
+            </Button>
+          )}
+          {appointment.checkOutAt ? (
+            <span className="text-xs text-blue-700">
+              <LogOut className="w-3 h-3 inline mr-1" />
+              {fmtTime(appointment.checkOutAt)}
+            </span>
+          ) : (
+            <Button
+              size="sm"
+              variant="outline"
+              className="h-7 text-xs"
+              disabled={
+                actingOnId === appointment.id ||
+                !appointment.checkInAt ||
+                ['CANCELLED', 'NO_SHOW'].includes(appointment.status)
+              }
+              onClick={() => handleCheckOut(appointment.id)}
+            >
+              <LogOut className="w-3 h-3 mr-1" />
+              Check out
+            </Button>
+          )}
+        </div>
+      ),
+      sortable: false,
+    },
+    {
       header: 'Status',
       accessorKey: 'status',
       cell: (appointment: Appointment) => (
@@ -166,8 +260,8 @@ export default function AppointmentsPage() {
           </span>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button 
-                variant="ghost" 
+              <Button
+                variant="ghost"
                 size="sm"
                 className="h-8 w-8 p-0 hover:bg-[#8B5C9E]/10"
                 disabled={updatingStatus === appointment.id}
@@ -175,8 +269,8 @@ export default function AppointmentsPage() {
                 <ChevronDown className="h-4 w-4 text-[#8B5C9E]" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent 
-              align="end" 
+            <DropdownMenuContent
+              align="end"
               className="w-[160px] p-2 bg-white shadow-lg rounded-md border border-[#8B5C9E]/10"
             >
               {getAvailableStatuses(appointment.status).map((status) => (
@@ -212,6 +306,44 @@ export default function AppointmentsPage() {
       },
       sortable: true,
     },
+    {
+      header: 'Created',
+      accessorKey: 'createdAt',
+      cell: (appointment: Appointment) => (
+        <div className="text-xs text-gray-500">
+          {format(new Date(appointment.createdAt), 'MMM d, yyyy')}
+          <div>{format(new Date(appointment.createdAt), 'h:mm a')}</div>
+        </div>
+      ),
+      sortable: true,
+    },
+    {
+      header: 'Updated',
+      accessorKey: 'updatedAt',
+      cell: (appointment: Appointment) => (
+        <div className="text-xs text-gray-500">
+          {format(new Date(appointment.updatedAt), 'MMM d, yyyy')}
+          <div>{format(new Date(appointment.updatedAt), 'h:mm a')}</div>
+        </div>
+      ),
+      sortable: true,
+    },
+    {
+      header: 'Details',
+      accessorKey: 'id',
+      cell: (appointment: Appointment) => (
+        <Button
+          size="sm"
+          variant="ghost"
+          className="text-[#8B5C9E]"
+          onClick={() => openDrawer(appointment.id)}
+        >
+          <FileText className="w-4 h-4 mr-1" />
+          Notes
+        </Button>
+      ),
+      sortable: false,
+    },
   ];
 
   if (isLoading) {
@@ -234,13 +366,15 @@ export default function AppointmentsPage() {
       </div>
 
       <Card className="border-0 shadow-md overflow-hidden">
-        <DataTable
-          columns={columns}
-          data={appointments}
-          searchable
-          sortable
-        />
+        <DataTable columns={columns} data={appointments} searchable sortable />
       </Card>
+
+      <AppointmentDetailDrawer
+        appointmentId={drawerId}
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        onChanged={loadAppointments}
+      />
     </div>
   );
-} 
+}

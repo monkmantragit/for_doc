@@ -1,42 +1,53 @@
 import { NextResponse } from 'next/server';
 import { sign } from 'jsonwebtoken';
+import { compare } from 'bcrypt';
 import { cookies } from 'next/headers';
 
-// Predefined admin credentials (in a real app, these would be in a secure database)
-const ADMIN_EMAIL = 'admin@bookingpress.com';
-const ADMIN_PASSWORD = 'admin123';
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
+export const runtime = 'nodejs';
+
+const JWT_SECRET = process.env.JWT_SECRET;
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+const ADMIN_PASSWORD_HASH = process.env.ADMIN_PASSWORD;
 
 export async function POST(request: Request) {
+  if (!JWT_SECRET || !ADMIN_EMAIL || !ADMIN_PASSWORD_HASH) {
+    console.error('Admin auth env vars missing (JWT_SECRET, ADMIN_EMAIL, ADMIN_PASSWORD)');
+    return NextResponse.json(
+      { error: 'Server misconfigured' },
+      { status: 500 }
+    );
+  }
+
   try {
     const body = await request.json();
-    const { email, password } = body;
+    const { email, password } = body ?? {};
 
-    // Simple credential check
-    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-      // Create a JWT token
-      const token = sign(
-        { email, role: 'admin' },
-        JWT_SECRET,
-        { expiresIn: '24h' }
-      );
-
-      // Set the token in an HTTP-only cookie
-      cookies().set('admin_token', token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
-        maxAge: 60 * 60 * 24, // 24 hours
-        path: '/',
-      });
-
-      return NextResponse.json({ success: true });
+    if (typeof email !== 'string' || typeof password !== 'string') {
+      return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
     }
 
-    return NextResponse.json(
-      { error: 'Invalid credentials' },
-      { status: 401 }
+    const emailMatches = email.trim().toLowerCase() === ADMIN_EMAIL.trim().toLowerCase();
+    const passwordMatches = await compare(password, ADMIN_PASSWORD_HASH);
+
+    if (!emailMatches || !passwordMatches) {
+      return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+    }
+
+    const token = sign(
+      { email: ADMIN_EMAIL, role: 'admin' },
+      JWT_SECRET,
+      { expiresIn: '24h' }
     );
+
+    cookies().set('admin_token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 60 * 60 * 24,
+      path: '/',
+    });
+
+    return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Login error:', error);
     return NextResponse.json(
@@ -44,4 +55,4 @@ export async function POST(request: Request) {
       { status: 500 }
     );
   }
-} 
+}

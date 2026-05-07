@@ -46,6 +46,7 @@ model Appointment {
   id          String   @id @default(uuid())
   doctorId    String
   customerId  String?
+  patientId   String?
   patientName String?
   date        DateTime
   time        String?  // HH:mm format
@@ -53,10 +54,38 @@ model Appointment {
   status      String   // SCHEDULED, CONFIRMED, COMPLETED, CANCELLED, NO_SHOW
   email       String?
   phone       String?
-  notes       String?
+  notes       String?  // booking-time notes from patient
+  visitNotes  String?  // clinical notes added by staff after the visit
+  diagnosis   String?  // free-text diagnosis recorded after the visit
+  checkInAt   DateTime?
+  checkOutAt  DateTime?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   doctor      Doctor   @relation(fields: [doctorId], references: [id])
+  patient     Patient? @relation(fields: [patientId], references: [id])
+
+  @@index([date])
+  @@index([phone])
+  @@index([patientId])
+}
+
+model Patient {
+  id             String   @id @default(uuid())
+  phone          String   // normalized E.164 (e.g. +91XXXXXXXXXX)
+  name           String   // display casing
+  nameKey        String   // normalized lowercase/trimmed name for matching
+  email          String?
+  dateOfBirth    DateTime?
+  gender         String?
+  address        String?
+  medicalHistory String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  appointments   Appointment[]
+
+  @@unique([phone, nameKey])
+  @@index([phone])
+  @@index([name])
 }
 
 model SpecialDate {

@@ -2,6 +2,7 @@
 
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
+import { normalizePhone, normalizeNameKey } from '@/lib/patient';
 
 export async function fetchDoctors() {
   try {
@@ -61,6 +62,140 @@ export async function fetchAppointments(filters?: {
   } catch (error) {
     console.error('Error fetching appointments:', error);
     return { success: false, error: 'Failed to fetch appointments' };
+  }
+}
+
+export async function fetchAppointmentDetail(appointmentId: string) {
+  try {
+    const appointment = await prisma.appointment.findUnique({
+      where: { id: appointmentId },
+      include: {
+        doctor: { select: { name: true, speciality: true, fee: true } },
+        patient: true,
+      },
+    });
+
+    if (!appointment) {
+      return { success: false, error: 'Appointment not found' };
+    }
+
+    return { success: true, data: appointment };
+  } catch (error) {
+    console.error('Error fetching appointment detail:', error);
+    return { success: false, error: 'Failed to fetch appointment' };
+  }
+}
+
+export async function recordCheckIn(appointmentId: string) {
+  try {
+    const existing = await prisma.appointment.findUnique({ where: { id: appointmentId } });
+    if (!existing) return { success: false, error: 'Appointment not found' };
+    if (existing.checkInAt) return { success: false, error: 'Already checked in' };
+
+    const updated = await prisma.appointment.update({
+      where: { id: appointmentId },
+      data: {
+        checkInAt: new Date(),
+        status: existing.status === 'SCHEDULED' ? 'CONFIRMED' : existing.status,
+      },
+    });
+
+    revalidatePath('/admin/appointments');
+    return { success: true, data: updated };
+  } catch (error) {
+    console.error('Error recording check-in:', error);
+    return { success: false, error: 'Failed to record check-in' };
+  }
+}
+
+export async function recordCheckOut(appointmentId: string) {
+  try {
+    const existing = await prisma.appointment.findUnique({ where: { id: appointmentId } });
+    if (!existing) return { success: false, error: 'Appointment not found' };
+    if (!existing.checkInAt) return { success: false, error: 'Patient must check in first' };
+    if (existing.checkOutAt) return { success: false, error: 'Already checked out' };
+
+    const updated = await prisma.appointment.update({
+      where: { id: appointmentId },
+      data: {
+        checkOutAt: new Date(),
+        status: 'COMPLETED',
+      },
+    });
+
+    revalidatePath('/admin/appointments');
+    return { success: true, data: updated };
+  } catch (error) {
+    console.error('Error recording check-out:', error);
+    return { success: false, error: 'Failed to record check-out' };
+  }
+}
+
+export async function updateVisitNotes(
+  appointmentId: string,
+  data: { visitNotes?: string | null; diagnosis?: string | null }
+) {
+  try {
+    const updated = await prisma.appointment.update({
+      where: { id: appointmentId },
+      data: {
+        visitNotes: data.visitNotes ?? null,
+        diagnosis: data.diagnosis ?? null,
+      },
+    });
+
+    revalidatePath('/admin/appointments');
+    return { success: true, data: updated };
+  } catch (error) {
+    console.error('Error updating visit notes:', error);
+    return { success: false, error: 'Failed to update visit notes' };
+  }
+}
+
+export async function fetchPatientHistoryByPhone(phoneInput: string) {
+  try {
+    const phone = normalizePhone(phoneInput);
+    if (!phone) return { success: false, error: 'Invalid phone number' };
+
+    const patients = await prisma.patient.findMany({
+      where: { phone },
+      include: {
+        appointments: {
+          orderBy: { date: 'desc' },
+          include: {
+            doctor: { select: { name: true, speciality: true } },
+          },
+        },
+      },
+      orderBy: { name: 'asc' },
+    });
+
+    return { success: true, data: { phone, patients } };
+  } catch (error) {
+    console.error('Error fetching patient history:', error);
+    return { success: false, error: 'Failed to fetch patient history' };
+  }
+}
+
+export async function fetchPatientHistoryById(patientId: string) {
+  try {
+    const patient = await prisma.patient.findUnique({
+      where: { id: patientId },
+      include: {
+        appointments: {
+          orderBy: { date: 'desc' },
+          include: {
+            doctor: { select: { name: true, speciality: true } },
+          },
+        },
+      },
+    });
+
+    if (!patient) return { success: false, error: 'Patient not found' };
+    return { success: true, data: patient };
+  } catch (error) {
+    console.error('Error fetching patient by id:', error);
+    return { success: false, error: 'Failed to fetch patient' };
   }
 }
 
