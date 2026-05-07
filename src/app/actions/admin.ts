@@ -1492,6 +1492,53 @@ export async function recordCheckOut(appointmentId: string) {
   }
 }
 
+export async function undoCheckIn(appointmentId: string) {
+  try {
+    const existing = await prisma.appointment.findUnique({ where: { id: appointmentId } });
+    if (!existing) return { success: false as const, error: 'Appointment not found' };
+    if (!existing.checkInAt) return { success: false as const, error: 'Not checked in yet' };
+    if (existing.checkOutAt) {
+      return { success: false as const, error: 'Undo check-out first before undoing check-in' };
+    }
+
+    const updated = await prisma.appointment.update({
+      where: { id: appointmentId },
+      data: {
+        checkInAt: null,
+        status: 'SCHEDULED',
+      },
+    });
+
+    revalidatePath('/admin/appointments');
+    return { success: true as const, data: updated };
+  } catch (error) {
+    console.error('Error undoing check-in:', error);
+    return { success: false as const, error: 'Failed to undo check-in' };
+  }
+}
+
+export async function undoCheckOut(appointmentId: string) {
+  try {
+    const existing = await prisma.appointment.findUnique({ where: { id: appointmentId } });
+    if (!existing) return { success: false as const, error: 'Appointment not found' };
+    if (!existing.checkOutAt) return { success: false as const, error: 'Not checked out yet' };
+
+    const updated = await prisma.appointment.update({
+      where: { id: appointmentId },
+      data: {
+        checkOutAt: null,
+        status: 'CONFIRMED',
+      },
+    });
+
+    revalidatePath('/admin/appointments');
+    return { success: true as const, data: updated };
+  } catch (error) {
+    console.error('Error undoing check-out:', error);
+    return { success: false as const, error: 'Failed to undo check-out' };
+  }
+}
+
 export async function updateVisitNotes(
   appointmentId: string,
   data: { visitNotes?: string | null; diagnosis?: string | null }

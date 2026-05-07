@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { format } from 'date-fns';
 import { toast } from 'react-hot-toast';
-import { Loader2, LogIn, LogOut, Save, User, Phone, Mail, Calendar, Clock } from 'lucide-react';
+import { Loader2, LogIn, LogOut, Save, User, Phone, Mail, Calendar, Clock, Undo2 } from 'lucide-react';
 import {
   Sheet,
   SheetContent,
@@ -17,6 +17,8 @@ import {
   fetchAppointmentDetail,
   recordCheckIn,
   recordCheckOut,
+  undoCheckIn,
+  undoCheckOut,
   updateVisitNotes,
   fetchPatientHistoryByPhone,
 } from '@/app/actions/admin';
@@ -134,6 +136,28 @@ export function AppointmentDetailDrawer({ appointmentId, open, onClose, onChange
     }
   };
 
+  const handleUndoCheckIn = async () => {
+    if (!appointmentId) return;
+    const res = await undoCheckIn(appointmentId);
+    if (res.success) {
+      toast.success('Check-in reverted');
+      refresh();
+    } else {
+      toast.error(res.error || 'Failed');
+    }
+  };
+
+  const handleUndoCheckOut = async () => {
+    if (!appointmentId) return;
+    const res = await undoCheckOut(appointmentId);
+    if (res.success) {
+      toast.success('Check-out reverted');
+      refresh();
+    } else {
+      toast.error(res.error || 'Failed');
+    }
+  };
+
   const handleSaveNotes = async () => {
     if (!appointmentId) return;
     setSaving(true);
@@ -224,7 +248,7 @@ export function AppointmentDetailDrawer({ appointmentId, open, onClose, onChange
                   </div>
                 )}
               </div>
-              <div className="flex gap-2 pt-2">
+              <div className="flex flex-wrap gap-2 pt-2">
                 <Button
                   size="sm"
                   variant="outline"
@@ -243,6 +267,28 @@ export function AppointmentDetailDrawer({ appointmentId, open, onClose, onChange
                   <LogOut className="w-3.5 h-3.5 mr-1" />
                   Check out
                 </Button>
+                {appointment.checkInAt && !appointment.checkOutAt && (
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="text-gray-500 hover:text-gray-700"
+                    onClick={handleUndoCheckIn}
+                  >
+                    <Undo2 className="w-3.5 h-3.5 mr-1" />
+                    Undo check-in
+                  </Button>
+                )}
+                {appointment.checkOutAt && (
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="text-gray-500 hover:text-gray-700"
+                    onClick={handleUndoCheckOut}
+                  >
+                    <Undo2 className="w-3.5 h-3.5 mr-1" />
+                    Undo check-out
+                  </Button>
+                )}
               </div>
             </Card>
 
