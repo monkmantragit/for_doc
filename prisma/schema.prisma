@@ -51,7 +51,36 @@ model Appointment {
   customerId  String?
   notes       String?
   timeSlot    String?
+  patientId   String?
+  visitNotes  String?
+  diagnosis   String?
+  checkInAt   DateTime?
+  checkOutAt  DateTime?
   doctor      Doctor   @relation(fields: [doctorId], references: [id])
+  patient     Patient? @relation(fields: [patientId], references: [id])
+
+  @@index([date])
+  @@index([phone])
+  @@index([patientId])
+}
+
+model Patient {
+  id             String   @id @default(uuid())
+  phone          String   // normalized E.164 (e.g. +91XXXXXXXXXX)
+  name           String   // display casing
+  nameKey        String   // normalized lowercase/trimmed name for matching
+  email          String?
+  dateOfBirth    DateTime?
+  gender         String?
+  address        String?
+  medicalHistory String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  appointments   Appointment[]
+
+  @@unique([phone, nameKey])
+  @@index([phone])
+  @@index([name])
 }
 
 model SpecialDate {

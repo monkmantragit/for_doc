@@ -1,71 +1,53 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-// Add paths that don't require authentication
-const publicPaths = [
+const JWT_SECRET = process.env.JWT_SECRET;
+
+if (!JWT_SECRET && process.env.NODE_ENV === 'production') {
+  throw new Error('JWT_SECRET environment variable is required in production');
+}
+
+const publicAdminPaths = [
   '/admin/login',
   '/api/admin/auth/login',
-  '/api/doctors',  // Public API for appointments booking
-  '/api/appointments'  // Public API for appointments booking
 ];
 
-// This function determines if a path is public (accessible without auth)
-function isPublicPath(path: string) {
-  // Exact matches
-  if (publicPaths.includes(path)) {
-    return true;
-  }
-  
-  // Root path and non-admin paths
-  if (path === '/' || !path.startsWith('/admin')) {
-    return true;
-  }
-  
-  return false;
+function isPublicAdminPath(pathname: string) {
+  return publicAdminPaths.some(p => pathname === p || pathname.startsWith(p + '/'));
 }
 
 export function middleware(request: NextRequest) {
-  const { pathname, searchParams } = request.nextUrl;
-  
-  // Allow bypassing auth check with parameter (for login redirect only)
-  if (searchParams.get('auth') === 'true') {
-    return NextResponse.next();
-  }
-  
-  // Allow public resources like static files
+  const { pathname } = request.nextUrl;
+
   if (pathname.match(/\.(js|css|png|jpg|jpeg|svg|ico|webp)$/)) {
     return NextResponse.next();
   }
 
-  // Allow public paths (non-admin routes)
-  if (isPublicPath(pathname)) {
+  if (!pathname.startsWith('/admin') && !pathname.startsWith('/api/admin')) {
     return NextResponse.next();
   }
 
-  // For admin paths, verify authentication
-  if (pathname.startsWith('/admin') || pathname.startsWith('/api/admin')) {
-    const token = request.cookies.get('admin_token')?.value;
+  if (isPublicAdminPath(pathname)) {
+    return NextResponse.next();
+  }
 
-    if (!token) {
-      // Token doesn't exist, redirect to login
-      return NextResponse.redirect(new URL('/admin/login', request.url));
+  const token = request.cookies.get('admin_token')?.value;
+
+  if (!token) {
+    if (pathname.startsWith('/api/admin')) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-
-    // Skip full token verification in middleware which causes crypto issues in Edge Runtime
-    // Just checking presence of token is enough for middleware
-    // The actual API routes will do full verification with proper Node.js runtime
-    return NextResponse.next();
+    return NextResponse.redirect(new URL('/admin/login', request.url));
   }
 
+  // Edge runtime can't run jsonwebtoken's crypto. Token presence is checked here;
+  // full verification happens in the Node.js API routes.
   return NextResponse.next();
 }
 
-// Configure the middleware to run on specific paths
 export const config = {
   matcher: [
-    // Match all routes under /admin, including root /admin
     '/admin/:path*',
-    // Match all API routes under /api/admin
-    '/api/admin/:path*'
-  ]
-}; 
+    '/api/admin/:path*',
+  ],
+};

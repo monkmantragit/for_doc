@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma';
+import { normalizePhone, normalizeNameKey } from '@/lib/patient';
 import { format, parse, isSameDay, isWithinInterval, addMinutes } from 'date-fns';
 import { Appointment, DoctorSchedule, SpecialDate } from '@/types/schedule';
 import { z } from 'zod';
@@ -332,10 +333,12 @@ export async function validateAndCreateAppointment(data: NewAppointment) {
       throw new AppointmentError('Time slot is already booked', 'SLOT_TAKEN');
     }
 
-    // Step 7: Create appointment with transaction
-    const appointment = await prisma.$transaction(async (prisma) => {
-      // Double-check availability within transaction
-      const slotCheck = await prisma.appointment.findFirst({
+    // Step 7: Create appointment with transaction (upsert Patient + create Appointment)
+    const normalizedPhone = normalizePhone(validatedData.phone);
+    const nameKey = normalizeNameKey(validatedData.patientName);
+
+    const appointment = await prisma.$transaction(async (tx) => {
+      const slotCheck = await tx.appointment.findFirst({
         where: {
           doctorId: validatedData.doctorId,
           date: appointmentDate,
@@ -350,11 +353,31 @@ export async function validateAndCreateAppointment(data: NewAppointment) {
         throw new AppointmentError('Time slot was just taken', 'SLOT_TAKEN');
       }
 
-      return prisma.appointment.create({
+      let patientId: string | undefined;
+      if (normalizedPhone && nameKey) {
+        const patient = await tx.patient.upsert({
+          where: { phone_nameKey: { phone: normalizedPhone, nameKey } },
+          create: {
+            phone: normalizedPhone,
+            name: validatedData.patientName.trim(),
+            nameKey,
+            email: validatedData.email || null,
+          },
+          update: {
+            name: validatedData.patientName.trim(),
+            email: validatedData.email || undefined,
+          },
+        });
+        patientId = patient.id;
+      }
+
+      return tx.appointment.create({
         data: {
           ...validatedData,
+          phone: normalizedPhone ?? validatedData.phone,
           status: 'SCHEDULED',
           date: appointmentDate,
+          patientId,
         },
         include: {
           doctor: {
