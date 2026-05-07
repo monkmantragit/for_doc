@@ -14,7 +14,9 @@ import {
   fetchAllAppointmentsForCalendar,
   deleteAppointmentAction,
   recordCheckIn,
-  recordCheckOut
+  recordCheckOut,
+  undoCheckIn,
+  undoCheckOut
 } from '@/app/actions/admin';
 import { toast } from 'react-hot-toast';
 import {
@@ -23,7 +25,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { ChevronDown, CalendarIcon, ListIcon, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Loader2, Trash2, LogIn, LogOut, FileText } from 'lucide-react';
+import { ChevronDown, CalendarIcon, ListIcon, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Loader2, Trash2, LogIn, LogOut, FileText, Undo2 } from 'lucide-react';
 import { AppointmentDetailDrawer } from '@/components/admin/AppointmentDetailDrawer';
 import { Pagination, PaginationData } from '@/components/admin/Pagination';
 import AdminCalendar from '@/components/AdminCalendar';
@@ -109,6 +111,30 @@ export default function AppointmentsPage() {
     setActingOnId(null);
     if (res.success) {
       toast.success('Checked out');
+      loadInitialData();
+    } else {
+      toast.error(res.error || 'Failed');
+    }
+  };
+
+  const handleUndoCheckIn = async (appointmentId: string) => {
+    setActingOnId(appointmentId);
+    const res = await undoCheckIn(appointmentId);
+    setActingOnId(null);
+    if (res.success) {
+      toast.success('Check-in reverted');
+      loadInitialData();
+    } else {
+      toast.error(res.error || 'Failed');
+    }
+  };
+
+  const handleUndoCheckOut = async (appointmentId: string) => {
+    setActingOnId(appointmentId);
+    const res = await undoCheckOut(appointmentId);
+    setActingOnId(null);
+    if (res.success) {
+      toast.success('Check-out reverted');
       loadInitialData();
     } else {
       toast.error(res.error || 'Failed');
@@ -410,9 +436,18 @@ export default function AppointmentsPage() {
       cell: (appointment: Appointment) => (
         <div className="flex flex-col gap-1">
           {appointment.checkInAt ? (
-            <span className="text-xs text-green-700">
-              <LogIn className="w-3 h-3 inline mr-1" />
+            <span className="text-xs text-green-700 inline-flex items-center gap-1">
+              <LogIn className="w-3 h-3" />
               {fmtTime(appointment.checkInAt)}
+              <button
+                type="button"
+                title="Undo check-in"
+                disabled={actingOnId === appointment.id || !!appointment.checkOutAt}
+                onClick={() => handleUndoCheckIn(appointment.id)}
+                className="ml-1 p-0.5 rounded hover:bg-gray-200 text-gray-500 hover:text-gray-700 disabled:opacity-30 disabled:cursor-not-allowed"
+              >
+                <Undo2 className="w-3 h-3" />
+              </button>
             </span>
           ) : (
             <Button
@@ -430,9 +465,18 @@ export default function AppointmentsPage() {
             </Button>
           )}
           {appointment.checkOutAt ? (
-            <span className="text-xs text-blue-700">
-              <LogOut className="w-3 h-3 inline mr-1" />
+            <span className="text-xs text-blue-700 inline-flex items-center gap-1">
+              <LogOut className="w-3 h-3" />
               {fmtTime(appointment.checkOutAt)}
+              <button
+                type="button"
+                title="Undo check-out"
+                disabled={actingOnId === appointment.id}
+                onClick={() => handleUndoCheckOut(appointment.id)}
+                className="ml-1 p-0.5 rounded hover:bg-gray-200 text-gray-500 hover:text-gray-700 disabled:opacity-30"
+              >
+                <Undo2 className="w-3 h-3" />
+              </button>
             </span>
           ) : (
             <Button
