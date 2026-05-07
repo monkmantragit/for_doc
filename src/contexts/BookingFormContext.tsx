@@ -16,6 +16,7 @@ export interface BookingFormData {
   patientName: string;
   email: string;
   phone: string;
+  notes: string;
   hasAcknowledgedNaveen: boolean;
 }
 
@@ -29,7 +30,8 @@ type BookingFormAction =
   | { type: 'SET_DOCTOR'; payload: Doctor | null }
   | { type: 'SET_DATE'; payload: Date | null }
   | { type: 'SET_TIME'; payload: string }
-  | { type: 'SET_PATIENT_INFO'; payload: { name: string; email: string; phone: string } }
+  | { type: 'SET_PATIENT_INFO'; payload: { name: string; email: string; phone: string; notes?: string } }
+  | { type: 'SET_NOTES'; payload: string }
   | { type: 'SET_STEP'; payload: number }
   | { type: 'SET_SUBMITTING'; payload: boolean }
   | { type: 'SET_ERROR'; payload: { field: string; message: string } }
@@ -44,6 +46,7 @@ const initialState: BookingFormState = {
   patientName: '',
   email: '',
   phone: '',
+  notes: '',
   isSubmitting: false,
   currentStep: 0,
   errors: {},
@@ -69,8 +72,11 @@ function bookingFormReducer(state: BookingFormState, action: BookingFormAction):
         patientName: action.payload.name,
         email: action.payload.email,
         phone: action.payload.phone,
+        notes: action.payload.notes !== undefined ? action.payload.notes : state.notes,
         errors: {},
       };
+    case 'SET_NOTES':
+      return { ...state, notes: action.payload };
     case 'SET_STEP':
       return { ...state, currentStep: action.payload, errors: {} };
     case 'SET_SUBMITTING':

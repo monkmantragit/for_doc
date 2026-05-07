@@ -190,7 +190,7 @@ export function AppointmentDetailDrawer({ appointmentId, open, onClose, onChange
     <Sheet open={open} onOpenChange={(v) => !v && onClose()}>
       <SheetContent
         side="right"
-        className="w-full sm:max-w-xl overflow-y-auto"
+        className="w-full sm:max-w-xl overflow-y-auto bg-white"
       >
         <SheetHeader>
           <SheetTitle>Appointment details</SheetTitle>

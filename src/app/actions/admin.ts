@@ -707,7 +707,7 @@ export const createAppointment = async (appointmentData: any): Promise<ApiRespon
   try {
     console.log('Attempting to create appointment with data:', appointmentData);
 
-    const { patientName, email, phone, date, time, status, doctorId, customerId } = appointmentData;
+    const { patientName, email, phone, date, time, status, doctorId, customerId, notes } = appointmentData;
     const appointmentDate = new Date(date);
     
     // Log both UTC and IST representations for debugging
@@ -915,6 +915,7 @@ export const createAppointment = async (appointmentData: any): Promise<ApiRespon
           patientName,
           email,
           phone: normalizedPhone ?? phone,
+          notes: notes ?? null,
           date: appointmentDate,
           time,
           status,

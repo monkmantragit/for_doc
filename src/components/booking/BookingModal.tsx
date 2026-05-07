@@ -51,6 +51,7 @@ const BookingModalContent = ({ isOpen, onClose }: BookingModalProps) => {
         patientName: state.patientName,
         email: state.email,
         phone: state.phone,
+        notes: state.notes?.trim() || null,
         doctorId: state.doctor.id,
         date: state.selectedDate,
         time: state.selectedTime,
