@@ -1,12 +1,11 @@
 import { NextResponse } from 'next/server';
 import { sign } from 'jsonwebtoken';
-import { compare } from 'bcrypt';
 import { cookies } from 'next/headers';
 
 export const runtime = 'nodejs';
 
 const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || '').split(',').map(e => e.trim()).filter(Boolean);
-const ADMIN_PASSWORD_HASHES = (process.env.ADMIN_PASSWORDS || '').split(',').map(p => p.trim()).filter(Boolean);
+const ADMIN_PASSWORDS = (process.env.ADMIN_PASSWORDS || '').split(',').map(p => p.trim()).filter(Boolean);
 const JWT_SECRET = process.env.JWT_SECRET;
 
 export async function POST(request: Request) {
@@ -15,7 +14,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Server misconfigured' }, { status: 500 });
   }
 
-  if (ADMIN_EMAILS.length === 0 || ADMIN_EMAILS.length !== ADMIN_PASSWORD_HASHES.length) {
+  if (ADMIN_EMAILS.length === 0 || ADMIN_EMAILS.length !== ADMIN_PASSWORDS.length) {
     console.error('ADMIN_EMAILS / ADMIN_PASSWORDS env vars are missing or mismatched');
     return NextResponse.json({ error: 'Server misconfigured' }, { status: 500 });
   }
@@ -35,10 +34,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
     }
 
-    const hash = ADMIN_PASSWORD_HASHES[emailIndex];
-    const passwordMatches = await compare(password, hash);
-
-    if (!passwordMatches) {
+    if (ADMIN_PASSWORDS[emailIndex] !== password) {
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
     }
 
