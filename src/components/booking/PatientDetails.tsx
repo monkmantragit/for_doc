@@ -112,6 +112,22 @@ const PatientDetails = ({ onBack }: PatientDetailsProps) => {
             <p className="mt-1 text-sm text-red-600">{state.errors.phone}</p>
           )}
         </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Reason for visit / concerns <span className="text-gray-400">(optional)</span>
+          </label>
+          <textarea
+            value={state.notes}
+            onChange={(e) => dispatch({ type: 'SET_NOTES', payload: e.target.value })}
+            rows={3}
+            className="w-full px-4 py-2.5 rounded-xl border border-gray-300 focus:border-[#8B5C9E] focus:ring-1 focus:ring-[#8B5C9E] transition-colors"
+            placeholder="Briefly describe your symptoms or what you'd like to consult about"
+          />
+          <p className="mt-1 text-xs text-gray-500">
+            This helps the doctor prepare for your visit.
+          </p>
+        </div>
       </div>
     </div>
   );
