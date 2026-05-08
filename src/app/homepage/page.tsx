@@ -239,7 +239,7 @@ export default function HomePage() {
             className="bg-soi-purple-500 hover:bg-soi-purple-600 text-white px-8 py-4 text-lg border-2 border-soi-pink-500 hover:border-soi-pink-400 transition-all duration-300 hover:shadow-lg"
             onClick={() => setIsBookingModalOpen(true)}
           >
-            Book Consultation
+            Book Appointment
             <ArrowRight className="ml-2 h-5 w-5" />
           </Button>
           <Button 

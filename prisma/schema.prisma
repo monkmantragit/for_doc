@@ -55,6 +55,7 @@ model Appointment {
   visitNotes  String?
   diagnosis   String?
   checkInAt   DateTime?
+  engagedAt   DateTime?
   checkOutAt  DateTime?
   doctor      Doctor   @relation(fields: [doctorId], references: [id])
   patient     Patient? @relation(fields: [patientId], references: [id])

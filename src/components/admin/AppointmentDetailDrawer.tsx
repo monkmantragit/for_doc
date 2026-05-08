@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { format } from 'date-fns';
 import { toast } from 'react-hot-toast';
-import { Loader2, LogIn, LogOut, Save, User, Phone, Mail, Calendar, Clock, Undo2 } from 'lucide-react';
+import { Loader2, LogIn, LogOut, Save, User, Phone, Mail, Calendar, Clock, Undo2, Stethoscope, Printer } from 'lucide-react';
 import {
   Sheet,
   SheetContent,
@@ -17,8 +17,10 @@ import {
   fetchAppointmentDetail,
   recordCheckIn,
   recordCheckOut,
+  recordEngage,
   undoCheckIn,
   undoCheckOut,
+  undoEngage,
   updateVisitNotes,
   fetchPatientHistoryByPhone,
 } from '@/app/actions/admin';
@@ -42,6 +44,7 @@ interface AppointmentDetail {
   visitNotes: string | null;
   diagnosis: string | null;
   checkInAt: Date | null;
+  engagedAt: Date | null;
   checkOutAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
@@ -158,6 +161,133 @@ export function AppointmentDetailDrawer({ appointmentId, open, onClose, onChange
     }
   };
 
+  const handleEngage = async () => {
+    if (!appointmentId) return;
+    const res = await recordEngage(appointmentId);
+    if (res.success) {
+      toast.success('Patient engaged');
+      refresh();
+    } else {
+      toast.error(res.error || 'Failed');
+    }
+  };
+
+  const handleUndoEngage = async () => {
+    if (!appointmentId) return;
+    const res = await undoEngage(appointmentId);
+    if (res.success) {
+      toast.success('Engage reverted');
+      refresh();
+    } else {
+      toast.error(res.error || 'Failed');
+    }
+  };
+
+  const handlePrintNotes = () => {
+    if (!appointment) return;
+
+    const fmt = (d: Date | string | null) =>
+      d ? format(new Date(d), 'MMM d, yyyy · h:mm a') : '—';
+
+    const escapeHtml = (s: string | null | undefined) =>
+      (s ?? '').replace(/[&<>"']/g, (c) =>
+        ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!)
+      );
+
+    const duration = (() => {
+      if (!appointment.checkInAt || !appointment.checkOutAt) return '—';
+      const ms = new Date(appointment.checkOutAt).getTime() - new Date(appointment.checkInAt).getTime();
+      const mins = Math.round(ms / 60000);
+      return mins < 60 ? `${mins} min` : `${Math.floor(mins / 60)}h ${mins % 60}m`;
+    })();
+
+    const html = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Visit Summary - ${escapeHtml(appointment.patientName || '')}</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #1f2937; padding: 32px; max-width: 800px; margin: 0 auto; line-height: 1.5; }
+  h1 { color: #8B5C9E; margin: 0 0 4px; font-size: 24px; }
+  h2 { color: #6B4A7E; font-size: 14px; text-transform: uppercase; letter-spacing: 0.05em; margin: 24px 0 8px; border-bottom: 1px solid #E9D5FF; padding-bottom: 4px; }
+  .header { border-bottom: 2px solid #8B5C9E; padding-bottom: 12px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: flex-start; }
+  .clinic { font-size: 12px; color: #6b7280; }
+  .meta-grid { display: grid; grid-template-columns: 140px 1fr; gap: 8px 16px; font-size: 14px; }
+  .meta-label { color: #6b7280; }
+  .meta-value { color: #1f2937; font-weight: 500; }
+  .notes-box { background: #faf5ff; border: 1px solid #E9D5FF; border-radius: 6px; padding: 12px; white-space: pre-wrap; font-size: 14px; min-height: 40px; }
+  .empty { color: #9ca3af; font-style: italic; }
+  .signature { margin-top: 48px; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; font-size: 13px; }
+  .sig-line { border-top: 1px solid #1f2937; padding-top: 4px; margin-top: 32px; color: #6b7280; }
+  @media print { body { padding: 0; } .no-print { display: none; } }
+</style>
+</head>
+<body>
+  <div class="header">
+    <div>
+      <h1>Visit Summary</h1>
+      <div class="clinic">Sports Orthopedics · Visit record</div>
+    </div>
+    <div style="text-align: right; font-size: 12px; color: #6b7280;">
+      Generated ${fmt(new Date())}<br/>
+      ID: ${escapeHtml(appointment.id)}
+    </div>
+  </div>
+
+  <h2>Patient</h2>
+  <div class="meta-grid">
+    <div class="meta-label">Name</div><div class="meta-value">${escapeHtml(appointment.patientName) || '—'}</div>
+    <div class="meta-label">Phone</div><div class="meta-value">${escapeHtml(appointment.phone) || '—'}</div>
+    <div class="meta-label">Email</div><div class="meta-value">${escapeHtml(appointment.email) || '—'}</div>
+  </div>
+
+  <h2>Doctor</h2>
+  <div class="meta-grid">
+    <div class="meta-label">Name</div><div class="meta-value">Dr. ${escapeHtml(appointment.doctor.name)}</div>
+    <div class="meta-label">Speciality</div><div class="meta-value">${escapeHtml(appointment.doctor.speciality)}</div>
+  </div>
+
+  <h2>Visit timeline</h2>
+  <div class="meta-grid">
+    <div class="meta-label">Scheduled</div><div class="meta-value">${escapeHtml(format(new Date(appointment.date), 'MMM d, yyyy'))} at ${escapeHtml(appointment.time) || '—'}</div>
+    <div class="meta-label">Check-in</div><div class="meta-value">${fmt(appointment.checkInAt)}</div>
+    <div class="meta-label">Engaged</div><div class="meta-value">${fmt(appointment.engagedAt)}</div>
+    <div class="meta-label">Check-out</div><div class="meta-value">${fmt(appointment.checkOutAt)}</div>
+    <div class="meta-label">Duration</div><div class="meta-value">${duration}</div>
+    <div class="meta-label">Status</div><div class="meta-value">${escapeHtml(appointment.status)}</div>
+  </div>
+
+  <h2>Patient's concern (at booking)</h2>
+  <div class="notes-box ${appointment.notes ? '' : 'empty'}">${escapeHtml(appointment.notes) || 'No concerns noted at booking.'}</div>
+
+  <h2>Diagnosis</h2>
+  <div class="notes-box ${diagnosis ? '' : 'empty'}">${escapeHtml(diagnosis) || 'No diagnosis recorded.'}</div>
+
+  <h2>Clinical notes</h2>
+  <div class="notes-box ${visitNotes ? '' : 'empty'}">${escapeHtml(visitNotes) || 'No clinical notes recorded.'}</div>
+
+  <div class="signature">
+    <div class="sig-line">Doctor's signature</div>
+    <div class="sig-line">Date</div>
+  </div>
+
+  <script>
+    window.addEventListener('load', () => { setTimeout(() => window.print(), 250); });
+  </script>
+</body>
+</html>`;
+
+    const w = window.open('', '_blank', 'width=900,height=900');
+    if (!w) {
+      toast.error('Pop-up blocked. Please allow pop-ups for this site.');
+      return;
+    }
+    w.document.open();
+    w.document.write(html);
+    w.document.close();
+  };
+
   const handleSaveNotes = async () => {
     if (!appointmentId) return;
     setSaving(true);
@@ -238,6 +368,10 @@ export function AppointmentDetailDrawer({ appointmentId, open, onClose, onChange
                   Check-in: {fmtDateTime(appointment.checkInAt)}
                 </div>
                 <div className="flex items-center gap-2 text-gray-700">
+                  <Stethoscope className="w-3.5 h-3.5 text-amber-600" />
+                  Engaged: {fmtDateTime(appointment.engagedAt)}
+                </div>
+                <div className="flex items-center gap-2 text-gray-700">
                   <LogOut className="w-3.5 h-3.5 text-blue-600" />
                   Check-out: {fmtDateTime(appointment.checkOutAt)}
                 </div>
@@ -261,13 +395,22 @@ export function AppointmentDetailDrawer({ appointmentId, open, onClose, onChange
                 <Button
                   size="sm"
                   variant="outline"
+                  disabled={!appointment.checkInAt || !!appointment.engagedAt || !!appointment.checkOutAt}
+                  onClick={handleEngage}
+                >
+                  <Stethoscope className="w-3.5 h-3.5 mr-1" />
+                  Engage
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
                   disabled={!appointment.checkInAt || !!appointment.checkOutAt}
                   onClick={handleCheckOut}
                 >
                   <LogOut className="w-3.5 h-3.5 mr-1" />
                   Check out
                 </Button>
-                {appointment.checkInAt && !appointment.checkOutAt && (
+                {appointment.checkInAt && !appointment.engagedAt && !appointment.checkOutAt && (
                   <Button
                     size="sm"
                     variant="ghost"
@@ -276,6 +419,17 @@ export function AppointmentDetailDrawer({ appointmentId, open, onClose, onChange
                   >
                     <Undo2 className="w-3.5 h-3.5 mr-1" />
                     Undo check-in
+                  </Button>
+                )}
+                {appointment.engagedAt && !appointment.checkOutAt && (
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="text-gray-500 hover:text-gray-700"
+                    onClick={handleUndoEngage}
+                  >
+                    <Undo2 className="w-3.5 h-3.5 mr-1" />
+                    Undo engage
                   </Button>
                 )}
                 {appointment.checkOutAt && (
@@ -313,10 +467,21 @@ export function AppointmentDetailDrawer({ appointmentId, open, onClose, onChange
                   className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-[#8B5C9E] focus:ring-[#8B5C9E] focus:outline-none"
                 />
               </div>
-              <Button onClick={handleSaveNotes} disabled={saving} size="sm">
-                {saving ? <Loader2 className="w-3.5 h-3.5 mr-1 animate-spin" /> : <Save className="w-3.5 h-3.5 mr-1" />}
-                Save notes
-              </Button>
+              <div className="flex gap-2 flex-wrap">
+                <Button onClick={handleSaveNotes} disabled={saving} size="sm">
+                  {saving ? <Loader2 className="w-3.5 h-3.5 mr-1 animate-spin" /> : <Save className="w-3.5 h-3.5 mr-1" />}
+                  Save notes
+                </Button>
+                <Button
+                  onClick={handlePrintNotes}
+                  variant="outline"
+                  size="sm"
+                  title="Open a print-friendly view (also works as Save as PDF)"
+                >
+                  <Printer className="w-3.5 h-3.5 mr-1" />
+                  Print / Save as PDF
+                </Button>
+              </div>
             </Card>
 
             {household.length > 0 && (
