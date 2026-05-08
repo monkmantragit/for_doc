@@ -24,32 +24,35 @@ if (!directusUrl) {
   throw new Error('Directus configuration required: NEXT_PUBLIC_DIRECTUS_URL is not set.');
 }
 
-// We only initialise the authenticated Directus client on the **server** to
-// avoid exposing any secret tokens in the browser bundle.  If we don't have an
-// admin token we still try to create the client with the public one so that
-// read-only queries succeed.
+// Initialise the Directus REST client. On the server we prefer the admin
+// token (DIRECTUS_ADMIN_TOKEN is server-only — no NEXT_PUBLIC_ prefix — so it
+// is automatically absent from the browser bundle). In the browser we fall
+// back to the public token (NEXT_PUBLIC_DIRECTUS_TOKEN), which is intentionally
+// safe to expose. This makes read-only Directus queries work uniformly from
+// client components (e.g. the navbar) and server components.
 
-const client: any = (typeof window === 'undefined') ? (() => {
-  // Build the Directus REST client.  If a token is available we attach it for
-  // authenticated requests; otherwise we fall back to anonymous (public) access.
-  const restMiddleware = directusToken ? {
+const client: any = (() => {
+  const isServer = typeof window === 'undefined';
+  const activeToken = isServer ? directusToken : directusPublicToken;
+
+  const restMiddleware = activeToken ? {
     onRequest: (options: any) => ({
       ...options,
       cache: 'no-store', // CRITICAL: Disable caching for production
       headers: {
         ...options.headers,
-        Authorization: `Bearer ${directusToken}`,
+        Authorization: `Bearer ${activeToken}`,
       },
     }),
   } : {
     onRequest: (options: any) => ({
       ...options,
-      cache: 'no-store', // CRITICAL: Disable caching for production
+      cache: 'no-store',
     }),
   };
 
   return createDirectus(directusUrl).with(rest(restMiddleware));
-})() : null;
+})();
 
 // Helper function to create a public client
 function createPublicClient() {
