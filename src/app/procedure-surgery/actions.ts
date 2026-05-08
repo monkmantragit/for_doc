@@ -86,4 +86,20 @@ export async function getCategoriesAction(): Promise<string[]> {
     console.error('Error in getCategoriesAction:', error);
     return ['All'];
   }
+}
+
+export async function getNavbarProceduresAction(): Promise<{
+  categories: string[];
+  procedures: ProcedureSurgery[];
+}> {
+  try {
+    const [categories, response] = await Promise.all([
+      getProcedureCategories(),
+      getProcedureSurgeries(100, 0),
+    ]);
+    return { categories, procedures: response.data };
+  } catch (error) {
+    console.error('Error in getNavbarProceduresAction:', error);
+    return { categories: ['All'], procedures: [] };
+  }
 } 

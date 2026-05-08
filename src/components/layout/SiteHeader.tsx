@@ -7,7 +7,8 @@ import { useRouter, usePathname } from 'next/navigation';
 import { Calendar, Menu, X, ChevronDown, ChevronRight, Activity, Users, Bookmark, BookOpen } from 'lucide-react';
 import BookingButton from '@/components/BookingButton';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getBoneJointCategories, getBoneJointTopics, getBoneJointContent, getImageUrl, getProcedureCategories, getProcedureSurgeries } from '@/lib/directus';
+import { getBoneJointCategories, getBoneJointTopics, getBoneJointContent, getImageUrl } from '@/lib/directus';
+import { getNavbarProceduresAction } from '@/app/procedure-surgery/actions';
 import { getBoneJointTopics as getTopicsData } from '@/app/bone-joint-school/actions';
 
 interface SiteHeaderProps {
@@ -167,19 +168,14 @@ export default function SiteHeader({ theme = 'default', className = '' }: SiteHe
     loadCategories();
   }, []);
 
-  // Fetch procedures data on mount
+  // Fetch procedures data on mount via server action (server-to-server, no CORS)
   useEffect(() => {
     async function loadProcedures() {
       try {
         setProceduresLoading(true);
-        // Fetch procedure categories and all procedures
-        const [categories, proceduresResponse] = await Promise.all([
-          getProcedureCategories(),
-          getProcedureSurgeries(100) // Get more procedures to have a good selection per category
-        ]);
-        
+        const { categories, procedures } = await getNavbarProceduresAction();
         setProcedureCategories(categories);
-        setProcedures(proceduresResponse.data);
+        setProcedures(procedures as any);
       } catch (error) {
         console.error("Failed to fetch procedures:", error);
         setProcedureCategories(['All']);
