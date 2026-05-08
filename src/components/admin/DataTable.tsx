@@ -30,6 +30,7 @@ interface DataTableProps<TData> {
     header: string;
     accessorKey: string;
     sortable?: boolean;
+    hideOnMobile?: boolean;
     cell?: (row: TData) => React.ReactNode;
   }[];
   data: TData[];
@@ -105,7 +106,8 @@ export function DataTable<TData extends object>({
                       className={cn(
                         'px-4 py-3.5 text-left text-sm font-semibold text-gray-900 sm:whitespace-nowrap',
                         'max-sm:px-2 max-sm:py-2 max-sm:text-xs',
-                        canSort && 'cursor-pointer select-none'
+                        canSort && 'cursor-pointer select-none',
+                        column.hideOnMobile && 'hidden md:table-cell'
                       )}
                       onClick={canSort ? header.column.getToggleSortingHandler() : undefined}
                     >
@@ -158,10 +160,13 @@ export function DataTable<TData extends object>({
               table.getRowModel().rows.map((row: Row<TData>) => (
                 <React.Fragment key={row.id}>
                   <tr className="hover:bg-gray-50">
-                    {row.getVisibleCells().map((cell: Cell<TData, unknown>) => (
+                    {row.getVisibleCells().map((cell: Cell<TData, unknown>, idx: number) => (
                       <td
                         key={cell.id}
-                        className="whitespace-nowrap px-4 py-4 text-sm text-gray-900 max-sm:px-2 max-sm:py-3 max-sm:text-xs"
+                        className={cn(
+                          'whitespace-nowrap px-4 py-4 text-sm text-gray-900 max-sm:px-2 max-sm:py-3 max-sm:text-xs',
+                          columns[idx]?.hideOnMobile && 'hidden md:table-cell'
+                        )}
                       >
                         {flexRender(
                           cell.column.columnDef.cell,

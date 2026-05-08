@@ -651,7 +651,8 @@ export async function updateAppointmentStatus(appointmentId: string, newStatus: 
     // Validate status transitions
     const validTransitions: Record<string, string[]> = {
       SCHEDULED: ['CONFIRMED', 'CANCELLED'],
-      CONFIRMED: ['COMPLETED', 'CANCELLED', 'NO_SHOW'],
+      CONFIRMED: ['IN_CONSULTATION', 'COMPLETED', 'CANCELLED', 'NO_SHOW'],
+      IN_CONSULTATION: ['COMPLETED', 'CANCELLED'],
       COMPLETED: [],
       CANCELLED: [],
       NO_SHOW: [],
@@ -1493,11 +1494,63 @@ export async function recordCheckOut(appointmentId: string) {
   }
 }
 
+export async function recordEngage(appointmentId: string) {
+  try {
+    const existing = await prisma.appointment.findUnique({ where: { id: appointmentId } });
+    if (!existing) return { success: false as const, error: 'Appointment not found' };
+    if (!existing.checkInAt) return { success: false as const, error: 'Patient must check in first' };
+    if (existing.engagedAt) return { success: false as const, error: 'Already engaged' };
+    if (existing.checkOutAt) return { success: false as const, error: 'Already checked out' };
+
+    const updated = await prisma.appointment.update({
+      where: { id: appointmentId },
+      data: {
+        engagedAt: new Date(),
+        status: 'IN_CONSULTATION',
+      },
+    });
+
+    revalidatePath('/admin/appointments');
+    return { success: true as const, data: updated };
+  } catch (error) {
+    console.error('Error recording engage:', error);
+    return { success: false as const, error: 'Failed to record engage' };
+  }
+}
+
+export async function undoEngage(appointmentId: string) {
+  try {
+    const existing = await prisma.appointment.findUnique({ where: { id: appointmentId } });
+    if (!existing) return { success: false as const, error: 'Appointment not found' };
+    if (!existing.engagedAt) return { success: false as const, error: 'Not engaged yet' };
+    if (existing.checkOutAt) {
+      return { success: false as const, error: 'Undo check-out first before undoing engage' };
+    }
+
+    const updated = await prisma.appointment.update({
+      where: { id: appointmentId },
+      data: {
+        engagedAt: null,
+        status: 'CONFIRMED',
+      },
+    });
+
+    revalidatePath('/admin/appointments');
+    return { success: true as const, data: updated };
+  } catch (error) {
+    console.error('Error undoing engage:', error);
+    return { success: false as const, error: 'Failed to undo engage' };
+  }
+}
+
 export async function undoCheckIn(appointmentId: string) {
   try {
     const existing = await prisma.appointment.findUnique({ where: { id: appointmentId } });
     if (!existing) return { success: false as const, error: 'Appointment not found' };
     if (!existing.checkInAt) return { success: false as const, error: 'Not checked in yet' };
+    if (existing.engagedAt) {
+      return { success: false as const, error: 'Undo engage first before undoing check-in' };
+    }
     if (existing.checkOutAt) {
       return { success: false as const, error: 'Undo check-out first before undoing check-in' };
     }
@@ -1528,7 +1581,7 @@ export async function undoCheckOut(appointmentId: string) {
       where: { id: appointmentId },
       data: {
         checkOutAt: null,
-        status: 'CONFIRMED',
+        status: existing.engagedAt ? 'IN_CONSULTATION' : 'CONFIRMED',
       },
     });
 

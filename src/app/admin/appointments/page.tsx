@@ -15,8 +15,10 @@ import {
   deleteAppointmentAction,
   recordCheckIn,
   recordCheckOut,
+  recordEngage,
   undoCheckIn,
-  undoCheckOut
+  undoCheckOut,
+  undoEngage
 } from '@/app/actions/admin';
 import { toast } from 'react-hot-toast';
 import {
@@ -25,7 +27,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { ChevronDown, CalendarIcon, ListIcon, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Loader2, Trash2, LogIn, LogOut, FileText, Undo2 } from 'lucide-react';
+import { ChevronDown, CalendarIcon, ListIcon, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Loader2, Trash2, LogIn, LogOut, FileText, Undo2, Stethoscope } from 'lucide-react';
 import { AppointmentDetailDrawer } from '@/components/admin/AppointmentDetailDrawer';
 import { Pagination, PaginationData } from '@/components/admin/Pagination';
 import AdminCalendar from '@/components/AdminCalendar';
@@ -51,6 +53,7 @@ interface Appointment {
   customerId: string | null;
   doctor: Doctor;
   checkInAt: Date | null;
+  engagedAt: Date | null;
   checkOutAt: Date | null;
   visitNotes: string | null;
   diagnosis: string | null;
@@ -135,6 +138,30 @@ export default function AppointmentsPage() {
     setActingOnId(null);
     if (res.success) {
       toast.success('Check-out reverted');
+      loadInitialData();
+    } else {
+      toast.error(res.error || 'Failed');
+    }
+  };
+
+  const handleEngage = async (appointmentId: string) => {
+    setActingOnId(appointmentId);
+    const res = await recordEngage(appointmentId);
+    setActingOnId(null);
+    if (res.success) {
+      toast.success('Patient engaged');
+      loadInitialData();
+    } else {
+      toast.error(res.error || 'Failed');
+    }
+  };
+
+  const handleUndoEngage = async (appointmentId: string) => {
+    setActingOnId(appointmentId);
+    const res = await undoEngage(appointmentId);
+    setActingOnId(null);
+    if (res.success) {
+      toast.success('Engage reverted');
       loadInitialData();
     } else {
       toast.error(res.error || 'Failed');
@@ -258,6 +285,8 @@ export default function AppointmentsPage() {
         return 'bg-[#F3E8FF] text-[#8B5C9E] border border-[#E9D5FF]';
       case 'CONFIRMED':
         return 'bg-[#8B5C9E] text-white';
+      case 'IN_CONSULTATION':
+        return 'bg-amber-100 text-amber-800 border border-amber-200';
       case 'COMPLETED':
         return 'bg-[#8B5C9E]/80 text-white';
       case 'CANCELLED':
@@ -276,6 +305,8 @@ export default function AppointmentsPage() {
         return '🕒';
       case 'CONFIRMED':
         return '✓';
+      case 'IN_CONSULTATION':
+        return '🩺';
       case 'COMPLETED':
         return '✔️';
       case 'CANCELLED':
@@ -288,7 +319,7 @@ export default function AppointmentsPage() {
   };
 
   const getAvailableStatuses = (currentStatus: string) => {
-    const allStatuses = ['SCHEDULED', 'CONFIRMED', 'COMPLETED', 'CANCELLED', 'NO_SHOW'];
+    const allStatuses = ['SCHEDULED', 'CONFIRMED', 'IN_CONSULTATION', 'COMPLETED', 'CANCELLED', 'NO_SHOW'];
     return allStatuses.filter(status => status !== currentStatus);
   };
 
@@ -344,6 +375,7 @@ export default function AppointmentsPage() {
     {
       header: 'Doctor',
       accessorKey: 'doctor',
+      hideOnMobile: true,
       cell: (appointment: Appointment) => (
         <div className={appointment.status === 'CANCELLED' ? 'text-gray-500 opacity-75' : ''}>
           <div className={`font-medium ${appointment.status === 'CANCELLED' ? 'text-gray-500' : 'text-gray-900'}`}>{appointment.doctor?.name}</div>
@@ -420,10 +452,11 @@ export default function AppointmentsPage() {
     {
       header: 'Fee',
       accessorKey: 'doctor.fee',
+      hideOnMobile: true,
       cell: (appointment: Appointment) => {
         const fee = appointment.doctor?.fee ?? 0;
         return (
-          <div className={`font-medium hidden md:block ${appointment.status === 'CANCELLED' ? 'text-gray-500 opacity-75' : 'text-gray-900'}`}>
+          <div className={`font-medium ${appointment.status === 'CANCELLED' ? 'text-gray-500 opacity-75' : 'text-gray-900'}`}>
             ₹{fee.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </div>
         );
@@ -431,10 +464,11 @@ export default function AppointmentsPage() {
       sortable: true,
     },
     {
-      header: 'Check-in / out',
+      header: 'Visit progress',
       accessorKey: 'checkInAt',
       cell: (appointment: Appointment) => (
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1 min-w-[140px]">
+          {/* Check-in */}
           {appointment.checkInAt ? (
             <span className="text-xs text-green-700 inline-flex items-center gap-1">
               <LogIn className="w-3 h-3" />
@@ -442,7 +476,7 @@ export default function AppointmentsPage() {
               <button
                 type="button"
                 title="Undo check-in"
-                disabled={actingOnId === appointment.id || !!appointment.checkOutAt}
+                disabled={actingOnId === appointment.id || !!appointment.engagedAt || !!appointment.checkOutAt}
                 onClick={() => handleUndoCheckIn(appointment.id)}
                 className="ml-1 p-0.5 rounded hover:bg-gray-200 text-gray-500 hover:text-gray-700 disabled:opacity-30 disabled:cursor-not-allowed"
               >
@@ -464,6 +498,41 @@ export default function AppointmentsPage() {
               Check in
             </Button>
           )}
+
+          {/* Engage */}
+          {appointment.engagedAt ? (
+            <span className="text-xs text-amber-700 inline-flex items-center gap-1">
+              <Stethoscope className="w-3 h-3" />
+              {fmtTime(appointment.engagedAt)}
+              <button
+                type="button"
+                title="Undo engage"
+                disabled={actingOnId === appointment.id || !!appointment.checkOutAt}
+                onClick={() => handleUndoEngage(appointment.id)}
+                className="ml-1 p-0.5 rounded hover:bg-gray-200 text-gray-500 hover:text-gray-700 disabled:opacity-30 disabled:cursor-not-allowed"
+              >
+                <Undo2 className="w-3 h-3" />
+              </button>
+            </span>
+          ) : (
+            <Button
+              size="sm"
+              variant="outline"
+              className="h-7 text-xs"
+              disabled={
+                actingOnId === appointment.id ||
+                !appointment.checkInAt ||
+                !!appointment.checkOutAt ||
+                ['CANCELLED', 'NO_SHOW'].includes(appointment.status)
+              }
+              onClick={() => handleEngage(appointment.id)}
+            >
+              <Stethoscope className="w-3 h-3 mr-1" />
+              Engage
+            </Button>
+          )}
+
+          {/* Check-out */}
           {appointment.checkOutAt ? (
             <span className="text-xs text-blue-700 inline-flex items-center gap-1">
               <LogOut className="w-3 h-3" />
@@ -501,8 +570,9 @@ export default function AppointmentsPage() {
     {
       header: 'Created',
       accessorKey: 'createdAt',
+      hideOnMobile: true,
       cell: (appointment: Appointment) => (
-        <div className="text-xs text-gray-500 hidden md:block">
+        <div className="text-xs text-gray-500">
           {format(new Date(appointment.createdAt), 'MMM d, yyyy')}
           <div>{format(new Date(appointment.createdAt), 'h:mm a')}</div>
         </div>
@@ -512,8 +582,9 @@ export default function AppointmentsPage() {
     {
       header: 'Updated',
       accessorKey: 'updatedAt',
+      hideOnMobile: true,
       cell: (appointment: Appointment) => (
-        <div className="text-xs text-gray-500 hidden md:block">
+        <div className="text-xs text-gray-500">
           {format(new Date(appointment.updatedAt), 'MMM d, yyyy')}
           <div>{format(new Date(appointment.updatedAt), 'h:mm a')}</div>
         </div>
