@@ -19,8 +19,21 @@ export default function PhysiotherapyPage() {
       
       <main>
         {/* Hero Section */}
-        <section className="relative bg-gradient-to-br from-[#2E3A59] via-[#2a3450] to-[#1f2937] pt-28 pb-16">
-          <Container>
+        <section className="relative pt-28 pb-16 overflow-hidden">
+          {/* Background image of physiotherapy in progress */}
+          <div className="absolute inset-0 z-0">
+            <Image
+              src="/images/physiotherapy-hero.jpg"
+              alt="Physiotherapy session in progress"
+              fill
+              priority
+              className="object-cover"
+            />
+            {/* Dark overlay + brand gradient for text legibility */}
+            <div className="absolute inset-0 bg-gradient-to-br from-[#2E3A59]/85 via-[#2a3450]/80 to-[#1f2937]/85" />
+          </div>
+
+          <Container className="relative z-10">
             <div className="max-w-4xl mx-auto text-center">
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
                 Physiotherapy Services at Sports Orthopedic Institute, HSR
@@ -29,11 +42,11 @@ export default function PhysiotherapyPage() {
                 Bridging the gap between medical treatment and an active lifestyle with personalized recovery plans.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <BookingButton 
+                <BookingButton
                   className="bg-[#8B5C9E] hover:bg-[#7A4F8C] text-white px-6 py-3 text-base font-medium rounded-lg transition-all duration-300 hover:shadow-lg w-full sm:w-auto"
                   text="Book a Physiotherapy Session"
                 />
-                <a 
+                <a
                   href="#services"
                   className="inline-flex items-center px-6 py-3 border border-white/25 text-white text-base font-medium rounded-lg hover:bg-white/5 transition-all duration-300 w-full sm:w-auto justify-center"
                 >

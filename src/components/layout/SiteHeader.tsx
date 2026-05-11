@@ -203,17 +203,15 @@ export default function SiteHeader({ theme = 'default', className = '' }: SiteHe
     // Can add more educational content here in the future
   ];
 
-  // Resources dropdown items
-  const resourcesLinks = [
-    { name: 'Clinical Videos', href: '/clinical-videos' },
-    { name: 'Publications', href: '/publications' },
-    { name: 'Sports Rehabilitation Centre', href: '/physiotherapy' },
-  ];
+  // Sports Rehabilitation top-level link (replaces the old Resources dropdown)
+  const sportsRehabLink = { name: 'Sports Rehabilitation', href: '/physiotherapy' };
 
-  // Media dropdown items
+  // Media dropdown items (resources and media clubbed together)
   const mediaLinks = [
     { name: 'Gallery', href: '/gallery' },
     { name: 'Blogs', href: '/blogs' },
+    { name: 'Clinical Videos', href: '/clinical-videos' },
+    { name: 'Publications', href: '/publications' },
     { name: 'Contact', href: '/contact' },
   ];
 
@@ -235,8 +233,7 @@ export default function SiteHeader({ theme = 'default', className = '' }: SiteHe
       name: `  ${category}`, // Indent to show hierarchy
       href: `/bone-joint-school${category === 'All' ? '' : `?category=${encodeURIComponent(category)}`}`
     }))),
-    { section: 'Resources' },
-    ...resourcesLinks,
+    sportsRehabLink,
     { section: 'Media' },
     ...mediaLinks,
   ];
@@ -680,57 +677,23 @@ export default function SiteHeader({ theme = 'default', className = '' }: SiteHe
                     )}
                   </div>
                   
-                  {/* Resources Dropdown - Using hover with delay */}
-                  <li
-                    className="relative mr-8"
-                    onMouseEnter={() => handleMouseEnter('resources')}
-                    onMouseLeave={handleMouseLeave}
-                  >
+                  {/* Sports Rehabilitation - top-level link */}
+                  <li className="mr-8">
                     <button
-                      className={`font-medium transition-colors duration-300 flex items-center group ${
+                      onClick={() => handleNavigation(sportsRehabLink.href)}
+                      className={`font-medium transition-colors duration-300 relative group ${
                         isTransparent && !scrolled
                           ? 'text-white hover:text-white/80'
                           : 'text-gray-200 hover:text-soi-mint-400'
-                      } py-2`}
-                      aria-expanded={activeDropdown === 'resources'}
-                      aria-haspopup="true"
+                      } py-2 block`}
                     >
-                      Resources
-                      <span className={`flex items-center justify-center ml-2 w-5 h-5 ${
-                        isTransparent && !scrolled
-                          ? 'bg-white/20 group-hover:bg-white/30'
-                          : 'bg-soi-navy-600 group-hover:bg-soi-navy-500'
-                      } rounded-full transition-all duration-150 ${activeDropdown === 'resources' ? 'rotate-180' : ''}`}>
-                        <ChevronDown className={`w-3.5 h-3.5 ${
-                          isTransparent && !scrolled ? 'text-white' : 'text-soi-mint-400'
-                        }`} />
-                      </span>
+                      {sportsRehabLink.name}
                       <span className={`absolute bottom-0 left-0 w-0 h-0.5 ${
                         isTransparent && !scrolled ? 'bg-white' : 'bg-soi-mint-400'
                       } group-hover:w-full transition-all duration-300`}></span>
                     </button>
-                    
-                    {activeDropdown === 'resources' && (
-                      <div 
-                        className="absolute top-full left-0 mt-1 w-64 bg-white rounded-lg shadow-lg py-2 z-50 border border-gray-100"
-                        onMouseEnter={handleMenuContainerMouseEnter}
-                        role="menu"
-                        aria-label="Resources"
-                      >
-                        {resourcesLinks.map((item) => (
-                          <button
-                            key={item.name}
-                            onClick={() => handleNavigation(item.href)}
-                            className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-50 hover:text-[#8B5C9E] transition-colors duration-150"
-                            role="menuitem"
-                          >
-                            {item.name}
-                          </button>
-                        ))}
-                      </div>
-                    )}
                   </li>
-                  
+
                   {/* Media Dropdown - Using hover with delay */}
                   <li
                     className="relative"
@@ -1041,25 +1004,16 @@ export default function SiteHeader({ theme = 'default', className = '' }: SiteHe
                     </div>
                   )}
 
-                  {/* Resources Section */}
-                  {resourcesLinks.length > 0 && (
-                    <div className="mt-4">
-                      <div className="px-4 pt-2 pb-2 text-sm font-medium text-gray-500 uppercase tracking-wider">
-                        Resources
-                      </div>
-                      {resourcesLinks.map((item) => (
-                        <button
-                          key={item.href}
-                          onClick={() => handleNavigation(item.href)}
-                          className={`flex w-full text-left px-4 py-3 text-gray-800 hover:bg-gray-50 transition-colors ${
-                            pathname === item.href ? 'bg-gray-50 text-[#8B5C9E] font-medium' : ''
-                          }`}
-                        >
-                          {item.name}
-                        </button>
-                      ))}
-                    </div>
-                  )}
+                  {/* Sports Rehabilitation - top-level link */}
+                  <button
+                    key={sportsRehabLink.href}
+                    onClick={() => handleNavigation(sportsRehabLink.href)}
+                    className={`flex w-full text-left px-4 py-3 text-gray-800 hover:bg-gray-50 transition-colors ${
+                      pathname === sportsRehabLink.href ? 'bg-gray-50 text-[#8B5C9E] font-medium' : ''
+                    }`}
+                  >
+                    {sportsRehabLink.name}
+                  </button>
 
                   {/* Media Section */}
                   {mediaLinks.length > 0 && (
