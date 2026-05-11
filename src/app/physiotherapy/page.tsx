@@ -23,7 +23,7 @@ export default function PhysiotherapyPage() {
           {/* Background image of physiotherapy in progress */}
           <div className="absolute inset-0 z-0">
             <Image
-              src="/images/physiotherapy-hero.jpg"
+              src="/uploads/content/3adb89cd-medium-shot-athlete-physiotherapy.webp.webp"
               alt="Physiotherapy session in progress"
               fill
               priority
