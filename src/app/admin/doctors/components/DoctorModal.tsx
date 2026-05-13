@@ -185,6 +185,7 @@ export default function DoctorModal({ isOpen, onClose, doctor, onSuccess }: Doct
                       <SelectItem value="Sports Shoulder Clinic">Sports Shoulder Clinic</SelectItem>
                       <SelectItem value="Orthopedic">Orthopedic</SelectItem>
                       <SelectItem value="Sports Psychologist">Sports Psychologist</SelectItem>
+                      <SelectItem value="Physiotherapist">Physiotherapist</SelectItem>
                       <SelectItem value="Cardiologist">Cardiologist</SelectItem>
                       <SelectItem value="Pediatrician">Pediatrician</SelectItem>
                       <SelectItem value="Neurologist">Neurologist</SelectItem>
