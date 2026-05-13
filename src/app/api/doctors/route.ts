@@ -11,6 +11,9 @@ export async function GET() {
   try {
     console.log('API /api/doctors: Fetching doctors from DB...');
     const dbDoctors = await prisma.doctor.findMany({
+      where: {
+        isActive: true
+      },
       include: {
         schedules: true
       },
