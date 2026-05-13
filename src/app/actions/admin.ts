@@ -1384,19 +1384,32 @@ export async function fetchDoctorById(doctorId: string) {
 // Action to delete a doctor
 export async function deleteDoctor(doctorId: string): Promise<ApiResponse> {
   try {
-    // Optional: Check if the doctor has any upcoming appointments
-    // and handle accordingly (e.g., prevent deletion or reassign)
-
-    await prisma.doctor.delete({
-      where: { id: doctorId },
+    const appointmentCount = await prisma.appointment.count({
+      where: { doctorId },
     });
-    revalidatePath('/admin/doctors'); // Or wherever doctors are listed
+
+    if (appointmentCount > 0) {
+      return {
+        success: false,
+        error: `Cannot delete doctor: ${appointmentCount} appointment(s) reference this doctor. Deactivate the doctor instead, or reassign/delete the appointments first.`,
+      };
+    }
+
+    await prisma.$transaction([
+      prisma.doctorSchedule.deleteMany({ where: { doctorId } }),
+      prisma.specialDate.deleteMany({ where: { doctorId } }),
+      prisma.doctor.delete({ where: { id: doctorId } }),
+    ]);
+
+    revalidatePath('/admin/doctors');
     return { success: true, message: 'Doctor deleted successfully' };
   } catch (error) {
     console.error("Error deleting doctor:", error);
-    // Check for specific Prisma errors, e.g., record not found
     if ((error as any).code === 'P2025') {
       return { success: false, error: 'Doctor not found or already deleted.' };
+    }
+    if ((error as any).code === 'P2003') {
+      return { success: false, error: 'Cannot delete doctor: related records exist. Deactivate instead.' };
     }
     return { success: false, error: 'Failed to delete doctor. Please try again.' };
   }
