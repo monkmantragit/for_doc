@@ -13,27 +13,31 @@ import { getClinicalVideosAction, getVideoCategoriesAction } from './actions';
 // Hardcoded external videos (Frame.io). These cannot be embedded — clicking opens
 // the source URL in a new tab. Kept here instead of Directus until the team
 // decides on a permanent hosting destination.
+// Each entry's thumbnailUrl points to /public/images/educational-bytes/<file>.jpg.
+// If that file doesn't exist, ExternalVideoCard falls back to /images/default-procedure.jpg
+// automatically, so the card always renders an image.
 const externalVideos: Array<{
   url: string;
   title: string;
   doctor: string;
   category: string;
+  thumbnailUrl: string;
 }> = [
   // Dr. Sameer — Manipal
-  { url: 'https://f.io/NIhdmV2H', title: 'Dr. Sameer — Manipal Byte 1', doctor: 'Dr. Sameer | MHSR', category: 'Manipal Bytes' },
-  { url: 'https://f.io/wsbZevHh', title: 'Dr. Sameer — Manipal Byte 2', doctor: 'Dr. Sameer | MHSR', category: 'Manipal Bytes' },
-  { url: 'https://f.io/vzPKZKgk', title: 'Dr. Sameer — Manipal Byte 3', doctor: 'Dr. Sameer | MHSR', category: 'Manipal Bytes' },
-  { url: 'https://f.io/adn2e6_w', title: 'Dr. Sameer — Manipal Byte 4', doctor: 'Dr. Sameer | MHSR', category: 'Manipal Bytes' },
-  { url: 'https://f.io/ue4N-Qzk', title: 'Dr. Sameer — Manipal Byte 5', doctor: 'Dr. Sameer | MHSR', category: 'Manipal Bytes' },
+  { url: 'https://f.io/NIhdmV2H', title: 'Dr. Sameer — Manipal Byte 1', doctor: 'Dr. Sameer | MHSR', category: 'Manipal Bytes', thumbnailUrl: '/images/educational-bytes/dr-sameer-byte-1.jpg' },
+  { url: 'https://f.io/wsbZevHh', title: 'Dr. Sameer — Manipal Byte 2', doctor: 'Dr. Sameer | MHSR', category: 'Manipal Bytes', thumbnailUrl: '/images/educational-bytes/dr-sameer-byte-2.jpg' },
+  { url: 'https://f.io/vzPKZKgk', title: 'Dr. Sameer — Manipal Byte 3', doctor: 'Dr. Sameer | MHSR', category: 'Manipal Bytes', thumbnailUrl: '/images/educational-bytes/dr-sameer-byte-3.jpg' },
+  { url: 'https://f.io/adn2e6_w', title: 'Dr. Sameer — Manipal Byte 4', doctor: 'Dr. Sameer | MHSR', category: 'Manipal Bytes', thumbnailUrl: '/images/educational-bytes/dr-sameer-byte-4.jpg' },
+  { url: 'https://f.io/ue4N-Qzk', title: 'Dr. Sameer — Manipal Byte 5', doctor: 'Dr. Sameer | MHSR', category: 'Manipal Bytes', thumbnailUrl: '/images/educational-bytes/dr-sameer-byte-5.jpg' },
   // Dr. Karthik — Bytes
-  { url: 'https://f.io/O1RBrwaa', title: 'Ankle Sprain', doctor: 'Dr. Karthik', category: 'Foot & Ankle' },
-  { url: 'https://f.io/rlo3PbVE', title: 'Regenerative Therapy', doctor: 'Dr. Karthik', category: 'General' },
-  { url: 'https://f.io/PVhgZBvq', title: 'Coccyx Pain', doctor: 'Dr. Karthik', category: 'Spine' },
-  { url: 'https://f.io/Mx0IpKjm', title: 'Flat Foot', doctor: 'Dr. Karthik', category: 'Foot & Ankle' },
-  { url: 'https://f.io/-hWjEn2J', title: 'Hip Pain', doctor: 'Dr. Karthik', category: 'Hip' },
+  { url: 'https://f.io/O1RBrwaa', title: 'Ankle Sprain', doctor: 'Dr. Karthik', category: 'Foot & Ankle', thumbnailUrl: '/images/educational-bytes/ankle-sprain.jpg' },
+  { url: 'https://f.io/rlo3PbVE', title: 'Regenerative Therapy', doctor: 'Dr. Karthik', category: 'General', thumbnailUrl: '/images/educational-bytes/regenerative-therapy.jpg' },
+  { url: 'https://f.io/PVhgZBvq', title: 'Coccyx Pain', doctor: 'Dr. Karthik', category: 'Spine', thumbnailUrl: '/images/educational-bytes/coccyx-pain.jpg' },
+  { url: 'https://f.io/Mx0IpKjm', title: 'Flat Foot', doctor: 'Dr. Karthik', category: 'Foot & Ankle', thumbnailUrl: '/images/educational-bytes/flat-foot.jpg' },
+  { url: 'https://f.io/-hWjEn2J', title: 'Hip Pain', doctor: 'Dr. Karthik', category: 'Hip', thumbnailUrl: '/images/educational-bytes/hip-pain.jpg' },
   // Dr. Sreejith T J — MHSR
-  { url: 'https://f.io/Zvc-xk0N', title: 'Educational Byte (English)', doctor: 'Dr. Sreejith T J | MHSR', category: 'Bytes' },
-  { url: 'https://f.io/p99Sx0vd', title: 'Educational Byte (Malayalam)', doctor: 'Dr. Sreejith T J | MHSR', category: 'Bytes' },
+  { url: 'https://f.io/Zvc-xk0N', title: 'Educational Byte (English)', doctor: 'Dr. Sreejith T J | MHSR', category: 'Bytes', thumbnailUrl: '/images/educational-bytes/educational-byte-english.jpg' },
+  { url: 'https://f.io/p99Sx0vd', title: 'Educational Byte (Malayalam)', doctor: 'Dr. Sreejith T J | MHSR', category: 'Bytes', thumbnailUrl: '/images/educational-bytes/educational-byte-malayalam.jpg' },
 ];
 
 // Fallback videos data for development
@@ -440,6 +444,7 @@ export default function ClinicalVideosPage() {
                 title={v.title}
                 doctor={v.doctor}
                 category={v.category}
+                thumbnailUrl={v.thumbnailUrl}
               />
             ))}
           </div>
