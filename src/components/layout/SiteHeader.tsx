@@ -234,7 +234,7 @@ export default function SiteHeader({ theme = 'default', className = '' }: SiteHe
       href: `/bone-joint-school${category === 'All' ? '' : `?category=${encodeURIComponent(category)}`}`
     }))),
     sportsRehabLink,
-    { section: 'Media' },
+    { section: 'Resources' },
     ...mediaLinks,
   ];
 
@@ -709,7 +709,7 @@ export default function SiteHeader({ theme = 'default', className = '' }: SiteHe
                       aria-expanded={activeDropdown === 'media'}
                       aria-haspopup="true"
                     >
-                      Media
+                      Resources
                       <span className={`flex items-center justify-center ml-2 w-5 h-5 ${
                         isTransparent && !scrolled
                           ? 'bg-white/20 group-hover:bg-white/30'
@@ -729,7 +729,7 @@ export default function SiteHeader({ theme = 'default', className = '' }: SiteHe
                         className="absolute top-full left-0 mt-1 w-64 bg-white rounded-lg shadow-lg py-2 z-50 border border-gray-100"
                         onMouseEnter={handleMenuContainerMouseEnter}
                         role="menu"
-                        aria-label="Media"
+                        aria-label="Resources"
                       >
                         {mediaLinks.map((item) => (
                           <button
@@ -1015,11 +1015,11 @@ export default function SiteHeader({ theme = 'default', className = '' }: SiteHe
                     {sportsRehabLink.name}
                   </button>
 
-                  {/* Media Section */}
+                  {/* Resources Section */}
                   {mediaLinks.length > 0 && (
                     <div className="mt-4">
                       <div className="px-4 pt-2 pb-2 text-sm font-medium text-gray-500 uppercase tracking-wider">
-                        Media
+                        Resources
                       </div>
                       {mediaLinks.map((item) => (
                         <button
