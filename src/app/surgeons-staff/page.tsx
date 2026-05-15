@@ -87,7 +87,7 @@ export default async function SurgeonsStaffPage({ searchParams }: StaffPageProps
         <section className="relative pt-20 pb-12 overflow-hidden">
           <div className="absolute inset-0 z-0">
             <Image
-              src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?q=80&w=2070&auto=format&fit=crop"
+              src="https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?q=80&w=2070&auto=format&fit=crop"
               alt=""
               fill
               priority
