@@ -57,7 +57,7 @@ export function HeroSection({ title, description, imageSrc }: HeroSectionProps) 
           <BookingButton 
             className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-medium rounded-lg inline-flex items-center transition-colors backdrop-blur-sm border-2 border-white/30 hover:border-soi-pink-400"
             icon={<Calendar className="w-5 h-5 mr-2" />}
-            text="Request Consultation"
+            text="Book Consultation"
           />
         </div>
       </div>
