@@ -73,9 +73,10 @@ export default async function ProcedureSurgeryPage({
         {/* Hero Section - Match homepage style */}
         <HeroSection
           className="pt-24"
-          variant="color"   // Change variant to color
+          variant="image"
           height="medium"
-          bgColor="#1e3a5f" 
+          bgColor="#1e3a5f"
+          bgImage="https://images.unsplash.com/photo-1588776814546-daab30f310ce?q=80&w=2070&auto=format&fit=crop"
           title={
             // Add Badge
             <div className="max-w-5xl mx-auto">

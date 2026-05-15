@@ -84,8 +84,18 @@ export default async function SurgeonsStaffPage({ searchParams }: StaffPageProps
       
       <main>
         {/* Hero Section - More subtle and refined */}
-        <section className="relative bg-gradient-to-br from-soi-navy-600 via-soi-navy-700 to-soi-navy-800 pt-20 pb-12">
-          <Container>
+        <section className="relative pt-20 pb-12 overflow-hidden">
+          <div className="absolute inset-0 z-0">
+            <Image
+              src="/images/team-hero.jpg"
+              alt=""
+              fill
+              priority
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-br from-soi-navy-600/85 via-soi-navy-700/85 to-soi-navy-800/90" />
+          </div>
+          <Container className="relative z-10">
             {/* Breadcrumb */}
             <nav className="flex items-center space-x-2 text-sm text-white/60 mb-6">
               <Link href="/" className="hover:text-white transition-colors">Home</Link>
