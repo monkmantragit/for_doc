@@ -353,7 +353,7 @@ export default function ClinicalVideosPage() {
       {/* Hero Section */}
       <HeroSection
         title="Clinical Videos"
-        description="Watch educational videos on orthopedic conditions, treatments, and surgical procedures by Dr. Naveen Kumar L V."
+        description="Watch educational videos on orthopedic conditions, treatments, and surgical procedures by Dr. Naveen Kumar L V, Dr. Sameer K M, Dr. Karthik D, Dr. Shreejith T."
         imageSrc="/images/team-hero.jpg"
       />
       
