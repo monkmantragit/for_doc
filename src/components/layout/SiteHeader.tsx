@@ -206,12 +206,12 @@ export default function SiteHeader({ theme = 'default', className = '' }: SiteHe
   // Sports Rehabilitation top-level link (replaces the old Resources dropdown)
   const sportsRehabLink = { name: 'Sports Rehabilitation', href: '/physiotherapy' };
 
-  // Media dropdown items (resources and media clubbed together)
+  // Resources dropdown items (order per client spec)
   const mediaLinks = [
-    { name: 'Gallery', href: '/gallery' },
-    { name: 'Blogs', href: '/blogs' },
     { name: 'Clinical Videos', href: '/clinical-videos' },
     { name: 'Publications', href: '/publications' },
+    { name: 'Blogs', href: '/blogs' },
+    { name: 'Gallery', href: '/gallery' },
     { name: 'Contact', href: '/contact' },
   ];
 
