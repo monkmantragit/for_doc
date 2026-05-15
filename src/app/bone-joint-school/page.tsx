@@ -230,7 +230,7 @@ export default async function BoneJointSchoolPage({
                 aria-label="Book an appointment with our specialists"
               >
                 <span className="flex items-center justify-center">
-                  Request a Consultation
+                  Book Consultation
                   <ArrowRight className="ml-2 w-5 h-5" />
                 </span>
               </Button>

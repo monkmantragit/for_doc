@@ -100,7 +100,7 @@ export default async function ProcedureSurgeryPage({
               <BookingButton 
                 className="bg-soi-navy-500 hover:bg-soi-navy-600 text-white rounded-lg px-8 sm:px-10 py-3 text-base font-medium transition-all duration-300 hover:shadow-lg w-full sm:w-auto"
                 icon={null}
-                text="Request Consultation"
+                text="Book Consultation"
               />
               {/* Secondary Action: Scroll Button */}
               <ScrollToProceduresButton />
