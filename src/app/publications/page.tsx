@@ -186,9 +186,10 @@ export default async function PublicationsPage() {
       {/* Hero Section - Styled like homepage */}
       <HeroSection
         className="pt-24 pb-16" // Add top and bottom padding for balance
-        variant="color" // Change to color to remove background image 
+        variant="image"
         height="medium"
         bgColor="#1e3a5f" // SOI Navy background
+        bgImage="https://images.unsplash.com/photo-1532619675605-1ede6c2ed2b0?q=80&w=2070&auto=format&fit=crop"
         title={
           <div className="max-w-5xl mx-auto px-4">
             {/* Badge */}

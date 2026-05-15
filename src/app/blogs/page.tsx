@@ -166,17 +166,31 @@ export default async function BlogPage() {
     <div className="bg-tint-expertise">
       <SiteHeader />
       
-      <main className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <main>
         {/* Hero Section */}
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-soi-navy-800 tracking-tight mb-6">
-            Our Medical <span className="text-soi-purple-500">Blog</span>
-          </h1>
-          <p className="text-xl text-soi-navy-600 max-w-3xl mx-auto leading-relaxed">
-            Expert insights, research, and guidance from our team of orthopedic specialists. 
-            Stay informed about the latest advances in sports medicine and orthopedic care.
-          </p>
-        </div>
+        <section className="relative overflow-hidden pt-32 pb-20 mb-16">
+          <div className="absolute inset-0 z-0">
+            <Image
+              src="/images/default-hero.jpg"
+              alt=""
+              fill
+              priority
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-br from-soi-navy-700/85 via-soi-navy-800/85 to-soi-purple-700/80" />
+          </div>
+          <div className="relative z-10 text-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight mb-6">
+              Our Medical <span className="text-soi-purple-300">Blog</span>
+            </h1>
+            <p className="text-xl text-white/90 max-w-3xl mx-auto leading-relaxed">
+              Expert insights, research, and guidance from our team of orthopedic specialists.
+              Stay informed about the latest advances in sports medicine and orthopedic care.
+            </p>
+          </div>
+        </section>
+
+        <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
 
         {blogPosts.length > 0 ? (
           <>
@@ -224,8 +238,9 @@ export default async function BlogPage() {
             </div>
           </div>
         )}
+        </div>
       </main>
-      
+
       <SiteFooter />
     </div>
   );
