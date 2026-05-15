@@ -603,6 +603,16 @@ export default function SiteHeader({ theme = 'default', className = '' }: SiteHe
                         >
                           {/* Categories directly in main dropdown */}
                           <div className="p-4 pr-8">
+                            {/* View All Bone Joint School Link */}
+                            <Link
+                              href="/bone-joint-school"
+                              className="flex items-center px-3 py-2 mb-3 rounded-lg bg-[#8B5C9E]/5 hover:bg-[#8B5C9E]/10 transition-colors"
+                              onClick={() => setActiveDropdown(null)}
+                            >
+                              <BookOpen className="h-4 w-4 mr-2 text-[#8B5C9E]" />
+                              <span className="font-semibold text-[#8B5C9E]">View All Bone Joint School</span>
+                            </Link>
+
                             <h4 className="font-bold text-gray-900 mb-3 px-2">Categories</h4>
                             {categoriesLoading ? (
                               <div className="text-center py-4 text-gray-500">Loading...</div>
