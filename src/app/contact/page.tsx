@@ -30,9 +30,9 @@ export default function ContactPage() {
       <SchemaMarkup schema={schemas} />
       <SiteHeader theme="light" />
       
-      <main className="pt-24 md:pt-32 pb-16">
+      <main className="pb-16">
         {/* Hero Section */}
-        <section className="relative overflow-hidden py-16 md:py-24">
+        <section className="relative overflow-hidden pt-32 md:pt-40 pb-16 md:pb-24">
           <div className="absolute inset-0 z-0">
             <Image
               src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=2070&auto=format&fit=crop"
