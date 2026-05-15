@@ -171,11 +171,12 @@ export default async function BlogPage() {
         <section className="relative overflow-hidden pt-32 pb-20 mb-16">
           <div className="absolute inset-0 z-0">
             <Image
-              src="/images/default-hero.jpg"
+              src="https://images.unsplash.com/photo-1505751172876-fa1923c5c528?q=80&w=2070&auto=format&fit=crop"
               alt=""
               fill
               priority
               className="object-cover"
+              unoptimized
             />
             <div className="absolute inset-0 bg-gradient-to-br from-soi-navy-700/85 via-soi-navy-800/85 to-soi-purple-700/80" />
           </div>

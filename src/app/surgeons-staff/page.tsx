@@ -87,11 +87,12 @@ export default async function SurgeonsStaffPage({ searchParams }: StaffPageProps
         <section className="relative pt-20 pb-12 overflow-hidden">
           <div className="absolute inset-0 z-0">
             <Image
-              src="/images/team-hero.jpg"
+              src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?q=80&w=2070&auto=format&fit=crop"
               alt=""
               fill
               priority
               className="object-cover"
+              unoptimized
             />
             <div className="absolute inset-0 bg-gradient-to-br from-soi-navy-600/85 via-soi-navy-700/85 to-soi-navy-800/90" />
           </div>

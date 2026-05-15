@@ -35,11 +35,12 @@ export default function ContactPage() {
         <section className="relative overflow-hidden py-16 md:py-24">
           <div className="absolute inset-0 z-0">
             <Image
-              src="/images/default-hero.jpg"
+              src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=2070&auto=format&fit=crop"
               alt=""
               fill
               priority
               className="object-cover"
+              unoptimized
             />
             <div className="absolute inset-0 bg-gradient-to-br from-soi-navy-700/85 via-soi-navy-800/85 to-soi-pink-600/70" />
           </div>
