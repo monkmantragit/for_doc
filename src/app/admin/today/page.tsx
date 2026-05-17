@@ -102,9 +102,13 @@ export default function TodayPage() {
       const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate());
       const endOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59);
       
+      // Physiotherapy bookings have their own dedicated admin tab
+      // (/admin/physiotherapy-bookings), so this clinic-wide "Today's
+      // Appointments" view excludes them.
       return await fetchAppointments(1, 100, {
         startDate: startOfDay,
-        endDate: endOfDay
+        endDate: endOfDay,
+        excludeSpeciality: 'Physiotherapist',
       });
     },
     {

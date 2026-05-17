@@ -184,10 +184,13 @@ export default function AppointmentsPage() {
     setIsLoading(true);
     try {
       let appointmentResult;
+      // Physiotherapy bookings live in their own admin tab (/admin/physiotherapy-bookings),
+      // so this Appointments tab should NOT include them. Every fetch call here
+      // passes excludeSpeciality so the lists/calendars stay strictly orthopedic.
       const defaultListViewFilters: any = {
         startDate: startOfMonth(selectedMonth),
         endDate: endOfMonth(selectedMonth),
-        // status: { notIn: ['CANCELLED', 'NO_SHOW', 'COMPLETED'] } // MODIFICATION: Removed to always fetch cancelled for list view
+        excludeSpeciality: 'Physiotherapist',
       };
 
       if (viewMode === 'list') {
@@ -197,16 +200,14 @@ export default function AppointmentsPage() {
           defaultListViewFilters
         );
       } else {
-        // For calendar view, fetch all statuses for the month to display them correctly
-        // Or decide if calendar should also respect some default filters
         appointmentResult = await fetchAppointments(pagination.page, pagination.pageSize, {
             startDate: startOfMonth(selectedMonth),
-            endDate: endOfMonth(selectedMonth)
-            // No status filter here, or a different one for calendar if needed
-        }); 
+            endDate: endOfMonth(selectedMonth),
+            excludeSpeciality: 'Physiotherapist',
+        });
       }
       const [calendarAppointmentResult, doctorResult] = await Promise.all([
-        fetchAllAppointmentsForCalendar(), // This fetches ALL for full calendar display
+        fetchAllAppointmentsForCalendar({ excludeSpeciality: 'Physiotherapist' }),
         fetchDoctors()
       ]);
 
@@ -239,7 +240,9 @@ export default function AppointmentsPage() {
 
   const loadAppointments = async () => {
     try {
-      const result = await fetchAppointments(pagination.page, pagination.pageSize);
+      const result = await fetchAppointments(pagination.page, pagination.pageSize, {
+        excludeSpeciality: 'Physiotherapist',
+      });
       if (result.success && result.data) {
         setAppointments(result.data.appointments);
         setPagination(result.data.pagination);
