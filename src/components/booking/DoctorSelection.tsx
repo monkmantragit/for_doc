@@ -176,7 +176,9 @@ const DoctorSelection = ({ onNext }: DoctorSelectionProps = {}) => {
       try {
         setIsLoading(true);
         console.log('DoctorSelection: Fetching /api/doctors...');
-        const response = await fetch('/api/doctors');
+        // Hide Physiotherapists from this list — they're booked via a separate
+        // modal triggered from /physiotherapy.
+        const response = await fetch('/api/doctors?excludeSpeciality=Physiotherapist');
         console.log('DoctorSelection: API response status:', response.status);
 
         if (!response.ok) {

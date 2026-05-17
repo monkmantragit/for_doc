@@ -5,7 +5,7 @@ import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import SiteHeader from '@/components/layout/SiteHeader';
 import SiteFooter from '@/components/layout/SiteFooter';
 import { Container } from '@/components/ui/container';
-import BookingButton from '@/components/BookingButton';
+import PhysiotherapyBookingButton from '@/components/PhysiotherapyBookingButton';
 
 export const metadata: Metadata = {
   title: 'Physiotherapy Services | Sports Orthopedic Institute, HSR',
@@ -42,7 +42,7 @@ export default function PhysiotherapyPage() {
                 Bridging the gap between medical treatment and an active lifestyle with personalized recovery plans.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <BookingButton
+                <PhysiotherapyBookingButton
                   className="bg-[#8B5C9E] hover:bg-[#7A4F8C] text-white px-6 py-3 text-base font-medium rounded-lg transition-all duration-300 hover:shadow-lg w-full sm:w-auto"
                   text="Book a Physiotherapy Session"
                 />
@@ -227,7 +227,7 @@ export default function PhysiotherapyPage() {
                 Our expert physiotherapists are here to help you regain strength, mobility, and confidence.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <BookingButton 
+                <PhysiotherapyBookingButton 
                   className="bg-white hover:bg-gray-100 text-[#8B5C9E] px-6 py-3 text-base font-medium rounded-lg transition-all duration-300 hover:shadow-lg w-full sm:w-auto"
                   text="Book a Physiotherapy Session"
                 />
