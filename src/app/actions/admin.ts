@@ -403,13 +403,17 @@ export async function fetchDoctors() {
 }
 
 export async function fetchAppointments(
-  page: number = 1, 
-  pageSize: number = 10, 
+  page: number = 1,
+  pageSize: number = 10,
   filters?: {
     startDate?: Date;
     endDate?: Date;
     doctorId?: string;
     status?: string;
+    /** Filter by the related doctor's speciality (e.g. "Physiotherapist"). */
+    speciality?: string;
+    /** Exclude appointments whose related doctor has this speciality. */
+    excludeSpeciality?: string;
   }
 ) {
   try {
@@ -429,6 +433,15 @@ export async function fetchAppointments(
 
     if (filters?.status) {
       where.status = filters.status;
+    }
+
+    if (filters?.speciality) {
+      where.doctor = { ...(where.doctor || {}), speciality: filters.speciality };
+    } else if (filters?.excludeSpeciality) {
+      where.doctor = {
+        ...(where.doctor || {}),
+        NOT: { speciality: filters.excludeSpeciality }
+      };
     }
     
     // Get total count for pagination
@@ -484,9 +497,24 @@ export async function fetchAppointments(
 }
 
 // NEW: Action to fetch all appointments specifically for the calendar view
-export async function fetchAllAppointmentsForCalendar(): Promise<ApiResponse<any[]>> {
+export async function fetchAllAppointmentsForCalendar(
+  filters?: {
+    /** Filter by the related doctor's speciality (e.g. "Physiotherapist"). */
+    speciality?: string;
+    /** Exclude appointments whose related doctor has this speciality. */
+    excludeSpeciality?: string;
+  }
+): Promise<ApiResponse<any[]>> {
   try {
+    const where: any = {};
+    if (filters?.speciality) {
+      where.doctor = { speciality: filters.speciality };
+    } else if (filters?.excludeSpeciality) {
+      where.doctor = { NOT: { speciality: filters.excludeSpeciality } };
+    }
+
     const appointments = await prisma.appointment.findMany({
+      where,
       select: { // Select fields needed by FullCalendarView AND AppointmentModal
         id: true,
         patientName: true,

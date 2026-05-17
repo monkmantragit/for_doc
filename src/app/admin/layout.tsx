@@ -20,7 +20,8 @@ import {
   CalendarClock,
   FileText,
   Image as ImageIcon,
-  Search
+  Search,
+  Activity
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -33,6 +34,7 @@ const menuItems = [
   { href: '/admin/doctors', label: 'Doctors', icon: Users },
   { href: '/admin/schedule', label: 'Schedule', icon: Calendar },
   { href: '/admin/appointments', label: 'Appointments', icon: Clock },
+  { href: '/admin/physiotherapy-bookings', label: 'Physiotherapy Bookings', icon: Activity },
   { href: '/admin/analytics', label: 'Analytics', icon: BarChart2 },
   { href: '/admin/settings', label: 'Settings', icon: Settings },
   { href: '/admin/content', label: 'Content', icon: FileText, hideOnMobile: true },

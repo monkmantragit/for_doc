@@ -7,13 +7,32 @@ import { prisma } from '@/lib/prisma';
 
 // Removed mock data as we'll use actual database data
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    console.log('API /api/doctors: Fetching doctors from DB...');
+    // Optional filters supplied by callers:
+    //   ?speciality=Physiotherapist          -> include only this speciality
+    //   ?excludeSpeciality=Physiotherapist   -> hide this speciality from the list
+    // The two booking flows use this split: the main BookingModal excludes
+    // Physiotherapists so they don't show up in the doctor selection, and the
+    // PhysiotherapyBookingModal pulls only Physiotherapists.
+    const { searchParams } = new URL(request.url);
+    const specialityFilter = searchParams.get('speciality') || undefined;
+    const excludeSpeciality = searchParams.get('excludeSpeciality') || undefined;
+
+    console.log('API /api/doctors: Fetching doctors from DB...', {
+      specialityFilter,
+      excludeSpeciality,
+    });
+
+    const where: any = { isActive: true };
+    if (specialityFilter) {
+      where.speciality = specialityFilter;
+    } else if (excludeSpeciality) {
+      where.NOT = { speciality: excludeSpeciality };
+    }
+
     const dbDoctors = await prisma.doctor.findMany({
-      where: {
-        isActive: true
-      },
+      where,
       include: {
         schedules: true
       },
