@@ -110,9 +110,12 @@ export default function AdminLayout({
       const today = new Date();
       const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate());
       const endOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59);
+      // Notification poller is for the orthopedic team. Physiotherapy
+      // bookings notify separately via the /admin/physiotherapy-bookings tab.
       return await fetchAppointments(1, 100, {
         startDate: startOfDay,
-        endDate: endOfDay
+        endDate: endOfDay,
+        excludeSpeciality: 'Physiotherapist',
       });
     },
     {
