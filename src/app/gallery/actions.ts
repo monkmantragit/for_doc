@@ -11,7 +11,15 @@ import { GalleryImage } from '@/types/gallery';
 // Only images tagged with one of these categories in Directus are shown on the
 // public Gallery page. Anything outside this allowlist is filtered out, even if
 // it's published in Directus.
-const ALLOWED_CATEGORIES = ['Awards & Recognition', 'Events', 'General'];
+const ALLOWED_CATEGORIES = [
+  'Awards & Recognition',
+  'Ceremony',
+  'Events',
+  'Faculty & Presentations',
+  'Our Facilities',
+  'Patient Feedbacks',
+  'General',
+];
 
 export async function getGalleryImagesAction(
   page: number = 1,
