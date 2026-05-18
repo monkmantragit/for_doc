@@ -186,39 +186,79 @@ export default function GalleryPage() {
             </div>
           )}
           
-          {/* Gallery Grid */}
+          {/* Gallery — grouped by category. Each non-empty category renders
+              as its own section with a heading; empty categories are skipped
+              so we don't show a heading with nothing under it.
+              When a specific category filter is active we only render that
+              one section. */}
           <div className="max-w-7xl mx-auto">
             {!loading && images.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {images.map((image: GalleryImage) => (
-                  <motion.div
-                    key={image.id}
-                    layout
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ duration: 0.3 }}
-                    className="group relative aspect-square rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer border border-soi-purple-100 hover:border-soi-purple-300 bg-white"
-                    onClick={() => setSelectedImage(image.id)}
-                    style={{ minHeight: '200px' }}
-                  >
-                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
-                      <Image
-                        src={(image as any).imageUrl || `/images/gallery/${image.image}`}
-                        alt={image.title}
-                        fill
-                        sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                        className="object-cover transition-transform duration-500 group-hover:scale-110"
-                      />
-                    </div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    <div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                      <p className="text-white font-medium text-sm md:text-base">{image.title}</p>
-                      <p className="text-white/80 text-xs md:text-sm">{image.category}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
+              (() => {
+                // Group the loaded images by category client-side.
+                const grouped = images.reduce<Record<string, GalleryImage[]>>((acc, img) => {
+                  const key = img.category || 'Uncategorized';
+                  if (!acc[key]) acc[key] = [];
+                  acc[key].push(img);
+                  return acc;
+                }, {});
+
+                // Render order: follow the `categories` array from the API
+                // (which preserves the allowlist order in actions.ts), but
+                // restrict to the actively-selected category when filtered.
+                const categoryOrder =
+                  selectedCategory === 'All'
+                    ? categories.filter((c) => c !== 'All')
+                    : [selectedCategory];
+
+                return (
+                  <div className="space-y-16">
+                    {categoryOrder
+                      .filter((cat) => (grouped[cat]?.length ?? 0) > 0)
+                      .map((cat) => (
+                        <section key={cat}>
+                          <div className="mb-6 flex items-end justify-between gap-4">
+                            <div>
+                              <h2 className="text-2xl md:text-3xl font-bold text-soi-navy-800">{cat}</h2>
+                              <p className="text-sm text-soi-navy-500 mt-1">
+                                {grouped[cat].length} image{grouped[cat].length === 1 ? '' : 's'}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                            {grouped[cat].map((image: GalleryImage) => (
+                              <motion.div
+                                key={image.id}
+                                layout
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.9 }}
+                                transition={{ duration: 0.3 }}
+                                className="group relative aspect-square rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer border border-soi-purple-100 hover:border-soi-purple-300 bg-white"
+                                onClick={() => setSelectedImage(image.id)}
+                                style={{ minHeight: '200px' }}
+                              >
+                                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
+                                  <Image
+                                    src={(image as any).imageUrl || `/images/gallery/${image.image}`}
+                                    alt={image.title}
+                                    fill
+                                    sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                                  />
+                                </div>
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                <div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                                  <p className="text-white font-medium text-sm md:text-base">{image.title}</p>
+                                  <p className="text-white/80 text-xs md:text-sm">{image.category}</p>
+                                </div>
+                              </motion.div>
+                            ))}
+                          </div>
+                        </section>
+                      ))}
+                  </div>
+                );
+              })()
             ) : !loading ? (
               <div className="text-center py-12">
                 <p className="text-soi-navy-600 mb-4">No images found matching your search criteria.</p>
