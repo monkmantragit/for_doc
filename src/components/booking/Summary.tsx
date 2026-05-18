@@ -159,20 +159,24 @@ export const Summary = ({
         )}
       </div>
 
-      {/* Important Notice */}
-      <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-        <div className="flex items-start gap-3">
-          <div className="flex-shrink-0 w-5 h-5 rounded-full bg-amber-100 flex items-center justify-center mt-0.5">
-            <span className="text-amber-600 text-xs font-bold">!</span>
-          </div>
-          <div>
-            <p className="text-sm font-medium text-amber-800 mb-1">Important Notice</p>
-            <p className="text-sm text-amber-700">
-              Please note: Dr Naveen doesn't see back & neck pains. Please book an appointment with Dr Sameer for the same.
-            </p>
+      {/* Important Notice — only relevant for orthopedic bookings. Hidden on
+          physiotherapy bookings where neither Dr. Naveen nor Dr. Sameer is
+          the consulting doctor. */}
+      {formData.doctor?.speciality !== 'Physiotherapist' && (
+        <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+          <div className="flex items-start gap-3">
+            <div className="flex-shrink-0 w-5 h-5 rounded-full bg-amber-100 flex items-center justify-center mt-0.5">
+              <span className="text-amber-600 text-xs font-bold">!</span>
+            </div>
+            <div>
+              <p className="text-sm font-medium text-amber-800 mb-1">Important Notice</p>
+              <p className="text-sm text-amber-700">
+                Please note: Dr Naveen doesn't see back & neck pains. Please book an appointment with Dr Sameer for the same.
+              </p>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Submit Button */}
       <div className="flex justify-end pt-4">
