@@ -17,6 +17,7 @@ const ALLOWED_CATEGORIES = [
   'Events',
   'Faculty & Presentations',
   'Our Facilities',
+  'Facilities',
   'Patient Feedbacks',
   'General',
 ];
