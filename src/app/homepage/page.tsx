@@ -582,7 +582,7 @@ export default function HomePage() {
                 </p>
                 <div className="text-soi-navy-600 space-y-4 prose max-w-none">
                   <p>
-                    Dr. Naveen, a globally acclaimed orthopedic surgeon, is the Chief of Orthopedics & Sports Medicine at Manipal Hospital. With 24+ years of experience, numerous international qualifications, and fellowships, he specializes in advanced arthroscopy, arthroplasty, and trauma care.
+                    Dr. Naveen, a globally acclaimed orthopedic surgeon, is the Chief of Orthopedics & Sports Medicine at Manipal Hospital. With 26+ years of experience, numerous international qualifications, and fellowships, he specializes in advanced arthroscopy, arthroplasty, and trauma care.
                   </p>
                   <p>
                     Dedicated to excellence, he sees over 80 patients daily and performs thousands of complex surgeries annually, alongside contributing to anonymous charitable work.
