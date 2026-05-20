@@ -57,11 +57,14 @@ export default async function SurgeonsStaffPage({ searchParams }: StaffPageProps
   console.log('Available categories:', Object.keys(groupedStaff));
   console.log('All staff:', allStaff.map(s => ({ title: s.title, category: s.category })));
 
-  // Define category mapping with icons - Dr. Naveen first, Associate Consultant MUST be 2nd, Clinic Staff last
+  // Define category mapping with icons - Dr. Naveen first, Consultants MUST be 2nd, Clinic Staff last.
+  // Display label is "Consultants" but the Directus category values remain
+  // "Associate Consultant" / "Consultant" so existing staff records keep
+  // matching without a data migration.
   const categoryConfig: Record<string, { title: string; icon: any; priority: number }> = {
     'Director': { title: 'Director', icon: Award, priority: 1 },
-    'Associate Consultant': { title: 'Associate Consultant', icon: Award, priority: 2 }, // MUST be 2nd - using exact category name
-    'Consultant': { title: 'Associate Consultant', icon: Award, priority: 2 }, // Backup for different naming
+    'Associate Consultant': { title: 'Consultants', icon: Award, priority: 2 },
+    'Consultant': { title: 'Consultants', icon: Award, priority: 2 }, // Backup for different naming
     'Sports Shoulder Clinic': { title: 'Sports Shoulder Clinic', icon: Activity, priority: 2.5 }, // Specialized sports shoulder department
     'Sports Psychologist': { title: 'Sports Psychologist', icon: UserPlus, priority: 3 },
     'Sports Orthopedics Fellows': { title: 'Sports Orthopedics Fellows', icon: Users, priority: 4 },
