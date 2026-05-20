@@ -385,9 +385,9 @@ export default function SiteHeader({ theme = 'default', className = '' }: SiteHe
         } as CSSProperties}
       >
         <div className="container mx-auto px-4 flex items-center h-full">
-          <div className="flex items-center justify-between w-full">
-            {/* Logo and Brand - Webflow-style implementation */}
-            <div className="flex items-center">
+          <div className="flex items-center w-full">
+            {/* Logo and Brand - left flex-1 zone */}
+            <div className="flex items-center flex-1">
               <button 
                 onClick={() => handleNavigation('/')} 
                 className="group flex items-start space-x-3"
@@ -414,13 +414,12 @@ export default function SiteHeader({ theme = 'default', className = '' }: SiteHe
               </button>
             </div>
             
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center">
-              <nav className={`px-4 2xl:px-8 py-2 rounded-full transition-all duration-300 ${
-                isTransparent && !scrolled
-                  ? 'bg-white/10 backdrop-blur-sm'
-                  : 'bg-soi-navy-900/50 backdrop-blur-sm'
-              }`}>
+            {/* Desktop Navigation - centered between the two flex-1 zones */}
+            <nav className={`hidden lg:flex items-center px-4 2xl:px-8 py-2 rounded-full transition-all duration-300 ${
+              isTransparent && !scrolled
+                ? 'bg-white/10 backdrop-blur-sm'
+                : 'bg-soi-navy-900/50 backdrop-blur-sm'
+            }`}>
                 <ul className="flex items-center">
                   {mainNavLinks.map((item) => (
                     <li key={item.name} className="mr-5 2xl:mr-8">
@@ -756,10 +755,12 @@ export default function SiteHeader({ theme = 'default', className = '' }: SiteHe
                   </li>
                 </ul>
               </nav>
-              
-              {/* Book an Appointment Button — compact at lg, full at xl+ */}
+
+            {/* Right cluster - right flex-1 zone (booking CTA + mobile hamburger) */}
+            <div className="flex items-center justify-end flex-1 gap-2">
+              {/* Desktop Booking Button — compact at lg, full at 2xl+ */}
               <BookingButton
-                className={`ml-4 2xl:ml-6 px-4 2xl:px-6 py-2 2xl:py-3 rounded-full text-sm 2xl:text-base font-medium transition-colors duration-300 shadow-sm hover:shadow-md flex items-center whitespace-nowrap ${
+                className={`hidden lg:flex px-4 2xl:px-6 py-2 2xl:py-3 rounded-full text-sm 2xl:text-base font-medium transition-colors duration-300 shadow-sm hover:shadow-md items-center whitespace-nowrap ${
                   isTransparent && scrollY < 50
                     ? 'bg-white text-[#8B5C9E] hover:bg-white/90'
                     : 'bg-[#8B5C9E] text-white hover:bg-[#7a4f8a]'
@@ -773,13 +774,10 @@ export default function SiteHeader({ theme = 'default', className = '' }: SiteHe
                 }
                 ariaLabel="Book an Appointment"
               />
-            </div>
-            
-            {/* Mobile: Booking & Menu Buttons */}
-            <div className="flex items-center space-x-2 lg:hidden">
+
               {/* Mobile Booking Button (compact) */}
-              <BookingButton 
-                className={`px-3 py-2 rounded-full font-medium transition-colors duration-300 shadow-sm hover:shadow-md flex items-center ${
+              <BookingButton
+                className={`lg:hidden px-3 py-2 rounded-full font-medium transition-colors duration-300 shadow-sm hover:shadow-md flex items-center ${
                   isTransparent && !scrolled
                     ? 'bg-white text-[#8B5C9E] hover:bg-white/90'
                     : 'bg-[#8B5C9E] text-white hover:bg-[#7a4f8a]'
@@ -788,10 +786,10 @@ export default function SiteHeader({ theme = 'default', className = '' }: SiteHe
                 text=""
                 ariaLabel="Book an Appointment"
               />
-              
-              {/* Mobile Menu Button - with consistent styling */}
+
+              {/* Mobile Menu Button */}
               <button
-                className={`p-2 rounded-full transition-colors duration-300 ${
+                className={`lg:hidden p-2 rounded-full transition-colors duration-300 ${
                   isTransparent && !scrolled
                     ? 'bg-white/20 hover:bg-white/30'
                     : 'bg-soi-navy-600 hover:bg-soi-navy-500'
