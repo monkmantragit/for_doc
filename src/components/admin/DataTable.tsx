@@ -104,7 +104,7 @@ export function DataTable<TData extends object>({
                     <th
                       key={header.id}
                       className={cn(
-                        'px-4 py-3.5 text-left text-sm font-semibold text-gray-900 sm:whitespace-nowrap',
+                        'px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:whitespace-nowrap',
                         'max-sm:px-2 max-sm:py-2 max-sm:text-xs',
                         canSort && 'cursor-pointer select-none',
                         column.hideOnMobile && 'hidden md:table-cell'
@@ -164,7 +164,7 @@ export function DataTable<TData extends object>({
                       <td
                         key={cell.id}
                         className={cn(
-                          'whitespace-nowrap px-4 py-4 text-sm text-gray-900 max-sm:px-2 max-sm:py-3 max-sm:text-xs',
+                          'whitespace-nowrap px-3 py-4 text-sm text-gray-900 max-sm:px-2 max-sm:py-3 max-sm:text-xs',
                           columns[idx]?.hideOnMobile && 'hidden md:table-cell'
                         )}
                       >

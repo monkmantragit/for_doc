@@ -766,8 +766,8 @@ export default function AppointmentsPage() {
         </>
       )}
       {viewMode === 'list' ? (
-        <Card className="mt-4 overflow-hidden border-0 shadow-none bg-transparent">
-          <div className="overflow-visible w-full">
+        <Card className="mt-4 border-0 shadow-none bg-transparent">
+          <div className="overflow-x-auto w-full">
             <DataTable
               columns={columns}
               data={appointments}
