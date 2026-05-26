@@ -392,8 +392,11 @@ export default function AppointmentsPage() {
       accessorKey: 'date',
       cell: (appointment: Appointment) => (
         <div className={appointment.status === 'CANCELLED' ? 'text-gray-500 opacity-75' : ''}>
-          <div className={`font-medium ${appointment.status === 'CANCELLED' ? 'text-gray-500' : 'text-gray-900'}`}>
-            {format(new Date(appointment.date), 'MMM d, yyyy')}
+          <div
+            className={`font-medium ${appointment.status === 'CANCELLED' ? 'text-gray-500' : 'text-gray-900'}`}
+            title={format(new Date(appointment.date), 'MMM d, yyyy')}
+          >
+            {format(new Date(appointment.date), 'MMM d')}
           </div>
           <div className="text-sm">{appointment.time}</div>
         </div>
@@ -470,7 +473,7 @@ export default function AppointmentsPage() {
       header: 'Visit progress',
       accessorKey: 'checkInAt',
       cell: (appointment: Appointment) => (
-        <div className="flex flex-col gap-1 min-w-[140px]">
+        <div className="flex flex-col gap-1 min-w-[120px]">
           {/* Check-in */}
           {appointment.checkInAt ? (
             <span className="text-xs text-green-700 inline-flex items-center gap-1">
@@ -576,7 +579,7 @@ export default function AppointmentsPage() {
       hideOnMobile: true,
       cell: (appointment: Appointment) => (
         <div className="text-xs text-gray-500">
-          {format(new Date(appointment.createdAt), 'MMM d, yyyy')}
+          {format(new Date(appointment.createdAt), 'MMM d')}
           <div>{format(new Date(appointment.createdAt), 'h:mm a')}</div>
         </div>
       ),
@@ -588,7 +591,7 @@ export default function AppointmentsPage() {
       hideOnMobile: true,
       cell: (appointment: Appointment) => (
         <div className="text-xs text-gray-500">
-          {format(new Date(appointment.updatedAt), 'MMM d, yyyy')}
+          {format(new Date(appointment.updatedAt), 'MMM d')}
           <div>{format(new Date(appointment.updatedAt), 'h:mm a')}</div>
         </div>
       ),
