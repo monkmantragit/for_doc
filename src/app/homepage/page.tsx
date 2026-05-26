@@ -14,6 +14,7 @@ import { Metadata } from 'next';
 import HeroSection from '@/components/ui/HeroSection';
 import AffiliationsSlider from '@/components/ui/AffiliationsSlider';
 import { AnimatePresence } from 'framer-motion';
+import { Search as SearchIcon } from 'lucide-react';
 
 const specialties = [
   {
@@ -233,9 +234,33 @@ export default function HomePage() {
           </div>
         }
       >
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
-          <Button 
-            size="lg" 
+        <form
+          action="/search"
+          method="get"
+          role="search"
+          className="relative flex items-center w-full max-w-2xl mx-auto mt-8"
+        >
+          <SearchIcon className="absolute left-5 w-5 h-5 text-gray-400 pointer-events-none" />
+          <input
+            type="search"
+            name="q"
+            placeholder="Search procedures, conditions, surgeons…"
+            aria-label="Search the site"
+            autoComplete="off"
+            minLength={2}
+            className="w-full pl-12 pr-32 py-4 text-base rounded-full bg-white/95 backdrop-blur-sm shadow-lg border border-white/20 text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-soi-mint-400 focus:bg-white"
+          />
+          <button
+            type="submit"
+            className="absolute right-2 px-5 py-2.5 rounded-full bg-soi-purple-500 hover:bg-soi-purple-600 text-white text-sm font-medium transition-colors shadow-md"
+          >
+            Search
+          </button>
+        </form>
+
+        <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6">
+          <Button
+            size="lg"
             className="bg-soi-purple-500 hover:bg-soi-purple-600 text-white px-8 py-4 text-lg border-2 border-soi-pink-500 hover:border-soi-pink-400 transition-all duration-300 hover:shadow-lg"
             onClick={() => setIsBookingModalOpen(true)}
           >
