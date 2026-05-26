@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter, usePathname } from 'next/navigation';
-import { Calendar, Menu, X, ChevronDown, ChevronRight, Activity, Users, Bookmark, BookOpen } from 'lucide-react';
+import { Calendar, Menu, X, ChevronDown, ChevronRight, Activity, Users, Bookmark, BookOpen, Search } from 'lucide-react';
 import BookingButton from '@/components/BookingButton';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getBoneJointCategories, getBoneJointTopics, getBoneJointContent, getImageUrl } from '@/lib/directus';
@@ -48,6 +48,9 @@ export default function SiteHeader({ theme = 'default', className = '' }: SiteHe
   const pathname = usePathname();
   const headerRef = useRef<HTMLElement>(null);
   const isMobile = useRef(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const [boneJointCategories, setBoneJointCategories] = useState<string[]>([]);
   const [categoriesLoading, setCategoriesLoading] = useState(true);
   const [boneJointTopics, setBoneJointTopics] = useState<BoneJointTopic[]>([]);
@@ -139,7 +142,28 @@ export default function SiteHeader({ theme = 'default', className = '' }: SiteHe
   useEffect(() => {
     setMobileMenuOpen(false);
     setActiveDropdown(null);
+    setSearchOpen(false);
   }, [pathname]);
+
+  // Focus the search input when it opens; ESC closes it
+  useEffect(() => {
+    if (!searchOpen) return;
+    searchInputRef.current?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setSearchOpen(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [searchOpen]);
+
+  const submitSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    const q = searchQuery.trim();
+    if (q.length < 2) return;
+    setSearchOpen(false);
+    setMobileMenuOpen(false);
+    router.push(`/search?q=${encodeURIComponent(q)}`);
+  };
 
   // Fetch categories and topics on mount
   useEffect(() => {
@@ -756,8 +780,24 @@ export default function SiteHeader({ theme = 'default', className = '' }: SiteHe
                 </ul>
               </nav>
 
-            {/* Right cluster - right flex-1 zone (booking CTA + mobile hamburger) */}
+            {/* Right cluster - right flex-1 zone (search + booking CTA + mobile hamburger) */}
             <div className="flex items-center justify-end flex-1 gap-2">
+              {/* Search toggle (desktop) */}
+              <button
+                type="button"
+                onClick={() => setSearchOpen((v) => !v)}
+                aria-label={searchOpen ? 'Close search' : 'Open search'}
+                aria-expanded={searchOpen}
+                aria-controls="site-search-bar"
+                className={`hidden lg:flex p-2 rounded-full transition-colors duration-300 ${
+                  isTransparent && !scrolled
+                    ? 'bg-white/10 hover:bg-white/20 text-white'
+                    : 'bg-soi-navy-600 hover:bg-soi-navy-500 text-soi-mint-400'
+                }`}
+              >
+                <Search className="w-4 h-4" />
+              </button>
+
               {/* Desktop Booking Button — compact at lg, full at 2xl+ */}
               <BookingButton
                 className={`hidden lg:flex px-4 2xl:px-6 py-2 2xl:py-3 rounded-full text-sm 2xl:text-base font-medium transition-colors duration-300 shadow-sm hover:shadow-md items-center whitespace-nowrap ${
@@ -805,7 +845,55 @@ export default function SiteHeader({ theme = 'default', className = '' }: SiteHe
           </div>
         </div>
       </header>
-      
+
+      {/* Desktop search overlay — sits just below the header */}
+      <AnimatePresence>
+        {searchOpen && (
+          <motion.div
+            key="site-search-bar"
+            id="site-search-bar"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.15 }}
+            className={`hidden lg:block fixed left-0 right-0 z-40 bg-white shadow-lg border-b border-gray-100`}
+            style={{ top: scrolled ? 'var(--header-height-scrolled, 72px)' : 'var(--header-height, 88px)' }}
+          >
+            <div className="container mx-auto px-4 py-4">
+              <form onSubmit={submitSearch} role="search" className="relative flex items-center max-w-3xl mx-auto">
+                <Search className="absolute left-4 w-4 h-4 text-gray-400 pointer-events-none" />
+                <input
+                  ref={searchInputRef}
+                  type="search"
+                  name="q"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search procedures, conditions, surgeons…"
+                  aria-label="Search the site"
+                  autoComplete="off"
+                  minLength={2}
+                  className="w-full pl-11 pr-28 py-3 text-base rounded-full border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-[#8B5C9E] focus:border-transparent"
+                />
+                <button
+                  type="submit"
+                  className="absolute right-1.5 px-5 py-2 rounded-full bg-[#8B5C9E] text-white text-sm font-medium hover:bg-[#7a4f8a] transition-colors"
+                >
+                  Search
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSearchOpen(false)}
+                  aria-label="Close search"
+                  className="ml-2 p-2 rounded-full text-gray-500 hover:bg-gray-100"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </form>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Mobile Navigation Drawer */}
       <AnimatePresence>
         {mobileMenuOpen && (
@@ -859,6 +947,23 @@ export default function SiteHeader({ theme = 'default', className = '' }: SiteHe
               
               {/* Drawer Content - Navigation */}
               <div className="flex-1 overflow-y-auto">
+                {/* Mobile search */}
+                <div className="px-4 pt-4 pb-2">
+                  <form onSubmit={submitSearch} role="search" className="relative flex items-center">
+                    <Search className="absolute left-3 w-4 h-4 text-gray-400 pointer-events-none" />
+                    <input
+                      type="search"
+                      name="q"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      placeholder="Search the site…"
+                      aria-label="Search the site"
+                      autoComplete="off"
+                      minLength={2}
+                      className="w-full pl-9 pr-3 py-2 text-sm rounded-full border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-[#8B5C9E] focus:border-transparent"
+                    />
+                  </form>
+                </div>
                 <nav className="py-4">
                   {/* Display main navigation links first */}
                   {mainNavLinks.map((item) => (
