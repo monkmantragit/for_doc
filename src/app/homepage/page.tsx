@@ -248,11 +248,11 @@ export default function HomePage() {
             aria-label="Search the site"
             autoComplete="off"
             minLength={2}
-            className="w-full pl-12 pr-32 py-4 text-base rounded-full bg-white/95 backdrop-blur-sm shadow-lg border border-white/20 text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-soi-mint-400 focus:bg-white"
+            className="w-full pl-12 pr-32 py-4 text-base rounded-md md:rounded-full bg-white/95 backdrop-blur-sm shadow-lg border border-white/20 text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-soi-mint-400 focus:bg-white"
           />
           <button
             type="submit"
-            className="absolute right-2 px-5 py-2.5 rounded-full bg-soi-purple-500 hover:bg-soi-purple-600 text-white text-sm font-medium transition-colors shadow-md"
+            className="absolute right-2 px-5 py-2.5 rounded-sm md:rounded-full bg-soi-purple-500 hover:bg-soi-purple-600 text-white text-sm font-medium transition-colors shadow-md"
           >
             Search
           </button>
