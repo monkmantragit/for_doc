@@ -234,47 +234,50 @@ export default function HomePage() {
           </div>
         }
       >
-        <form
-          action="/search"
-          method="get"
-          role="search"
-          className="relative flex items-center w-full max-w-2xl mx-auto mt-8"
-        >
-          <SearchIcon className="absolute left-5 w-5 h-5 text-gray-400 pointer-events-none" />
-          <input
-            type="search"
-            name="q"
-            placeholder="Search procedures, conditions, surgeons…"
-            aria-label="Search the site"
-            autoComplete="off"
-            minLength={2}
-            className="w-full pl-12 pr-32 py-4 text-base rounded-md md:rounded-full bg-white/95 backdrop-blur-sm shadow-lg border border-white/20 text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-soi-mint-400 focus:bg-white"
-          />
-          <button
-            type="submit"
-            className="absolute right-2 px-5 py-2.5 rounded-sm md:rounded-full bg-soi-purple-500 hover:bg-soi-purple-600 text-white text-sm font-medium transition-colors shadow-md"
+        {/* Unified action block: search + the two primary CTAs share one width
+            band (max-w-2xl) and the same height (h-14) so all three read as
+            equal-weight options rather than the search bar dominating. */}
+        <div className="w-full max-w-2xl mx-auto flex flex-col gap-4">
+          <form
+            action="/search"
+            method="get"
+            role="search"
+            className="relative flex items-center w-full"
           >
-            Search
-          </button>
-        </form>
+            <SearchIcon className="absolute left-5 w-5 h-5 text-gray-400 pointer-events-none" />
+            <input
+              type="search"
+              name="q"
+              placeholder="Search procedures, conditions, surgeons…"
+              aria-label="Search the site"
+              autoComplete="off"
+              minLength={2}
+              className="w-full h-14 pl-12 pr-28 text-base rounded-xl bg-white/95 backdrop-blur-sm shadow-lg border border-white/20 text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-soi-mint-400 focus:bg-white"
+            />
+            <button
+              type="submit"
+              className="absolute right-2 top-1/2 -translate-y-1/2 inline-flex items-center h-10 px-5 rounded-lg bg-soi-purple-500 hover:bg-soi-purple-600 text-white text-sm font-semibold transition-colors shadow-md"
+            >
+              Search
+            </button>
+          </form>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6">
-          <Button
-            size="lg"
-            className="bg-soi-purple-500 hover:bg-soi-purple-600 text-white px-8 py-4 text-lg border-2 border-soi-pink-500 hover:border-soi-pink-400 transition-all duration-300 hover:shadow-lg"
-            onClick={() => setIsBookingModalOpen(true)}
-          >
-            Book Appointment
-            <ArrowRight className="ml-2 h-5 w-5" />
-          </Button>
-          <Button 
-            size="lg" 
-            variant="outline" 
-            className="border-2 border-white text-white hover:bg-white hover:text-soi-navy-800 px-8 py-4 text-lg backdrop-blur-sm transition-all duration-300"
-            asChild
-          >
-            <Link href="#specialties">Our Services</Link>
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-4 w-full">
+            <Button
+              className="w-full sm:flex-1 h-14 rounded-xl bg-soi-purple-500 hover:bg-soi-purple-600 text-white text-base font-semibold border-2 border-soi-pink-500 hover:border-soi-pink-400 shadow-lg hover:shadow-xl transition-all duration-300"
+              onClick={() => setIsBookingModalOpen(true)}
+            >
+              Book Appointment
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+            <Button
+              variant="outline"
+              className="w-full sm:flex-1 h-14 rounded-xl border-2 border-white bg-white/10 text-white text-base font-semibold hover:bg-white hover:text-soi-navy-800 backdrop-blur-sm transition-all duration-300"
+              asChild
+            >
+              <Link href="#specialties">Our Services</Link>
+            </Button>
+          </div>
         </div>
       </HeroSection>
 
