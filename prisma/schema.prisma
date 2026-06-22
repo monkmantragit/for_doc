@@ -160,15 +160,3 @@ model GalleryImage {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
-
-model FellowshipApplication {
-  id            String   @id @default(uuid())
-  name          String
-  email         String
-  phone         String
-  qualification String
-  message       String?
-  status        String   @default("PENDING")
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-}

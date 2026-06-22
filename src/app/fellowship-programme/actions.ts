@@ -1,7 +1,6 @@
 'use server';
 
-import { prisma } from '@/lib/prisma';
-import { revalidatePath } from 'next/cache';
+import { createFellowshipApplicationItem } from '@/lib/directus';
 
 export async function createFellowshipApplication(prevState: any, formData: FormData) {
     try {
@@ -19,17 +18,15 @@ export async function createFellowshipApplication(prevState: any, formData: Form
             };
         }
 
-        await prisma.fellowshipApplication.create({
-            data: {
-                name,
-                email,
-                phone,
-                qualification,
-                message: message || '',
-            },
+        // Stored in Directus (collection: fellowship_applications) so the admin
+        // can review applications there, rather than in the team-wide admin.
+        await createFellowshipApplicationItem({
+            name,
+            email,
+            phone,
+            qualification,
+            message,
         });
-
-        revalidatePath('/fellowship-programme');
 
         return {
             success: true,

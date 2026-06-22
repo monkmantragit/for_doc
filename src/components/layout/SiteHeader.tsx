@@ -212,6 +212,7 @@ export default function SiteHeader({ theme = 'default', className = '' }: SiteHe
     { name: 'Publications', href: '/publications' },
     { name: 'Blogs', href: '/blogs' },
     { name: 'Gallery', href: '/gallery' },
+    { name: 'Fellowship Programme', href: '/fellowship-programme' },
     { name: 'Contact', href: '/contact' },
   ];
 

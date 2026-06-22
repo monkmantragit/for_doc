@@ -144,6 +144,18 @@ export interface LandingPage {
   parent_slug?: string;
 }
 
+export interface FellowshipApplication {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  qualification: string;
+  message: string | null;
+  status: string;
+  date_created: string;
+  date_updated: string | null;
+}
+
 interface DirectusSchema {
   blog_content: BlogPost[];
   educational_content: EducationalContent[];
@@ -153,6 +165,42 @@ interface DirectusSchema {
   staff_info: StaffMember[];
   publications: Publication[];
   landing_pages: LandingPage[];
+  fellowship_applications: FellowshipApplication[];
+}
+
+export interface FellowshipApplicationInput {
+  name: string;
+  email: string;
+  phone: string;
+  qualification: string;
+  message?: string;
+}
+
+/**
+ * Create a fellowship application record in Directus.
+ *
+ * SERVER-ONLY: this writes using the admin token (DIRECTUS_ADMIN_TOKEN), which
+ * is never exposed to the browser bundle. The applicant data is private, so the
+ * `fellowship_applications` collection is not readable by the public role —
+ * submissions are reviewed by admins inside Directus.
+ */
+export async function createFellowshipApplicationItem(data: FellowshipApplicationInput) {
+  if (!directusAdminToken) {
+    throw new Error(
+      'DIRECTUS_ADMIN_TOKEN is required to submit fellowship applications. It must be set on the server.'
+    );
+  }
+
+  return client.request(
+    createItem('fellowship_applications', {
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      qualification: data.qualification,
+      message: data.message?.trim() ? data.message.trim() : null,
+      status: 'PENDING',
+    })
+  );
 }
 
 function toAssetUrl(fileId: string): string {
