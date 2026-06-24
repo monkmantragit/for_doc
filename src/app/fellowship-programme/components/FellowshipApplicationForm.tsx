@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Send, CheckCircle, AlertCircle } from 'lucide-react';
+import { Send, CheckCircle, AlertCircle, Paperclip, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { createFellowshipApplication } from '../actions';
 
@@ -17,6 +17,34 @@ export default function FellowshipApplicationForm() {
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+    const [resumeFile, setResumeFile] = useState<File | null>(null);
+    const [resumeError, setResumeError] = useState('');
+
+    const MAX_RESUME_BYTES = 5 * 1024 * 1024; // 5MB
+    const ALLOWED_RESUME_EXTENSIONS = ['.pdf', '.doc', '.docx'];
+
+    const handleResumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        const lowerName = file.name.toLowerCase();
+        if (!ALLOWED_RESUME_EXTENSIONS.some((ext) => lowerName.endsWith(ext))) {
+            setResumeError('Please upload a PDF, DOC, or DOCX file.');
+            setResumeFile(null);
+            return;
+        }
+        if (file.size > MAX_RESUME_BYTES) {
+            setResumeError('File must be 5MB or smaller.');
+            setResumeFile(null);
+            return;
+        }
+        setResumeError('');
+        setResumeFile(file);
+    };
+
+    const removeResume = () => {
+        setResumeError('');
+        setResumeFile(null);
+    };
 
     const validateForm = () => {
         const newErrors: Record<string, string> = {};
@@ -60,6 +88,9 @@ export default function FellowshipApplicationForm() {
             formDataObj.append('phone', formData.phone);
             formDataObj.append('qualification', formData.qualification);
             formDataObj.append('message', formData.message);
+            if (resumeFile) {
+                formDataObj.append('resume', resumeFile);
+            }
 
             const result = await createFellowshipApplication(null, formDataObj);
 
@@ -72,6 +103,8 @@ export default function FellowshipApplicationForm() {
                     qualification: '',
                     message: '',
                 });
+                setResumeFile(null);
+                setResumeError('');
                 setTimeout(() => setSubmitStatus('idle'), 5000);
             } else {
                 throw new Error(result.message || 'Submission failed');
@@ -195,6 +228,45 @@ export default function FellowshipApplicationForm() {
                         className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-soi-purple-500 focus:border-transparent focus:ring-2 transition-all outline-none resize-none"
                         placeholder="Why do you want to join this fellowship?"
                     ></textarea>
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-soi-navy-700 mb-1">
+                        Resume / CV <span className="text-soi-navy-400 font-normal">(optional · PDF, DOC, DOCX · max 5MB)</span>
+                    </label>
+                    {!resumeFile ? (
+                        <label
+                            htmlFor="resume"
+                            className="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-dashed border-gray-300 text-soi-navy-600 cursor-pointer hover:border-soi-purple-400 hover:bg-soi-purple-50/50 transition-colors"
+                        >
+                            <Paperclip className="w-4 h-4 flex-shrink-0" />
+                            <span className="text-sm">Attach your resume</span>
+                            <input
+                                id="resume"
+                                name="resume"
+                                type="file"
+                                accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                                onChange={handleResumeChange}
+                                className="hidden"
+                            />
+                        </label>
+                    ) : (
+                        <div className="flex items-center justify-between gap-3 px-4 py-2.5 rounded-lg border border-soi-mint-300 bg-soi-mint-50">
+                            <span className="flex items-center gap-2 min-w-0 text-sm text-soi-navy-700">
+                                <Paperclip className="w-4 h-4 flex-shrink-0 text-soi-mint-600" />
+                                <span className="truncate">{resumeFile.name}</span>
+                            </span>
+                            <button
+                                type="button"
+                                onClick={removeResume}
+                                aria-label="Remove resume"
+                                className="flex-shrink-0 text-soi-navy-400 hover:text-red-500 transition-colors"
+                            >
+                                <X className="w-4 h-4" />
+                            </button>
+                        </div>
+                    )}
+                    {resumeError && <p className="mt-1 text-sm text-red-500">{resumeError}</p>}
                 </div>
 
                 <Button

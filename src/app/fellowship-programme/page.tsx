@@ -3,8 +3,16 @@ import SiteFooter from '@/components/layout/SiteFooter';
 import HeroSection from '@/components/ui/HeroSection';
 import FellowshipApplicationForm from './components/FellowshipApplicationForm';
 import { CheckCircle2, Calendar, IndianRupee, Clock, GraduationCap, Stethoscope, Microscope, Award, TrendingUp, HandHeart } from 'lucide-react';
+import { isFellowshipWindowOpen, getNextWindowLabel, FELLOWSHIP_WINDOW_DESCRIPTION } from '@/lib/fellowship-window';
+
+// Evaluate the application window on every request (not at build time) so the
+// form opens/closes on the right dates.
+export const dynamic = 'force-dynamic';
 
 export default function FellowshipProgrammePage() {
+    const applicationsOpen = isFellowshipWindowOpen();
+    const nextWindowLabel = getNextWindowLabel();
+
     return (
         <div className="min-h-screen bg-neutral-50 flex flex-col font-sans">
             <SiteHeader theme="transparent" />
@@ -170,7 +178,7 @@ export default function FellowshipProgrammePage() {
                                 <h3 className="text-2xl font-bold text-soi-navy-900 mb-4 uppercase">WHEN TO APPLY FOR FELLOWSHIP?</h3>
                                 <div className="prose prose-lg text-soi-navy-600">
                                     <p>
-                                        It gets advertised on all our social media handles twice a year – 1st week of February and 1st week of August for Summer and Winter Fellowships respectively.
+                                        It gets advertised on all our social media handles twice a year – 1st–15th February and 1st–15th August for Summer and Winter Fellowships respectively.
                                     </p>
                                 </div>
                             </div>
@@ -190,7 +198,23 @@ export default function FellowshipProgrammePage() {
                             <div className="absolute -top-10 -right-10 w-32 h-32 bg-soi-mint-200 rounded-full opacity-20 blur-3xl"></div>
                             <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-soi-purple-200 rounded-full opacity-20 blur-3xl"></div>
 
-                            <FellowshipApplicationForm />
+                            {applicationsOpen ? (
+                                <FellowshipApplicationForm />
+                            ) : (
+                                <div className="relative bg-white rounded-xl shadow-lg border border-soi-mint-200 p-6 md:p-8 text-center">
+                                    <div className="mx-auto mb-4 w-14 h-14 rounded-full bg-soi-purple-100 flex items-center justify-center">
+                                        <Calendar className="w-7 h-7 text-soi-purple-500" />
+                                    </div>
+                                    <h3 className="text-2xl font-bold text-soi-navy-800 mb-2">Applications are currently closed</h3>
+                                    <p className="text-soi-navy-600 mb-5">
+                                        We accept applications only during two windows each year: {FELLOWSHIP_WINDOW_DESCRIPTION}.
+                                    </p>
+                                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-soi-mint-50 border border-soi-mint-200 text-soi-navy-700 font-medium">
+                                        <Clock className="w-4 h-4 text-soi-mint-600" />
+                                        Next window opens {nextWindowLabel}
+                                    </div>
+                                </div>
+                            )}
                         </div>
 
                     </section>
