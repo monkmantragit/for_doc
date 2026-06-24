@@ -41,9 +41,6 @@ const nextConfig = {
     memoryBasedWorkersCount: true,
     workerThreads: true,
     optimizeCss: true,
-    // @react-pdf/renderer (and its fontkit dependency) must run as a real Node
-    // module on the server, not be bundled, or PDF generation fails at runtime.
-    serverComponentsExternalPackages: ['@react-pdf/renderer'],
     // Allow resume uploads (PDF/DOC/DOCX up to 5MB) through the fellowship
     // server action; the default server action body limit is 1MB.
     serverActions: {
