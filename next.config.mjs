@@ -41,6 +41,11 @@ const nextConfig = {
     memoryBasedWorkersCount: true,
     workerThreads: true,
     optimizeCss: true,
+    // Allow resume uploads (PDF/DOC/DOCX up to 5MB) through the fellowship
+    // server action; the default server action body limit is 1MB.
+    serverActions: {
+      bodySizeLimit: '5mb',
+    },
   },
 
   // Set higher memory limit for builds

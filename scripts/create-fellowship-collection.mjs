@@ -87,9 +87,15 @@ const fields = [
     schema: { is_nullable: false },
   },
   {
+    field: 'resume',
+    type: 'uuid',
+    meta: { interface: 'file', special: ['file'], note: 'Applicant CV/resume (PDF/DOC/DOCX).', width: 'half', sort: 6 },
+    schema: {},
+  },
+  {
     field: 'message',
     type: 'text',
-    meta: { interface: 'input-multiline', sort: 6 },
+    meta: { interface: 'input-multiline', sort: 7 },
     schema: { is_nullable: true },
   },
   {
@@ -98,7 +104,7 @@ const fields = [
     meta: {
       interface: 'select-dropdown',
       width: 'half',
-      sort: 7,
+      sort: 8,
       options: {
         choices: [
           { text: 'Pending', value: 'PENDING' },
@@ -115,13 +121,13 @@ const fields = [
   {
     field: 'date_created',
     type: 'timestamp',
-    meta: { special: ['date-created'], interface: 'datetime', readonly: true, width: 'half', sort: 8 },
+    meta: { special: ['date-created'], interface: 'datetime', readonly: true, width: 'half', sort: 9 },
     schema: {},
   },
   {
     field: 'date_updated',
     type: 'timestamp',
-    meta: { special: ['date-updated'], interface: 'datetime', readonly: true, width: 'half', sort: 9, hidden: true },
+    meta: { special: ['date-updated'], interface: 'datetime', readonly: true, width: 'half', sort: 10, hidden: true },
     schema: {},
   },
 ];

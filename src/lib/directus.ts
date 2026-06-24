@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { createDirectus, rest, readItems, readItem, createItem, updateItem, deleteItem, type RestCommand, aggregate } from '@directus/sdk';
+import { createDirectus, rest, readItems, readItem, createItem, updateItem, deleteItem, uploadFiles, type RestCommand, aggregate } from '@directus/sdk';
 import { ProcedureSurgery } from '@/types/procedure-surgery';
 import { GalleryImage, GalleryCategory } from '@/types/gallery';
 import { ClinicalVideo, VideoCategory } from '@/types/clinical-videos';
@@ -151,6 +151,7 @@ export interface FellowshipApplication {
   phone: string;
   qualification: string;
   message: string | null;
+  resume: string | null;
   status: string;
   date_created: string;
   date_updated: string | null;
@@ -174,6 +175,8 @@ export interface FellowshipApplicationInput {
   phone: string;
   qualification: string;
   message?: string;
+  /** Directus file id of an uploaded resume, if any (see uploadFellowshipResume). */
+  resume?: string;
 }
 
 /**
@@ -199,8 +202,37 @@ export async function createFellowshipApplicationItem(data: FellowshipApplicatio
       qualification: data.qualification,
       message: data.message?.trim() ? data.message.trim() : null,
       status: 'PENDING',
+      // Only include `resume` when present so submissions still work before the
+      // resume field has been added to the collection.
+      ...(data.resume ? { resume: data.resume } : {}),
     })
   );
+}
+
+/**
+ * Upload an applicant's resume to Directus files and return the new file id.
+ *
+ * SERVER-ONLY: uses the admin token. The returned id is stored on the
+ * application's `resume` field so admins can download it from the record.
+ */
+export async function uploadFellowshipResume(file: File): Promise<string> {
+  if (!directusAdminToken) {
+    throw new Error(
+      'DIRECTUS_ADMIN_TOKEN is required to upload resumes. It must be set on the server.'
+    );
+  }
+
+  const formData = new FormData();
+  formData.append('title', `Fellowship CV - ${file.name}`);
+  // The file part MUST be appended last for Directus to parse it correctly.
+  formData.append('file', file, file.name);
+
+  const result: any = await client.request(uploadFiles(formData));
+  const id = Array.isArray(result) ? result[0]?.id : result?.id;
+  if (!id) {
+    throw new Error('Resume upload failed: Directus did not return a file id.');
+  }
+  return id as string;
 }
 
 function toAssetUrl(fileId: string): string {
