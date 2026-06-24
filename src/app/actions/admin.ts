@@ -414,6 +414,15 @@ export async function fetchAppointments(
     speciality?: string;
     /** Exclude appointments whose related doctor has this speciality. */
     excludeSpeciality?: string;
+    /** Free-text search across patient name, phone and email. */
+    search?: string;
+    /**
+     * Ordering. `upcoming` (default) shows today + future first (soonest at
+     * top) then past dates (most recent first) — best for a reception desk.
+     * The other keys order by a single column using `sortOrder`.
+     */
+    sortBy?: 'upcoming' | 'date' | 'createdAt' | 'patientName' | 'status';
+    sortOrder?: 'asc' | 'desc';
   }
 ) {
   try {
@@ -443,43 +452,127 @@ export async function fetchAppointments(
         NOT: { speciality: filters.excludeSpeciality }
       };
     }
-    
-    // Get total count for pagination
+
+    // Free-text search across the patient's name, phone and email. Phone is
+    // matched with a plain `contains` so typing the last few digits works even
+    // though numbers are stored normalized (e.g. +91XXXXXXXXXX).
+    const search = filters?.search?.trim();
+    if (search) {
+      where.OR = [
+        { patientName: { contains: search, mode: 'insensitive' } },
+        { phone: { contains: search } },
+        { email: { contains: search, mode: 'insensitive' } },
+      ];
+    }
+
+    const select = {
+      id: true,
+      patientName: true,
+      email: true,
+      phone: true,
+      date: true,
+      time: true,
+      status: true,
+      doctorId: true,
+      customerId: true,
+      createdAt: true,
+      updatedAt: true,
+      notes: true,
+      timeSlot: true,
+      doctor: {
+        select: {
+          name: true,
+          speciality: true,
+          fee: true
+        }
+      }
+    } as const;
+
+    const sortBy = filters?.sortBy ?? 'upcoming';
+    const sortOrder: 'asc' | 'desc' = filters?.sortOrder === 'asc' ? 'asc' : 'desc';
+
+    // "Upcoming first": future/today appointments ascending, then past dates
+    // descending. Prisma can't express this conditional ordering in a single
+    // query, so we split the dataset at the start of today and paginate across
+    // the two ordered segments.
+    if (sortBy === 'upcoming') {
+      const now = new Date();
+      const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const futureWhere = { ...where, date: { ...(where.date || {}), gte: startOfToday } };
+      const pastWhere = { ...where, date: { ...(where.date || {}), lt: startOfToday } };
+
+      const [futureCount, pastCount] = await Promise.all([
+        prisma.appointment.count({ where: futureWhere }),
+        prisma.appointment.count({ where: pastWhere }),
+      ]);
+      const total = futureCount + pastCount;
+
+      let appointments: any[] = [];
+      if (skip < futureCount) {
+        const future = await prisma.appointment.findMany({
+          where: futureWhere,
+          select,
+          orderBy: [{ date: 'asc' }, { time: 'asc' }],
+          skip,
+          take: pageSize,
+        });
+        appointments = future;
+        const remaining = pageSize - future.length;
+        if (remaining > 0) {
+          const past = await prisma.appointment.findMany({
+            where: pastWhere,
+            select,
+            orderBy: [{ date: 'desc' }, { time: 'asc' }],
+            skip: 0,
+            take: remaining,
+          });
+          appointments = [...future, ...past];
+        }
+      } else {
+        appointments = await prisma.appointment.findMany({
+          where: pastWhere,
+          select,
+          orderBy: [{ date: 'desc' }, { time: 'asc' }],
+          skip: skip - futureCount,
+          take: pageSize,
+        });
+      }
+
+      return {
+        success: true,
+        data: {
+          appointments,
+          pagination: {
+            total,
+            page,
+            pageSize,
+            pageCount: Math.ceil(total / pageSize),
+          },
+        },
+      };
+    }
+
+    // Single-column ordering.
+    const orderByMap: Record<string, any> = {
+      date: [{ date: sortOrder }, { time: 'asc' }],
+      createdAt: [{ createdAt: sortOrder }],
+      patientName: [{ patientName: sortOrder }],
+      status: [{ status: sortOrder }],
+    };
+    const orderBy = orderByMap[sortBy] ?? [{ date: 'desc' }];
+
     const totalCount = await prisma.appointment.count({ where });
 
     const appointments = await prisma.appointment.findMany({
       where,
-      select: {
-        id: true,
-        patientName: true,
-        email: true,
-        phone: true,
-        date: true,
-        time: true,
-        status: true,
-        doctorId: true,
-        customerId: true,
-        createdAt: true,
-        updatedAt: true,
-        notes: true,
-        timeSlot: true,
-        doctor: {
-          select: {
-            name: true,
-            speciality: true,
-            fee: true
-          }
-        }
-      },
-      orderBy: {
-        date: 'desc'
-      },
+      select,
+      orderBy,
       skip,
       take: pageSize
     });
 
-    return { 
-      success: true, 
+    return {
+      success: true,
       data: {
         appointments,
         pagination: {
@@ -488,7 +581,7 @@ export async function fetchAppointments(
           pageSize,
           pageCount: Math.ceil(totalCount / pageSize)
         }
-      } 
+      }
     };
   } catch (error) {
     console.error('Error fetching appointments:', error);
@@ -1487,6 +1580,76 @@ export async function fetchAppointmentDetail(appointmentId: string) {
   } catch (error) {
     console.error('Error fetching appointment detail:', error);
     return { success: false as const, error: 'Failed to fetch appointment' };
+  }
+}
+
+/**
+ * Generate the visit-summary PDF for an appointment, store it in Directus and
+ * record the file id on the appointment. Returns a URL pointing at the
+ * authenticated admin proxy route (never the raw Directus asset link).
+ */
+export async function generateVisitSummaryPdf(appointmentId: string) {
+  try {
+    const appt = await prisma.appointment.findUnique({
+      where: { id: appointmentId },
+      select: {
+        id: true,
+        patientName: true,
+        phone: true,
+        email: true,
+        date: true,
+        diagnosis: true,
+        visitNotes: true,
+        doctor: { select: { name: true } },
+      },
+    });
+
+    if (!appt) {
+      return { success: false as const, error: 'Appointment not found' };
+    }
+
+    // Loaded lazily so the heavy PDF renderer isn't pulled into every admin
+    // action's bundle.
+    const { renderVisitSummaryPdf } = await import('@/lib/pdf/visit-summary');
+    const { uploadVisitSummaryPdf } = await import('@/lib/directus');
+
+    const pdf = await renderVisitSummaryPdf({
+      patientName: appt.patientName,
+      phone: appt.phone,
+      email: appt.email,
+      date: appt.date,
+      diagnosis: appt.diagnosis,
+      visitNotes: appt.visitNotes,
+      doctorName: appt.doctor?.name ?? '',
+    });
+
+    const safeName = (appt.patientName || 'patient')
+      .replace(/[^a-z0-9]+/gi, '-')
+      .replace(/^-+|-+$/g, '')
+      .toLowerCase();
+    const filename = `visit-summary-${safeName}-${format(new Date(appt.date), 'yyyy-MM-dd')}.pdf`;
+
+    const fileId = await uploadVisitSummaryPdf(pdf, filename);
+    const generatedAt = new Date();
+
+    await prisma.appointment.update({
+      where: { id: appointmentId },
+      data: { visitSummaryFileId: fileId, visitSummaryGeneratedAt: generatedAt },
+    });
+
+    revalidatePath('/admin/appointments');
+    return {
+      success: true as const,
+      data: {
+        // Proxy URL keyed by appointment id — the raw Directus file id is never
+        // exposed to the browser.
+        url: `/api/admin/visit-summary/${appointmentId}`,
+        generatedAt: generatedAt.toISOString(),
+      },
+    };
+  } catch (error) {
+    console.error('Error generating visit summary PDF:', error);
+    return { success: false as const, error: 'Failed to generate PDF' };
   }
 }
 

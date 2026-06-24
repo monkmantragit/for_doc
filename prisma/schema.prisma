@@ -57,6 +57,10 @@ model Appointment {
   checkInAt   DateTime?
   engagedAt   DateTime?
   checkOutAt  DateTime?
+  // Directus file id of the generated visit-summary PDF (served privately via
+  // the authenticated admin proxy route, never a public /assets link).
+  visitSummaryFileId      String?
+  visitSummaryGeneratedAt DateTime?
   doctor      Doctor   @relation(fields: [doctorId], references: [id])
   patient     Patient? @relation(fields: [patientId], references: [id])
 
