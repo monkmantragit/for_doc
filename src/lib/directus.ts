@@ -235,6 +235,60 @@ export async function uploadFellowshipResume(file: File): Promise<string> {
   return id as string;
 }
 
+/**
+ * Upload a generated visit-summary PDF to Directus file storage and return the
+ * new file id.
+ *
+ * SERVER-ONLY: uses the admin token. These files contain medical data, so they
+ * are NOT exposed via a public /assets link — they are read back only through
+ * the authenticated admin proxy route (see fetchVisitSummaryAsset).
+ */
+export async function uploadVisitSummaryPdf(pdf: Buffer, filename: string): Promise<string> {
+  if (!directusAdminToken) {
+    throw new Error(
+      'DIRECTUS_ADMIN_TOKEN is required to store visit summaries. It must be set on the server.'
+    );
+  }
+
+  const formData = new FormData();
+  formData.append('title', filename.replace(/\.pdf$/i, ''));
+  // The file part MUST be appended last for Directus to parse it correctly.
+  const blob = new Blob([pdf], { type: 'application/pdf' });
+  formData.append('file', blob, filename);
+
+  const result: any = await client.request(uploadFiles(formData));
+  const id = Array.isArray(result) ? result[0]?.id : result?.id;
+  if (!id) {
+    throw new Error('Visit summary upload failed: Directus did not return a file id.');
+  }
+  return id as string;
+}
+
+/**
+ * Fetch a stored file from Directus using the admin token, for streaming back
+ * through an authenticated route. Returns the raw fetch Response (caller streams
+ * `res.body`) or null if unavailable.
+ *
+ * SERVER-ONLY: never call from the browser — it uses the admin token.
+ */
+export async function fetchVisitSummaryAsset(fileId: string): Promise<Response | null> {
+  if (!directusAdminToken) {
+    console.error('DIRECTUS_ADMIN_TOKEN is required to read visit summaries.');
+    return null;
+  }
+
+  const res = await fetch(`${directusUrl}/assets/${encodeURIComponent(fileId)}`, {
+    headers: { Authorization: `Bearer ${directusAdminToken}` },
+    cache: 'no-store',
+  });
+
+  if (!res.ok) {
+    console.error(`Failed to fetch visit summary asset ${fileId}: ${res.status}`);
+    return null;
+  }
+  return res;
+}
+
 function toAssetUrl(fileId: string): string {
   if (!fileId) return '/images/default-blog-image.webp';
   

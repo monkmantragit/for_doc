@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { DataTable } from '@/components/admin/DataTable';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { format, startOfMonth, endOfMonth, subMonths, addMonths } from 'date-fns';
+import { format, startOfMonth, endOfMonth } from 'date-fns';
 import {
   fetchAppointments,
   updateAppointmentStatus,
@@ -27,11 +27,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { ChevronDown, CalendarIcon, ListIcon, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Loader2, Trash2, LogIn, LogOut, FileText, Undo2, Stethoscope } from 'lucide-react';
+import { ChevronDown, CalendarIcon, ListIcon, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Loader2, Trash2, LogIn, LogOut, FileText, Undo2, Stethoscope, Search, ArrowUpDown, X } from 'lucide-react';
+import { Input } from '@/components/ui/input';
 import { AppointmentDetailDrawer } from '@/components/admin/AppointmentDetailDrawer';
 import { Pagination, PaginationData } from '@/components/admin/Pagination';
-import AdminCalendar from '@/components/AdminCalendar';
-import DayAppointmentsDrawer from '@/components/DayAppointmentsDrawer';
+import AppointmentsCalendar from '@/components/AppointmentsCalendar';
 import AppointmentModal from '@/components/AppointmentModal';
 import { ConfirmationDialog } from '@/components/ui/ConfirmationDialog';
 
@@ -61,6 +61,17 @@ interface Appointment {
   updatedAt: Date;
 }
 
+const SORT_OPTIONS = [
+  { key: 'upcoming', label: 'Upcoming first', sortBy: 'upcoming', sortOrder: 'desc' },
+  { key: 'date_desc', label: 'Appointment date (newest)', sortBy: 'date', sortOrder: 'desc' },
+  { key: 'date_asc', label: 'Appointment date (oldest)', sortBy: 'date', sortOrder: 'asc' },
+  { key: 'booked', label: 'Recently booked', sortBy: 'createdAt', sortOrder: 'desc' },
+  { key: 'name', label: 'Patient name (A–Z)', sortBy: 'patientName', sortOrder: 'asc' },
+  { key: 'status', label: 'Status', sortBy: 'status', sortOrder: 'asc' },
+] as const;
+
+type SortKey = (typeof SORT_OPTIONS)[number]['key'];
+
 export default function AppointmentsPage() {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [calendarAppointments, setCalendarAppointments] = useState<Appointment[]>([]);
@@ -68,6 +79,12 @@ export default function AppointmentsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [updatingStatus, setUpdatingStatus] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'list' | 'calendar'>('calendar');
+
+  // List view: server-side search + sort
+  const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [sortKey, setSortKey] = useState<SortKey>('upcoming');
+  const activeSort = SORT_OPTIONS.find((o) => o.key === sortKey) ?? SORT_OPTIONS[0];
   
   // Add pagination state
   const [pagination, setPagination] = useState<PaginationData>({
@@ -77,8 +94,6 @@ export default function AppointmentsPage() {
     pageCount: 0
   });
 
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [selectedDateForDrawer, setSelectedDateForDrawer] = useState<Date | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
   const [isNewAppointment, setIsNewAppointment] = useState(false);
@@ -176,9 +191,21 @@ export default function AppointmentsPage() {
   const fmtTime = (d: Date | string | null) =>
     d ? format(new Date(d), 'h:mm a') : '—';
 
+  // Debounce the search box so we don't hit the server on every keystroke.
+  useEffect(() => {
+    const t = setTimeout(() => setDebouncedSearch(searchTerm.trim()), 400);
+    return () => clearTimeout(t);
+  }, [searchTerm]);
+
+  // A new search or sort should always start from page 1.
+  useEffect(() => {
+    setPagination((prev) => (prev.page === 1 ? prev : { ...prev, page: 1 }));
+  }, [debouncedSearch, sortKey]);
+
   useEffect(() => {
     loadInitialData();
-  }, [pagination.page, pagination.pageSize, selectedMonth, viewMode]); // Reload when page, page size, month, or view changes
+    // Reload when page, page size, month, view, search or sort changes
+  }, [pagination.page, pagination.pageSize, selectedMonth, viewMode, debouncedSearch, sortKey]);
 
   const loadInitialData = async () => {
     setIsLoading(true);
@@ -187,17 +214,18 @@ export default function AppointmentsPage() {
       // Physiotherapy bookings live in their own admin tab (/admin/physiotherapy-bookings),
       // so this Appointments tab should NOT include them. Every fetch call here
       // passes excludeSpeciality so the lists/calendars stay strictly orthopedic.
-      const defaultListViewFilters: any = {
-        startDate: startOfMonth(selectedMonth),
-        endDate: endOfMonth(selectedMonth),
-        excludeSpeciality: 'Physiotherapist',
-      };
-
       if (viewMode === 'list') {
+        // The list shows all dates (upcoming first by default) with server-side
+        // search + sort — it is no longer scoped to a single month.
         appointmentResult = await fetchAppointments(
           pagination.page,
           pagination.pageSize,
-          defaultListViewFilters
+          {
+            excludeSpeciality: 'Physiotherapist',
+            search: debouncedSearch || undefined,
+            sortBy: activeSort.sortBy,
+            sortOrder: activeSort.sortOrder,
+          }
         );
       } else {
         appointmentResult = await fetchAppointments(pagination.page, pagination.pageSize, {
@@ -660,11 +688,6 @@ export default function AppointmentsPage() {
   };
 
   // --- Handlers for calendar integration ---
-  const handleDayClick = (date: Date) => {
-    setSelectedDateForDrawer(date);
-    setIsDrawerOpen(true);
-  };
-
   const handleAppointmentClick = (appointment: Appointment) => {
     setSelectedAppointment(appointment);
     setIsNewAppointment(false);
@@ -680,18 +703,12 @@ export default function AppointmentsPage() {
     setIsModalOpen(true);
   };
 
-  const handleDrawerAppointmentClick = (appointment: Appointment) => {
-    handleAppointmentClick(appointment);
-    setIsDrawerOpen(false);
-  };
-
   const handleDrawerAddSlotClick = (date: Date, time: string) => {
     setSelectedDate(date);
     setPrefilledTimeForModal(time);
     setSelectedAppointment(null);
     setIsNewAppointment(true);
     setIsModalOpen(true);
-    setIsDrawerOpen(false);
   };
 
   const handleSaveAppointment = async (appointment: Appointment) => {
@@ -740,33 +757,54 @@ export default function AppointmentsPage() {
           </div>
         </div>
       </div>
-      {/* Mobile: Month filter and count for list view */}
+      {/* List view: search (name / phone / email) + sort controls */}
       {viewMode === 'list' && (
-        <>
-          <div className="sm:hidden px-4 mb-2 flex items-center gap-2">
-            <button
-              className="p-2 rounded-full bg-[#F3E8FF] text-[#8B5C9E] hover:bg-[#E9D5FF]"
-              onClick={() => setSelectedMonth(subMonths(selectedMonth, 1))}
-              aria-label="Previous month"
-            >
-              <ChevronLeft className="w-4 h-4" />
-            </button>
-            <span className="text-base font-semibold text-[#8B5C9E]">
-              {format(selectedMonth, 'MMMM yyyy')}
-            </span>
-            <button
-              className="p-2 rounded-full bg-[#F3E8FF] text-[#8B5C9E] hover:bg-[#E9D5FF]"
-              onClick={() => setSelectedMonth(addMonths(selectedMonth, 1))}
-              aria-label="Next month"
-            >
-              <ChevronRight className="w-4 h-4" />
-            </button>
+        <div className="px-4 mb-2 flex flex-col sm:flex-row sm:items-center gap-2">
+          <div className="relative flex-1 max-w-md">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+            <Input
+              placeholder="Search by name, phone or email…"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-9 pr-9 bg-white text-gray-900 border-gray-200"
+            />
+            {searchTerm && (
+              <button
+                type="button"
+                onClick={() => setSearchTerm('')}
+                aria-label="Clear search"
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
           </div>
-          <div className="sm:hidden px-4 mb-2 flex items-center justify-between">
-            <span className="text-sm text-gray-700">Appointments this month:</span>
-            <span className="text-base font-semibold text-[#8B5C9E]">{pagination.total}</span>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm" className="h-10 gap-2 text-[#8B5C9E] border-gray-200 bg-white">
+                <ArrowUpDown className="h-3.5 w-3.5" />
+                <span className="whitespace-nowrap">Sort: {activeSort.label}</span>
+                <ChevronDown className="h-3.5 w-3.5" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56 bg-white">
+              {SORT_OPTIONS.map((opt) => (
+                <DropdownMenuItem
+                  key={opt.key}
+                  onClick={() => setSortKey(opt.key)}
+                  className={`cursor-pointer text-sm ${opt.key === sortKey ? 'bg-[#F3E8FF] text-[#8B5C9E] font-medium' : 'text-gray-700'}`}
+                >
+                  {opt.label}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <div className="text-sm text-gray-500 sm:ml-auto whitespace-nowrap">
+            {pagination.total} appointment{pagination.total === 1 ? '' : 's'}
           </div>
-        </>
+        </div>
       )}
       {viewMode === 'list' ? (
         <Card className="mt-4 border-0 shadow-none bg-transparent">
@@ -774,8 +812,6 @@ export default function AppointmentsPage() {
             <DataTable
               columns={columns}
               data={appointments}
-              searchable
-              sortable
               loading={isLoading}
             />
             <Pagination 
@@ -787,22 +823,10 @@ export default function AppointmentsPage() {
         </Card>
       ) : (
         <Card className="mt-4 p-4 overflow-hidden border-0 shadow-none bg-transparent">
-          <AdminCalendar
+          <AppointmentsCalendar
             appointments={calendarAppointments}
-            onDayClick={handleDayClick}
             onAppointmentClick={handleAppointmentClick}
-          />
-          <DayAppointmentsDrawer
-            isOpen={isDrawerOpen}
-            onClose={() => setIsDrawerOpen(false)}
-            selectedDate={selectedDateForDrawer}
-            allAppointments={calendarAppointments}
-            onAppointmentClick={handleDrawerAppointmentClick}
-            onAddSlotClick={handleDrawerAddSlotClick}
-            getStatusColorClass={() => ''}
-            workingHoursStart={8}
-            workingHoursEnd={20}
-            timeSlotIntervalMinutes={30}
+            onSlotClick={handleDrawerAddSlotClick}
           />
           {isModalOpen && (
             <AppointmentModal
