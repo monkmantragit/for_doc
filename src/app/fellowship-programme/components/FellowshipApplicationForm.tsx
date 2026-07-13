@@ -1,3 +1,4 @@
+```tsx
 'use client';
 
 import { useState } from 'react';
@@ -11,6 +12,14 @@ import {
 import { Button } from '@/components/ui/button';
 import { createFellowshipApplication } from '../actions';
 
+const MAX_RESUME_BYTES = 5 * 1024 * 1024; // 5MB
+
+const ALLOWED_RESUME_EXTENSIONS = [
+    '.pdf',
+    '.doc',
+    '.docx',
+];
+
 export default function FellowshipApplicationForm() {
     const [formData, setFormData] = useState({
         name: '',
@@ -21,181 +30,217 @@ export default function FellowshipApplicationForm() {
     });
 
     const [errors, setErrors] = useState<Record<string, string>>({});
+    const [resumeFile, setResumeFile] = useState<File | null>(null);
+    const [resumeError, setResumeError] = useState('');
+    const [submitErrorMessage, setSubmitErrorMessage] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
+
     const [submitStatus, setSubmitStatus] = useState<
         'idle' | 'success' | 'error'
     >('idle');
 
-    const [resumeFile, setResumeFile] = useState<File | null>(null);
-    const [resumeError, setResumeError] = useState('');
+    const handleChange = (
+        event: React.ChangeEvent<
+            HTMLInputElement |
+            HTMLTextAreaElement |
+            HTMLSelectElement
+        >
+    ) => {
+        const { name, value } = event.target;
 
-    const MAX_RESUME_BYTES = 5 * 1024 * 1024;
+        setFormData((previous) => ({
+            ...previous,
+            [name]: value,
+        }));
 
-    const ALLOWED_RESUME_EXTENSIONS = [
-        '.pdf',
-        '.doc',
-        '.docx',
-    ];
+        if (errors[name]) {
+            setErrors((previous) => {
+                const updatedErrors = { ...previous };
+                delete updatedErrors[name];
+                return updatedErrors;
+            });
+        }
+
+        if (submitStatus === 'error') {
+            setSubmitStatus('idle');
+            setSubmitErrorMessage('');
+        }
+    };
 
     const handleResumeChange = (
-        e: React.ChangeEvent<HTMLInputElement>
+        event: React.ChangeEvent<HTMLInputElement>
     ) => {
-        const file = e.target.files?.[0];
+        const file = event.target.files?.[0];
 
         if (!file) {
             setResumeFile(null);
-            setResumeError('Resume / CV is required');
+            setResumeError('Resume / CV is required.');
             return;
         }
 
-        const lowerName = file.name.toLowerCase();
+        const lowerCaseFileName = file.name.toLowerCase();
 
-        const hasValidExtension =
+        const hasAllowedExtension =
             ALLOWED_RESUME_EXTENSIONS.some((extension) =>
-                lowerName.endsWith(extension)
+                lowerCaseFileName.endsWith(extension)
             );
 
-        if (!hasValidExtension) {
+        if (!hasAllowedExtension) {
+            setResumeFile(null);
             setResumeError(
                 'Please upload a PDF, DOC, or DOCX file.'
             );
+
+            event.target.value = '';
+            return;
+        }
+
+        if (file.size === 0) {
             setResumeFile(null);
-            e.target.value = '';
+            setResumeError(
+                'The selected file is empty. Please upload a valid resume.'
+            );
+
+            event.target.value = '';
             return;
         }
 
         if (file.size > MAX_RESUME_BYTES) {
-            setResumeError(
-                'File must be 5MB or smaller.'
-            );
             setResumeFile(null);
-            e.target.value = '';
+            setResumeError(
+                'Resume must be 5MB or smaller.'
+            );
+
+            event.target.value = '';
             return;
         }
 
-        setResumeError('');
         setResumeFile(file);
+        setResumeError('');
+        setSubmitErrorMessage('');
+
+        if (submitStatus === 'error') {
+            setSubmitStatus('idle');
+        }
     };
 
     const removeResume = () => {
         setResumeFile(null);
-        setResumeError('Resume / CV is required');
+        setResumeError('Resume / CV is required.');
     };
 
-    const validateForm = () => {
+    const validateForm = (): boolean => {
         const newErrors: Record<string, string> = {};
-        let isResumeValid = true;
 
         if (!formData.name.trim()) {
-            newErrors.name = 'Name is required';
+            newErrors.name = 'Name is required.';
         }
 
         if (!formData.email.trim()) {
-            newErrors.email = 'Email is required';
+            newErrors.email = 'Email is required.';
         } else if (
-            !/\S+@\S+\.\S+/.test(formData.email)
+            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+                formData.email.trim()
+            )
         ) {
-            newErrors.email = 'Email is invalid';
+            newErrors.email =
+                'Please enter a valid email address.';
         }
 
         if (!formData.phone.trim()) {
             newErrors.phone =
-                'Phone number is required';
+                'Phone number is required.';
         }
 
-        if (!formData.qualification) {
+        if (!formData.qualification.trim()) {
             newErrors.qualification =
-                'Qualification is required';
+                'Qualification is required.';
         }
+
+        let resumeIsValid = true;
 
         if (!resumeFile) {
             setResumeError(
-                'Resume / CV is required'
+                'Resume / CV is required.'
             );
-            isResumeValid = false;
+
+            resumeIsValid = false;
         } else if (resumeError) {
-            isResumeValid = false;
+            resumeIsValid = false;
         }
 
         setErrors(newErrors);
 
         return (
             Object.keys(newErrors).length === 0 &&
-            isResumeValid
+            resumeIsValid
         );
     };
 
-    const handleChange = (
-        e: React.ChangeEvent<
-            | HTMLInputElement
-            | HTMLTextAreaElement
-            | HTMLSelectElement
-        >
-    ) => {
-        const { name, value } = e.target;
-
-        setFormData((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
-
-        if (errors[name]) {
-            setErrors((prev) => {
-                const updatedErrors = { ...prev };
-                delete updatedErrors[name];
-                return updatedErrors;
-            });
-        }
-    };
-
     const handleSubmit = async (
-        e: React.FormEvent<HTMLFormElement>
+        event: React.FormEvent<HTMLFormElement>
     ) => {
-        e.preventDefault();
+        event.preventDefault();
 
-        if (!validateForm()) {
+        setSubmitStatus('idle');
+        setSubmitErrorMessage('');
+
+        const formIsValid = validateForm();
+
+        if (!formIsValid) {
+            if (!resumeFile) {
+                setSubmitErrorMessage(
+                    'Resume / CV is required.'
+                );
+            }
+
             return;
         }
 
         if (!resumeFile) {
             setResumeError(
-                'Resume / CV is required'
+                'Resume / CV is required.'
             );
+
+            setSubmitErrorMessage(
+                'Resume / CV is required.'
+            );
+
+            setSubmitStatus('error');
             return;
         }
 
         setIsSubmitting(true);
-        setSubmitStatus('idle');
 
         try {
-            const formDataObj = new FormData();
+            const submissionData = new FormData();
 
-            formDataObj.append(
+            submissionData.append(
                 'name',
                 formData.name.trim()
             );
 
-            formDataObj.append(
+            submissionData.append(
                 'email',
                 formData.email.trim()
             );
 
-            formDataObj.append(
+            submissionData.append(
                 'phone',
                 formData.phone.trim()
             );
 
-            formDataObj.append(
+            submissionData.append(
                 'qualification',
-                formData.qualification
+                formData.qualification.trim()
             );
 
-            formDataObj.append(
+            submissionData.append(
                 'message',
                 formData.message.trim()
             );
 
-            formDataObj.append(
+            submissionData.append(
                 'resume',
                 resumeFile
             );
@@ -203,17 +248,33 @@ export default function FellowshipApplicationForm() {
             const result =
                 await createFellowshipApplication(
                     null,
-                    formDataObj
+                    submissionData
                 );
 
             if (!result.success) {
-                throw new Error(
+                const message =
                     result.message ||
-                        'Submission failed'
-                );
+                    'Submission failed. Please try again.';
+
+                setSubmitErrorMessage(message);
+                setSubmitStatus('error');
+
+                if (
+                    message
+                        .toLowerCase()
+                        .includes('resume')
+                ) {
+                    setResumeError(message);
+                }
+
+                return;
             }
 
             setSubmitStatus('success');
+            setSubmitErrorMessage('');
+            setErrors({});
+            setResumeError('');
+            setResumeFile(null);
 
             setFormData({
                 name: '',
@@ -223,24 +284,22 @@ export default function FellowshipApplicationForm() {
                 message: '',
             });
 
-            setResumeFile(null);
-            setResumeError('');
-            setErrors({});
-
-            setTimeout(() => {
+            window.setTimeout(() => {
                 setSubmitStatus('idle');
             }, 5000);
         } catch (error) {
             console.error(
-                'Error submitting application:',
+                'Error submitting fellowship application:',
                 error
             );
 
-            setSubmitStatus('error');
+            const message =
+                error instanceof Error
+                    ? error.message
+                    : 'There was an error sending your application. Please try again later.';
 
-            setTimeout(() => {
-                setSubmitStatus('idle');
-            }, 5000);
+            setSubmitErrorMessage(message);
+            setSubmitStatus('error');
         } finally {
             setIsSubmitting(false);
         }
@@ -253,8 +312,8 @@ export default function FellowshipApplicationForm() {
             </h3>
 
             <p className="text-soi-navy-600 mb-6">
-                Start your journey towards excellence
-                in orthopedics.
+                Start your journey towards excellence in
+                orthopedics.
             </p>
 
             {submitStatus === 'success' && (
@@ -276,7 +335,10 @@ export default function FellowshipApplicationForm() {
             )}
 
             {submitStatus === 'error' && (
-                <div className="mb-6 p-4 bg-red-50 text-red-800 rounded-lg border border-red-200 flex items-start gap-3">
+                <div
+                    role="alert"
+                    className="mb-6 p-4 bg-red-50 text-red-800 rounded-lg border border-red-200 flex items-start gap-3"
+                >
                     <AlertCircle className="w-5 h-5 mt-0.5 flex-shrink-0" />
 
                     <div>
@@ -285,9 +347,8 @@ export default function FellowshipApplicationForm() {
                         </p>
 
                         <p className="text-sm mt-1">
-                            There was an error sending
-                            your application. Please try
-                            again later.
+                            {submitErrorMessage ||
+                                'There was an error sending your application. Please try again later.'}
                         </p>
                     </div>
                 </div>
@@ -316,6 +377,11 @@ export default function FellowshipApplicationForm() {
                         value={formData.name}
                         onChange={handleChange}
                         aria-invalid={Boolean(errors.name)}
+                        aria-describedby={
+                            errors.name
+                                ? 'name-error'
+                                : undefined
+                        }
                         className={`w-full px-4 py-2.5 rounded-lg border ${
                             errors.name
                                 ? 'border-red-500 focus:ring-red-500'
@@ -325,7 +391,10 @@ export default function FellowshipApplicationForm() {
                     />
 
                     {errors.name && (
-                        <p className="mt-1 text-sm text-red-500">
+                        <p
+                            id="name-error"
+                            className="mt-1 text-sm text-red-500"
+                        >
                             {errors.name}
                         </p>
                     )}
@@ -352,6 +421,11 @@ export default function FellowshipApplicationForm() {
                             aria-invalid={Boolean(
                                 errors.email
                             )}
+                            aria-describedby={
+                                errors.email
+                                    ? 'email-error'
+                                    : undefined
+                            }
                             className={`w-full px-4 py-2.5 rounded-lg border ${
                                 errors.email
                                     ? 'border-red-500 focus:ring-red-500'
@@ -361,7 +435,10 @@ export default function FellowshipApplicationForm() {
                         />
 
                         {errors.email && (
-                            <p className="mt-1 text-sm text-red-500">
+                            <p
+                                id="email-error"
+                                className="mt-1 text-sm text-red-500"
+                            >
                                 {errors.email}
                             </p>
                         )}
@@ -387,6 +464,11 @@ export default function FellowshipApplicationForm() {
                             aria-invalid={Boolean(
                                 errors.phone
                             )}
+                            aria-describedby={
+                                errors.phone
+                                    ? 'phone-error'
+                                    : undefined
+                            }
                             className={`w-full px-4 py-2.5 rounded-lg border ${
                                 errors.phone
                                     ? 'border-red-500 focus:ring-red-500'
@@ -396,7 +478,10 @@ export default function FellowshipApplicationForm() {
                         />
 
                         {errors.phone && (
-                            <p className="mt-1 text-sm text-red-500">
+                            <p
+                                id="phone-error"
+                                className="mt-1 text-sm text-red-500"
+                            >
                                 {errors.phone}
                             </p>
                         )}
@@ -422,6 +507,11 @@ export default function FellowshipApplicationForm() {
                         aria-invalid={Boolean(
                             errors.qualification
                         )}
+                        aria-describedby={
+                            errors.qualification
+                                ? 'qualification-error'
+                                : undefined
+                        }
                         className={`w-full px-4 py-2.5 rounded-lg border ${
                             errors.qualification
                                 ? 'border-red-500 focus:ring-red-500'
@@ -454,7 +544,10 @@ export default function FellowshipApplicationForm() {
                     </select>
 
                     {errors.qualification && (
-                        <p className="mt-1 text-sm text-red-500">
+                        <p
+                            id="qualification-error"
+                            className="mt-1 text-sm text-red-500"
+                        >
                             {errors.qualification}
                         </p>
                     )}
@@ -514,12 +607,19 @@ export default function FellowshipApplicationForm() {
                                 id="resume"
                                 name="resume"
                                 type="file"
-                                required
                                 accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                                 onChange={
                                     handleResumeChange
                                 }
-                                className="hidden"
+                                aria-invalid={Boolean(
+                                    resumeError
+                                )}
+                                aria-describedby={
+                                    resumeError
+                                        ? 'resume-error'
+                                        : 'resume-help'
+                                }
+                                className="sr-only"
                             />
                         </label>
                     ) : (
@@ -543,8 +643,19 @@ export default function FellowshipApplicationForm() {
                         </div>
                     )}
 
+                    {!resumeError && (
+                        <p
+                            id="resume-help"
+                            className="mt-1 text-xs text-soi-navy-400"
+                        >
+                            A resume is required to submit
+                            the application.
+                        </p>
+                    )}
+
                     {resumeError && (
                         <p
+                            id="resume-error"
                             role="alert"
                             className="mt-1 text-sm text-red-500"
                         >
@@ -565,6 +676,7 @@ export default function FellowshipApplicationForm() {
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
                                 viewBox="0 0 24 24"
+                                aria-hidden="true"
                             >
                                 <circle
                                     className="opacity-25"
@@ -595,3 +707,4 @@ export default function FellowshipApplicationForm() {
         </div>
     );
 }
+```
