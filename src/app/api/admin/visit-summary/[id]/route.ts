@@ -41,9 +41,17 @@ export async function GET(
     }
 
     const asset = await fetchVisitSummaryAsset(appointment.visitSummaryFileId);
-    if (!asset || !asset.body) {
-      return NextResponse.json({ error: 'PDF unavailable' }, { status: 502 });
+    if (!asset) {
+      // Most commonly a 403 from Directus: the token's role can upload files
+      // but lacks READ permission on directus_files. Grant that role read
+      // access to Files in Directus for this to work.
+      return NextResponse.json(
+        { error: 'PDF unavailable — Directus denied access to the stored file.' },
+        { status: 502 }
+      );
     }
+
+    const buffer = Buffer.from(await asset.arrayBuffer());
 
     const safeName = (appointment.patientName || 'patient')
       .replace(/[^a-z0-9]+/gi, '-')
@@ -51,10 +59,10 @@ export async function GET(
       .toLowerCase();
     const filename = `visit-summary-${safeName}.pdf`;
 
-    return new NextResponse(asset.body, {
+    return new NextResponse(buffer, {
       status: 200,
       headers: {
-        'Content-Type': 'application/pdf',
+        'Content-Type': asset.headers.get('content-type') || 'application/pdf',
         'Content-Disposition': `inline; filename="${filename}"`,
         'Cache-Control': 'private, no-store',
       },

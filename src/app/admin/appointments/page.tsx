@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { DataTable } from '@/components/admin/DataTable';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { format, startOfMonth, endOfMonth } from 'date-fns';
+import { format, startOfMonth, endOfMonth, startOfDay, endOfDay } from 'date-fns';
 import {
   fetchAppointments,
   updateAppointmentStatus,
@@ -31,7 +31,7 @@ import { ChevronDown, CalendarIcon, ListIcon, ChevronLeft, ChevronRight, Chevron
 import { Input } from '@/components/ui/input';
 import { AppointmentDetailDrawer } from '@/components/admin/AppointmentDetailDrawer';
 import { Pagination, PaginationData } from '@/components/admin/Pagination';
-import AppointmentsCalendar from '@/components/AppointmentsCalendar';
+import AdminCalendar from '@/components/AdminCalendar';
 import AppointmentModal from '@/components/AppointmentModal';
 import { ConfirmationDialog } from '@/components/ui/ConfirmationDialog';
 
@@ -80,11 +80,13 @@ export default function AppointmentsPage() {
   const [updatingStatus, setUpdatingStatus] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'list' | 'calendar'>('calendar');
 
-  // List view: server-side search + sort
+  // List view: server-side search + sort + optional single-date filter.
+  // Search runs only when submitted (Enter / button), not on every keystroke.
   const [searchTerm, setSearchTerm] = useState('');
-  const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [submittedSearch, setSubmittedSearch] = useState('');
   const [sortKey, setSortKey] = useState<SortKey>('upcoming');
   const activeSort = SORT_OPTIONS.find((o) => o.key === sortKey) ?? SORT_OPTIONS[0];
+  const [listDate, setListDate] = useState<string>(''); // 'yyyy-MM-dd' or ''
   
   // Add pagination state
   const [pagination, setPagination] = useState<PaginationData>({
@@ -191,21 +193,28 @@ export default function AppointmentsPage() {
   const fmtTime = (d: Date | string | null) =>
     d ? format(new Date(d), 'h:mm a') : '—';
 
-  // Debounce the search box so we don't hit the server on every keystroke.
-  useEffect(() => {
-    const t = setTimeout(() => setDebouncedSearch(searchTerm.trim()), 400);
-    return () => clearTimeout(t);
-  }, [searchTerm]);
+  // Run the search only when the user submits it (Enter or the Search button).
+  const runSearch = () => {
+    const next = searchTerm.trim();
+    setSubmittedSearch(next);
+    setPagination((prev) => (prev.page === 1 ? prev : { ...prev, page: 1 }));
+  };
 
-  // A new search or sort should always start from page 1.
+  const clearSearch = () => {
+    setSearchTerm('');
+    setSubmittedSearch('');
+    setPagination((prev) => (prev.page === 1 ? prev : { ...prev, page: 1 }));
+  };
+
+  // A new sort or date filter should always start from page 1.
   useEffect(() => {
     setPagination((prev) => (prev.page === 1 ? prev : { ...prev, page: 1 }));
-  }, [debouncedSearch, sortKey]);
+  }, [sortKey, listDate]);
 
   useEffect(() => {
     loadInitialData();
-    // Reload when page, page size, month, view, search or sort changes
-  }, [pagination.page, pagination.pageSize, selectedMonth, viewMode, debouncedSearch, sortKey]);
+    // Reload when page, page size, month, view, submitted search, sort or date changes
+  }, [pagination.page, pagination.pageSize, selectedMonth, viewMode, submittedSearch, sortKey, listDate]);
 
   const loadInitialData = async () => {
     setIsLoading(true);
@@ -216,15 +225,19 @@ export default function AppointmentsPage() {
       // passes excludeSpeciality so the lists/calendars stay strictly orthopedic.
       if (viewMode === 'list') {
         // The list shows all dates (upcoming first by default) with server-side
-        // search + sort — it is no longer scoped to a single month.
+        // search + sort. An optional single-date filter scopes it to one day.
+        const dayFilter = listDate
+          ? { startDate: startOfDay(new Date(`${listDate}T00:00:00`)), endDate: endOfDay(new Date(`${listDate}T00:00:00`)) }
+          : {};
         appointmentResult = await fetchAppointments(
           pagination.page,
           pagination.pageSize,
           {
             excludeSpeciality: 'Physiotherapist',
-            search: debouncedSearch || undefined,
+            search: submittedSearch || undefined,
             sortBy: activeSort.sortBy,
             sortOrder: activeSort.sortOrder,
+            ...dayFilter,
           }
         );
       } else {
@@ -757,23 +770,59 @@ export default function AppointmentsPage() {
           </div>
         </div>
       </div>
-      {/* List view: search (name / phone / email) + sort controls */}
+      {/* List view: search (submitted) + date filter + sort controls */}
       {viewMode === 'list' && (
         <div className="px-4 mb-2 flex flex-col sm:flex-row sm:items-center gap-2">
-          <div className="relative flex-1 max-w-md">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+          {/* Search — runs on Enter or the Search button, not while typing */}
+          <div className="flex items-stretch gap-2 flex-1 max-w-md">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+              <Input
+                placeholder="Search by name, phone or email…"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') runSearch();
+                }}
+                className="pl-9 pr-9 bg-white text-gray-900 border-gray-200"
+              />
+              {searchTerm && (
+                <button
+                  type="button"
+                  onClick={clearSearch}
+                  aria-label="Clear search"
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              )}
+            </div>
+            <Button
+              size="sm"
+              className="h-10 bg-[#8B5C9E] text-white hover:bg-[#7A4F8C]"
+              onClick={runSearch}
+            >
+              <Search className="h-3.5 w-3.5 mr-1" />
+              Search
+            </Button>
+          </div>
+
+          {/* Single-date filter */}
+          <div className="flex items-center gap-1">
             <Input
-              placeholder="Search by name, phone or email…"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-9 pr-9 bg-white text-gray-900 border-gray-200"
+              type="date"
+              value={listDate}
+              onChange={(e) => setListDate(e.target.value)}
+              aria-label="Filter by date"
+              className="h-10 w-[150px] bg-white text-gray-900 border-gray-200"
             />
-            {searchTerm && (
+            {listDate && (
               <button
                 type="button"
-                onClick={() => setSearchTerm('')}
-                aria-label="Clear search"
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+                onClick={() => setListDate('')}
+                aria-label="Clear date filter"
+                className="p-1.5 rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+                title="Clear date"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -823,10 +872,11 @@ export default function AppointmentsPage() {
         </Card>
       ) : (
         <Card className="mt-4 p-4 overflow-hidden border-0 shadow-none bg-transparent">
-          <AppointmentsCalendar
+          <AdminCalendar
             appointments={calendarAppointments}
             onAppointmentClick={handleAppointmentClick}
-            onSlotClick={handleDrawerAddSlotClick}
+            onAddSlotClick={handleDrawerAddSlotClick}
+            enableViewSwitcher
           />
           {isModalOpen && (
             <AppointmentModal

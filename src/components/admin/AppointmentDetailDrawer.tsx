@@ -276,9 +276,11 @@ export function AppointmentDetailDrawer({ appointmentId, open, onClose, onChange
     w.document.close();
   };
 
-  // Persist the current notes, store the PDF in Directus, then open the print
-  // dialog — a single "Save PDF & print" action.
-  const handleSavePdfAndPrint = async () => {
+  // Persist the current notes and store a PDF copy in Directus. Kept separate
+  // from printing: opening the print window must happen synchronously inside a
+  // click handler (see the Print button), otherwise the browser pop-up blocker
+  // kills a window.open() that runs after an await.
+  const handleSavePdf = async () => {
     if (!appointmentId) return;
     setGeneratingPdf(true);
     try {
@@ -295,15 +297,13 @@ export function AppointmentDetailDrawer({ appointmentId, open, onClose, onChange
         toast.success('PDF saved to records');
         onChanged?.();
       } else {
-        toast.error(res.error || 'Could not save PDF — opening print only');
+        toast.error(res.error || 'Could not save PDF');
       }
     } catch (e) {
       console.error(e);
-      toast.error('Could not save PDF — opening print only');
+      toast.error('Could not save PDF');
     } finally {
       setGeneratingPdf(false);
-      // Always open the print view so the clinic can print on letterhead.
-      openPrintWindow();
     }
   };
 
@@ -492,18 +492,27 @@ export function AppointmentDetailDrawer({ appointmentId, open, onClose, onChange
                   Save notes
                 </Button>
                 <Button
-                  onClick={handleSavePdfAndPrint}
+                  onClick={openPrintWindow}
+                  variant="outline"
+                  size="sm"
+                  title="Open a print-friendly copy (prints on the clinic letterhead)"
+                >
+                  <Printer className="w-3.5 h-3.5 mr-1" />
+                  Print
+                </Button>
+                <Button
+                  onClick={handleSavePdf}
                   variant="outline"
                   size="sm"
                   disabled={generatingPdf}
-                  title="Saves a PDF copy to the patient's records and opens the print dialog"
+                  title="Save a PDF copy to the patient's records in Directus"
                 >
                   {generatingPdf ? (
                     <Loader2 className="w-3.5 h-3.5 mr-1 animate-spin" />
                   ) : (
-                    <Printer className="w-3.5 h-3.5 mr-1" />
+                    <FileText className="w-3.5 h-3.5 mr-1" />
                   )}
-                  Save PDF &amp; print
+                  Save PDF
                 </Button>
               </div>
 
