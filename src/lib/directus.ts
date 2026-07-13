@@ -240,7 +240,11 @@ export async function createFellowshipApplicationItem(data: FellowshipApplicatio
  * SERVER-ONLY: uses the admin token. The returned id is stored on the
  * application's `resume` field so admins can download it from the record.
  */
-export async function uploadFellowshipResume(file: File): Promise<string> {
+export async function uploadFellowshipResume(
+  file: Buffer,
+  filename: string,
+  mimeType?: string
+): Promise<string> {
   if (!directusAdminToken) {
     throw new Error(
       'DIRECTUS_ADMIN_TOKEN is required to upload resumes. It must be set on the server.'
@@ -248,9 +252,13 @@ export async function uploadFellowshipResume(file: File): Promise<string> {
   }
 
   const formData = new FormData();
-  formData.append('title', `Fellowship CV - ${file.name}`);
+  formData.append('title', `Fellowship CV - ${filename}`);
   // The file part MUST be appended last for Directus to parse it correctly.
-  formData.append('file', file, file.name);
+  // `File` is a browser-only Web API and isn't guaranteed to exist in every
+  // Node.js runtime, so build the upload from a `Buffer`/`Blob` instead,
+  // matching the pattern used by uploadVisitSummaryPdf below.
+  const blob = new Blob([file], mimeType ? { type: mimeType } : undefined);
+  formData.append('file', blob, filename);
 
   const result: any = await client.request(uploadFiles(formData));
   const id = Array.isArray(result) ? result[0]?.id : result?.id;
