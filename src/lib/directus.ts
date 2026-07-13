@@ -157,6 +157,30 @@ export interface FellowshipApplication {
   date_updated: string | null;
 }
 
+/**
+ * Alumni ("Hall of Fame") record. This collection is created and managed
+ * entirely inside the Directus portal — editors add each alumnus (photo +
+ * details) there and published records render on the public /our-alumni page.
+ * There is no public submission form.
+ */
+export interface AlumniMember {
+  id: string;
+  name: string;
+  /** Directus file id of the alumnus photo. */
+  photo: string | null;
+  /** Resolved public asset URL, added server-side (not a Directus column). */
+  photoUrl?: string;
+  batch_year?: string | null;
+  qualification?: string | null;
+  current_position?: string | null;
+  hospital?: string | null;
+  city?: string | null;
+  testimonial?: string | null;
+  sort?: number | null;
+  status?: string;
+  date_created?: string;
+}
+
 interface DirectusSchema {
   blog_content: BlogPost[];
   educational_content: EducationalContent[];
@@ -167,6 +191,7 @@ interface DirectusSchema {
   publications: Publication[];
   landing_pages: LandingPage[];
   fellowship_applications: FellowshipApplication[];
+  alumni: AlumniMember[];
 }
 
 export interface FellowshipApplicationInput {
@@ -326,6 +351,55 @@ export function getPublicImageUrl(imageId: string | null): string {
   
   // Public URL without admin token - works in client and server
   return `${directusUrl}/assets/${imageId}`;
+}
+
+/**
+ * Fetch published alumni for the public Hall of Fame page (/our-alumni).
+ *
+ * Reads the `alumni` collection (created/managed in the Directus portal) and
+ * returns only `status = published` records, ordered by the manual `sort` field
+ * then newest first. Each record's `photo` file id is resolved to an asset URL.
+ * Optional/empty fields are tolerated so the page still renders if an editor
+ * fills in only some of the details.
+ *
+ * This runs server-side with the Directus token (the page is server-rendered),
+ * so photos use `getImageUrl` — the same token-authenticated asset URL the
+ * gallery and staff pages use — rather than relying on public file permissions.
+ */
+export async function getAlumni(): Promise<AlumniMember[]> {
+  try {
+    const response = await client.request(
+      readItems('alumni', {
+        fields: [
+          'id',
+          'name',
+          'photo',
+          'batch_year',
+          'qualification',
+          'current_position',
+          'hospital',
+          'city',
+          'testimonial',
+          'sort',
+          'status',
+          'date_created',
+        ],
+        filter: { status: { _eq: 'published' } },
+        sort: ['sort', '-date_created'],
+        limit: -1,
+      })
+    );
+
+    const items = Array.isArray(response) ? response : (response as any).data || [];
+
+    return (items as AlumniMember[]).map((item) => ({
+      ...item,
+      photoUrl: item.photo ? getImageUrl(item.photo) : undefined,
+    }));
+  } catch (error) {
+    console.error('Error fetching alumni:', error);
+    return [];
+  }
 }
 
 // Function to get all blog posts
