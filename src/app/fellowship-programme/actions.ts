@@ -12,7 +12,29 @@ const ALLOWED_RESUME_TYPES = [
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
 ];
 
-function resumeIsAllowed(file: File): boolean {
+// `File` is a browser/Web API and is not guaranteed to exist as a global in
+// every Node.js runtime this app may be deployed on. Avoid referencing it
+// directly (e.g. `instanceof File`) — instead duck-type the Blob-like object
+// that `formData.get()` returns for a file field. `Blob` (and its
+// `arrayBuffer()` method) is available in Node regardless of `File` support.
+type ResumeUpload = {
+    name: string;
+    type: string;
+    size: number;
+    arrayBuffer: () => Promise<ArrayBuffer>;
+};
+
+function isResumeUpload(value: FormDataEntryValue | null): value is ResumeUpload {
+    return (
+        typeof value === 'object' &&
+        value !== null &&
+        typeof (value as any).arrayBuffer === 'function' &&
+        typeof (value as any).size === 'number' &&
+        typeof (value as any).name === 'string'
+    );
+}
+
+function resumeIsAllowed(file: ResumeUpload): boolean {
     const lowerName = file.name.toLowerCase();
     const extOk = ALLOWED_RESUME_EXTENSIONS.some((ext) => lowerName.endsWith(ext));
     const typeOk = !file.type || ALLOWED_RESUME_TYPES.includes(file.type);
@@ -103,14 +125,20 @@ export async function createFellowshipApplication(prevState: any, formData: Form
         // Optional resume upload (PDF/DOC/DOCX, max 5MB).
         let resumeId: string | undefined;
         const resume = formData.get('resume');
-        if (resume instanceof File && resume.size > 0) {
+        if (isResumeUpload(resume) && resume.size > 0) {
             if (resume.size > MAX_RESUME_BYTES) {
                 return { success: false, message: 'Resume must be 5MB or smaller.' };
             }
             if (!resumeIsAllowed(resume)) {
                 return { success: false, message: 'Resume must be a PDF, DOC, or DOCX file.' };
             }
-            resumeId = await uploadFellowshipResume(resume);
+            // Read the upload into a Buffer here (server-side) rather than
+            // passing the Blob-like object further down — this avoids relying
+            // on any browser-only File semantics once the data leaves this
+            // request context.
+            const arrayBuffer = await resume.arrayBuffer();
+            const buffer = Buffer.from(arrayBuffer);
+            resumeId = await uploadFellowshipResume(buffer, resume.name, resume.type);
         }
 
         // Stored in Directus (collection: fellowship_applications) so the admin
