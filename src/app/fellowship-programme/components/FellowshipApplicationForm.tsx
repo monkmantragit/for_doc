@@ -20,7 +20,7 @@ export default function FellowshipApplicationForm() {
     const [resumeFile, setResumeFile] = useState<File | null>(null);
     const [resumeError, setResumeError] = useState('');
 
-    const MAX_RESUME_BYTES = 5 * 1024 * 1024; // 5MB
+    const MAX_RESUME_BYTES = 2 * 1024 * 1024; // 2MB
     const ALLOWED_RESUME_EXTENSIONS = ['.pdf', '.doc', '.docx'];
 
     const handleResumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,8 +33,10 @@ export default function FellowshipApplicationForm() {
             return;
         }
         if (file.size > MAX_RESUME_BYTES) {
-            setResumeError('File must be 5MB or smaller.');
+            setResumeError('This file is too large. Please upload a resume under 2 MB.');
             setResumeFile(null);
+            // Clear the input so re-selecting the same over-size file still fires onChange.
+            e.target.value = '';
             return;
         }
         setResumeError('');
@@ -240,7 +242,7 @@ export default function FellowshipApplicationForm() {
 
                 <div>
                     <label className="block text-sm font-medium text-soi-navy-700 mb-1">
-                        Resume / CV <span className="text-red-500">*</span> <span className="text-soi-navy-400 font-normal">(PDF, DOC, DOCX · max 5MB)</span>
+                        Resume / CV <span className="text-red-500">*</span> <span className="text-soi-navy-400 font-normal">(PDF, DOC, DOCX · max 2MB)</span>
                     </label>
                     {!resumeFile ? (
                         <label
