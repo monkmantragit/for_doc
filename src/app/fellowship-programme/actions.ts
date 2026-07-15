@@ -16,11 +16,39 @@ const ALLOWED_RESUME_TYPES = [
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
 ];
 
-function resumeIsAllowed(file: File): boolean {
+type ResumeUpload = {
+    name: string;
+    type: string;
+    size: number;
+    arrayBuffer: () => Promise<ArrayBuffer>;
+};
+
+function isResumeUpload(
+    value: FormDataEntryValue | null
+): value is ResumeUpload {
+    return (
+        typeof value === 'object' &&
+        value !== null &&
+        typeof (value as ResumeUpload).arrayBuffer ===
+            'function' &&
+        typeof (value as ResumeUpload).size === 'number' &&
+        typeof (value as ResumeUpload).name === 'string'
+    );
+}
+
+function resumeIsAllowed(file: ResumeUpload): boolean {
     const lowerName = file.name.toLowerCase();
-    const extOk = ALLOWED_RESUME_EXTENSIONS.some((ext) => lowerName.endsWith(ext));
-    const typeOk = !file.type || ALLOWED_RESUME_TYPES.includes(file.type);
-    return extOk && typeOk;
+
+    const extensionIsAllowed =
+        ALLOWED_RESUME_EXTENSIONS.some((extension) =>
+            lowerName.endsWith(extension)
+        );
+
+    const typeIsAllowed =
+        !file.type ||
+        ALLOWED_RESUME_TYPES.includes(file.type);
+
+    return extensionIsAllowed && typeIsAllowed;
 }
 
 function contentTypeFor(filename: string): string {
@@ -47,16 +75,24 @@ interface NotificationData {
 }
 
 async function notifyTeam(data: NotificationData) {
-    const recipient = process.env.FELLOWSHIP_NOTIFY_EMAIL || process.env.ADMIN_EMAIL;
+    const recipient =
+        process.env.FELLOWSHIP_NOTIFY_EMAIL ||
+        process.env.ADMIN_EMAIL;
+
     if (!recipient) {
-        console.warn('Fellowship application saved, but no FELLOWSHIP_NOTIFY_EMAIL/ADMIN_EMAIL is set — skipping notification.');
+        console.warn(
+            'Fellowship application saved, but no FELLOWSHIP_NOTIFY_EMAIL or ADMIN_EMAIL is configured. Notification skipped.'
+        );
         return;
     }
 
-    const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL;
-    const recordLink = data.id && directusUrl
-        ? `${directusUrl}/admin/content/fellowship_applications/${data.id}`
-        : null;
+    const directusUrl =
+        process.env.NEXT_PUBLIC_DIRECTUS_URL;
+
+    const recordLink =
+        data.id && directusUrl
+            ? `${directusUrl}/admin/content/fellowship_applications/${data.id}`
+            : null;
 
     const resumeCell = data.resumeFilename
         ? `${data.resumeFilename}${data.resumeUrl ? ` — <a href="${data.resumeUrl}">download</a> (link expires)` : ''}`
@@ -73,20 +109,53 @@ async function notifyTeam(data: NotificationData) {
     ];
 
     const html = `
-        <h2 style="margin:0 0 12px">New Fellowship Application</h2>
+        <h2 style="margin:0 0 12px">
+            New Fellowship Application
+        </h2>
+
         <table style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:14px">
             ${rows
                 .map(
-                    ([label, value]) =>
-                        `<tr><td style="padding:6px 12px;font-weight:bold;vertical-align:top;color:#334155">${label}</td><td style="padding:6px 12px;color:#0f172a">${String(value).replace(/\n/g, '<br>')}</td></tr>`,
+                    ([label, value]) => `
+                        <tr>
+                            <td style="padding:6px 12px;font-weight:bold;vertical-align:top;color:#334155">
+                                ${label}
+                            </td>
+                            <td style="padding:6px 12px;color:#0f172a">
+                                ${String(value).replace(
+                                    /\n/g,
+                                    '<br>'
+                                )}
+                            </td>
+                        </tr>
+                    `
                 )
                 .join('')}
         </table>
-        ${recordLink ? `<p style="margin-top:16px"><a href="${recordLink}">Open the application in Directus</a></p>` : ''}
+
+        ${
+            recordLink
+                ? `
+                    <p style="margin-top:16px">
+                        <a href="${recordLink}">
+                            Open the application in Directus
+                        </a>
+                    </p>
+                `
+                : ''
+        }
     `;
 
-    const text = rows.map(([label, value]) => `${label}: ${value}`).join('\n')
-        + (recordLink ? `\n\nOpen in Directus: ${recordLink}` : '');
+    const text =
+        rows
+            .map(
+                ([label, value]) =>
+                    `${label}: ${value}`
+            )
+            .join('\n') +
+        (recordLink
+            ? `\n\nOpen in Directus: ${recordLink}`
+            : '');
 
     await sendMail({
         to: recipient,
@@ -99,28 +168,74 @@ async function notifyTeam(data: NotificationData) {
     });
 }
 
-export async function createFellowshipApplication(prevState: any, formData: FormData) {
+export async function createFellowshipApplication(
+    prevState: unknown,
+    formData: FormData
+) {
     try {
-        // Enforce the application window server-side (UI also hides the form,
-        // but this guards against direct/bypassed submissions).
         if (!isFellowshipWindowOpen()) {
             return {
                 success: false,
-                message: 'Applications are currently closed. Please apply during the next window.',
+                message:
+                    'Applications are currently closed. Please apply during the next application window.',
             };
         }
 
-        const name = formData.get('name') as string;
-        const email = formData.get('email') as string;
-        const phone = formData.get('phone') as string;
-        const qualification = formData.get('qualification') as string;
-        const message = formData.get('message') as string;
+        const nameValue = formData.get('name');
+        const emailValue = formData.get('email');
+        const phoneValue = formData.get('phone');
+        const qualificationValue =
+            formData.get('qualification');
+        const messageValue = formData.get('message');
 
-        // specific validation can be improved with zod
-        if (!name || !email || !phone || !qualification) {
+        const name =
+            typeof nameValue === 'string'
+                ? nameValue.trim()
+                : '';
+
+        const email =
+            typeof emailValue === 'string'
+                ? emailValue.trim()
+                : '';
+
+        const phone =
+            typeof phoneValue === 'string'
+                ? phoneValue.trim()
+                : '';
+
+        const qualification =
+            typeof qualificationValue === 'string'
+                ? qualificationValue.trim()
+                : '';
+
+        const message =
+            typeof messageValue === 'string'
+                ? messageValue.trim()
+                : '';
+
+        if (
+            !name ||
+            !email ||
+            !phone ||
+            !qualification
+        ) {
             return {
                 success: false,
-                message: 'Missing required fields',
+                message:
+                    'Please complete all required fields.',
+            };
+        }
+
+        const emailIsValid =
+            /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+                email
+            );
+
+        if (!emailIsValid) {
+            return {
+                success: false,
+                message:
+                    'Please enter a valid email address.',
             };
         }
 
@@ -206,13 +321,19 @@ export async function createFellowshipApplication(prevState: any, formData: Form
 
         return {
             success: true,
-            message: 'Application submitted successfully',
+            message:
+                'Application submitted successfully.',
         };
     } catch (error) {
-        console.error('Error creating fellowship application:', error);
+        console.error(
+            'Error creating fellowship application:',
+            error
+        );
+
         return {
             success: false,
-            message: 'Failed to submit application. Please try again later.',
+            message:
+                'Failed to submit the application. Please try again later.',
         };
     }
 }
