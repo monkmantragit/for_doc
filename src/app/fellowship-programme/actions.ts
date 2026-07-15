@@ -100,18 +100,18 @@ export async function createFellowshipApplication(prevState: any, formData: Form
             };
         }
 
-        // Optional resume upload (PDF/DOC/DOCX, max 5MB).
-        let resumeId: string | undefined;
+        // Resume upload is required (PDF/DOC/DOCX, max 5MB).
         const resume = formData.get('resume');
-        if (resume instanceof File && resume.size > 0) {
-            if (resume.size > MAX_RESUME_BYTES) {
-                return { success: false, message: 'Resume must be 5MB or smaller.' };
-            }
-            if (!resumeIsAllowed(resume)) {
-                return { success: false, message: 'Resume must be a PDF, DOC, or DOCX file.' };
-            }
-            resumeId = await uploadFellowshipResume(resume);
+        if (!(resume instanceof File) || resume.size === 0) {
+            return { success: false, message: 'A resume/CV is required. Please attach a PDF, DOC, or DOCX file.' };
         }
+        if (resume.size > MAX_RESUME_BYTES) {
+            return { success: false, message: 'Resume must be 5MB or smaller.' };
+        }
+        if (!resumeIsAllowed(resume)) {
+            return { success: false, message: 'Resume must be a PDF, DOC, or DOCX file.' };
+        }
+        const resumeId = await uploadFellowshipResume(resume);
 
         // Stored in Directus (collection: fellowship_applications) so the admin
         // can review applications there, rather than in the team-wide admin.

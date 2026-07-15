@@ -59,7 +59,15 @@ export default function FellowshipApplicationForm() {
         if (!formData.qualification) newErrors.qualification = 'Qualification is required';
 
         setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
+
+        // Resume/CV is now mandatory.
+        let resumeOk = true;
+        if (!resumeFile) {
+            setResumeError('Resume is required. Please attach your CV (PDF, DOC, or DOCX).');
+            resumeOk = false;
+        }
+
+        return Object.keys(newErrors).length === 0 && resumeOk;
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -232,7 +240,7 @@ export default function FellowshipApplicationForm() {
 
                 <div>
                     <label className="block text-sm font-medium text-soi-navy-700 mb-1">
-                        Resume / CV <span className="text-soi-navy-400 font-normal">(optional · PDF, DOC, DOCX · max 5MB)</span>
+                        Resume / CV <span className="text-red-500">*</span> <span className="text-soi-navy-400 font-normal">(PDF, DOC, DOCX · max 5MB)</span>
                     </label>
                     {!resumeFile ? (
                         <label
