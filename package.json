@@ -81,6 +81,7 @@
     "glob": "^10.3.10",
     "gray-matter": "^4.0.3",
     "html-react-parser": "^5.2.5",
+    "imagekit": "^6.0.0",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.344.0",
     "marked": "^15.0.7",

@@ -702,10 +702,9 @@ export default function AppointmentsPage() {
 
   // --- Handlers for calendar integration ---
   const handleAppointmentClick = (appointment: Appointment) => {
-    setSelectedAppointment(appointment);
-    setIsNewAppointment(false);
-    setPrefilledTimeForModal(undefined);
-    setIsModalOpen(true);
+    // Open the right-side details drawer for the clicked appointment (same
+    // drawer the list view uses).
+    openDetailDrawer(appointment.id);
   };
 
   const handleBookAgain = (appointment: Appointment) => {

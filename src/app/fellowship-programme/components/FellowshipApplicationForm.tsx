@@ -79,10 +79,8 @@ export default function FellowshipApplicationForm() {
 
         const lowerCaseFileName = file.name.toLowerCase();
 
-        const hasAllowedExtension =
-            ALLOWED_RESUME_EXTENSIONS.some((extension) =>
-                lowerCaseFileName.endsWith(extension)
-            );
+    const MAX_RESUME_BYTES = 2 * 1024 * 1024; // 2MB
+    const ALLOWED_RESUME_EXTENSIONS = ['.pdf', '.doc', '.docx'];
 
         if (!hasAllowedExtension) {
             setResumeFile(null);
@@ -105,12 +103,10 @@ export default function FellowshipApplicationForm() {
         }
 
         if (file.size > MAX_RESUME_BYTES) {
+            setResumeError('This file is too large. Please upload a resume under 2 MB.');
             setResumeFile(null);
-            setResumeError(
-                'Resume must be 5MB or smaller.'
-            );
-
-            event.target.value = '';
+            // Clear the input so re-selecting the same over-size file still fires onChange.
+            e.target.value = '';
             return;
         }
 
@@ -170,10 +166,14 @@ export default function FellowshipApplicationForm() {
 
         setErrors(newErrors);
 
-        return (
-            Object.keys(newErrors).length === 0 &&
-            resumeIsValid
-        );
+        // Resume/CV is now mandatory.
+        let resumeOk = true;
+        if (!resumeFile) {
+            setResumeError('Resume is required. Please attach your CV (PDF, DOC, or DOCX).');
+            resumeOk = false;
+        }
+
+        return Object.keys(newErrors).length === 0 && resumeOk;
     };
 
     const handleSubmit = async (
@@ -572,19 +572,8 @@ export default function FellowshipApplicationForm() {
                 </div>
 
                 <div>
-                    <label
-                        htmlFor="resume"
-                        className="block text-sm font-medium text-soi-navy-700 mb-1"
-                    >
-                        Resume / CV{' '}
-                        <span className="text-red-500">
-                            *
-                        </span>
-
-                        <span className="text-soi-navy-400 font-normal">
-                            {' '}
-                            (PDF, DOC, DOCX · max 5MB)
-                        </span>
+                    <label className="block text-sm font-medium text-soi-navy-700 mb-1">
+                        Resume / CV <span className="text-red-500">*</span> <span className="text-soi-navy-400 font-normal">(PDF, DOC, DOCX · max 2MB)</span>
                     </label>
 
                     {!resumeFile ? (

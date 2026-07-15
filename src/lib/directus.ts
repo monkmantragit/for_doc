@@ -200,8 +200,10 @@ export interface FellowshipApplicationInput {
   phone: string;
   qualification: string;
   message?: string;
-  /** Directus file id of an uploaded resume, if any (see uploadFellowshipResume). */
-  resume?: string;
+  /** Signed ImageKit URL of the uploaded resume (convenience link; expires). */
+  resume_url?: string;
+  /** ImageKit file id of the uploaded resume (used to regenerate signed URLs). */
+  resume_file_id?: string;
 }
 
 /**
@@ -227,46 +229,19 @@ export async function createFellowshipApplicationItem(data: FellowshipApplicatio
       qualification: data.qualification,
       message: data.message?.trim() ? data.message.trim() : null,
       status: 'PENDING',
-      // Only include `resume` when present so submissions still work before the
-      // resume field has been added to the collection.
-      ...(data.resume ? { resume: data.resume } : {}),
+      // Only include the resume fields when present so submissions still work
+      // before these fields are added to the collection (see
+      // scripts/add-fellowship-resume-url-field.mjs). Resumes now live on
+      // ImageKit; we store the signed URL + file id here, not a Directus file.
+      ...(data.resume_url ? { resume_url: data.resume_url } : {}),
+      ...(data.resume_file_id ? { resume_file_id: data.resume_file_id } : {}),
     })
   );
 }
 
-/**
- * Upload an applicant's resume to Directus files and return the new file id.
- *
- * SERVER-ONLY: uses the admin token. The returned id is stored on the
- * application's `resume` field so admins can download it from the record.
- */
-export async function uploadFellowshipResume(
-  file: Buffer,
-  filename: string,
-  mimeType?: string
-): Promise<string> {
-  if (!directusAdminToken) {
-    throw new Error(
-      'DIRECTUS_ADMIN_TOKEN is required to upload resumes. It must be set on the server.'
-    );
-  }
-
-  const formData = new FormData();
-  formData.append('title', `Fellowship CV - ${filename}`);
-  // The file part MUST be appended last for Directus to parse it correctly.
-  // `File` is a browser-only Web API and isn't guaranteed to exist in every
-  // Node.js runtime, so build the upload from a `Buffer`/`Blob` instead,
-  // matching the pattern used by uploadVisitSummaryPdf below.
-  const blob = new Blob([file], mimeType ? { type: mimeType } : undefined);
-  formData.append('file', blob, filename);
-
-  const result: any = await client.request(uploadFiles(formData));
-  const id = Array.isArray(result) ? result[0]?.id : result?.id;
-  if (!id) {
-    throw new Error('Resume upload failed: Directus did not return a file id.');
-  }
-  return id as string;
-}
+// NOTE: Fellowship resumes are no longer uploaded to Directus files — they are
+// stored privately on ImageKit (see src/lib/imagekit.ts) and referenced from the
+// `fellowship_applications` record via `resume_url` + `resume_file_id`.
 
 /**
  * Upload a generated visit-summary PDF to Directus file storage and return the

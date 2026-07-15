@@ -38,17 +38,25 @@ function getTransporter(): Transporter | null {
   return transporter;
 }
 
+/** A file attached to an outgoing email (nodemailer attachment shape). */
+export interface MailAttachment {
+  filename: string;
+  content: Buffer;
+  contentType?: string;
+}
+
 export interface MailMessage {
   to: string;
   subject: string;
   html: string;
   text?: string;
+  attachments?: MailAttachment[];
 }
 
 /** Sends an email. Throws if SMTP is not configured or the send fails. */
-export async function sendMail({ to, subject, html, text }: MailMessage): Promise<void> {
+export async function sendMail({ to, subject, html, text, attachments }: MailMessage): Promise<void> {
   const tx = getTransporter();
   if (!tx) throw new Error('SMTP is not configured.');
   const from = process.env.SMTP_FROM || process.env.SMTP_USER!;
-  await tx.sendMail({ from, to, subject, html, text });
+  await tx.sendMail({ from, to, subject, html, text, attachments });
 }
