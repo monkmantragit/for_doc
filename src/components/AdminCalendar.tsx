@@ -80,11 +80,12 @@ const AdminCalendar = ({
       .filter((a) => isSameDay(new Date(a.date), date))
       .sort((a, b) => parseTime(a.time) - parseTime(b.time));
 
-  // Shared appointment "chip" used across all views.
-  const renderChip = (appointment: Appointment, size: 'sm' | 'md' = 'sm') => (
+  // Shared appointment "chip" used across all views. `showDoctor` adds the
+  // doctor's name on its own line (used by the Day and Week views).
+  const renderChip = (appointment: Appointment, size: 'sm' | 'md' = 'sm', showDoctor = false) => (
     <button
       key={appointment.id}
-      className={`w-full text-left truncate rounded shadow-sm border ${size === 'md' ? 'text-sm px-2 py-1.5' : 'text-xs px-1 py-0.5'} mb-0.5 ${
+      className={`w-full text-left rounded shadow-sm border ${size === 'md' ? 'text-sm px-2 py-1.5' : 'text-xs px-1 py-0.5'} mb-0.5 ${
         appointment.status === 'CANCELLED'
           ? 'bg-gray-100 border-gray-200 text-gray-500 opacity-75 hover:bg-gray-200'
           : 'bg-[#F3E8FF] border-[#E9D5FF] hover:bg-[#E9D5FF]'
@@ -93,11 +94,18 @@ const AdminCalendar = ({
         e.stopPropagation();
         onAppointmentClick(appointment);
       }}
-      title={appointment.patientName || 'Appointment'}
+      title={`${appointment.patientName || 'Appointment'}${appointment.doctor?.name ? ` — Dr. ${appointment.doctor.name}` : ''}`}
       style={{ color: appointment.status === 'CANCELLED' ? '#6B7280' : '#4B006E' }}
     >
-      {appointment.time && <span className="font-medium mr-1 text-[#8B5C9E]">{appointment.time}</span>}
-      <span className="font-medium">{appointment.patientName || 'Appointment'}</span>
+      <span className="block truncate">
+        {appointment.time && <span className="font-medium mr-1 text-[#8B5C9E]">{appointment.time}</span>}
+        <span className="font-medium">{appointment.patientName || 'Appointment'}</span>
+      </span>
+      {showDoctor && appointment.doctor?.name && (
+        <span className="block truncate font-normal opacity-80" style={{ fontSize: size === 'md' ? '0.72rem' : '0.62rem' }}>
+          Dr. {appointment.doctor.name}
+        </span>
+      )}
     </button>
   );
 
@@ -138,7 +146,7 @@ const AdminCalendar = ({
         </div>
         <div className="flex flex-col gap-1">
           {visible.length === 0 && <span className="text-xs text-gray-400">No appointments</span>}
-          {visible.map((a) => renderChip(a, variant === 'day' ? 'md' : 'sm'))}
+          {visible.map((a) => renderChip(a, variant === 'day' ? 'md' : 'sm', true))}
           {hidden > 0 && (
             <button
               className="text-xs text-[#8B5C9E] mt-1 underline hover:text-[#6D28D9] font-semibold text-left"

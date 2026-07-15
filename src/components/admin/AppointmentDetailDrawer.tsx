@@ -358,6 +358,13 @@ export function AppointmentDetailDrawer({ appointmentId, open, onClose, onChange
                 <User className="w-4 h-4 text-[#8B5C9E]" />
                 {appointment.patientName || 'Unknown patient'}
               </div>
+              <div className="flex items-center gap-2 text-sm text-gray-700">
+                <Stethoscope className="w-3.5 h-3.5 text-[#8B5C9E]" />
+                Dr. {appointment.doctor?.name || '—'}
+                {appointment.doctor?.speciality && (
+                  <span className="text-gray-500">· {appointment.doctor.speciality}</span>
+                )}
+              </div>
               {appointment.phone && (
                 <div className="flex items-center gap-2 text-sm text-gray-600">
                   <Phone className="w-3.5 h-3.5" />
