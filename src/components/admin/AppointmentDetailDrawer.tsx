@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { format } from 'date-fns';
 import { toast } from 'react-hot-toast';
-import { Loader2, LogIn, LogOut, Save, User, Phone, Mail, Calendar, Clock, Undo2, Stethoscope, Printer, FileText, ExternalLink } from 'lucide-react';
+import { Loader2, LogIn, LogOut, Save, User, Phone, Mail, Calendar, Clock, Undo2, Stethoscope, Printer, FileText, ExternalLink, CalendarClock, Trash2 } from 'lucide-react';
 import {
   Sheet,
   SheetContent,
@@ -24,6 +24,9 @@ import {
   updateVisitNotes,
   fetchPatientHistoryByPhone,
   generateVisitSummaryPdf,
+  fetchAvailableSlots,
+  updateAppointment,
+  deleteAppointmentAction,
 } from '@/app/actions/admin';
 
 interface Props {
@@ -51,6 +54,8 @@ interface AppointmentDetail {
   visitSummaryGeneratedAt: Date | string | null;
   createdAt: Date;
   updatedAt: Date;
+  doctorId: string;
+  customerId: string | null;
   doctor: { name: string; speciality: string; fee: number };
   patient: { id: string; phone: string; name: string } | null;
 }
@@ -79,10 +84,21 @@ export function AppointmentDetailDrawer({ appointmentId, open, onClose, onChange
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const [pdfGeneratedAt, setPdfGeneratedAt] = useState<string | null>(null);
 
+  // Reschedule + delete
+  const [rescheduleDate, setRescheduleDate] = useState(''); // 'yyyy-MM-dd'
+  const [rescheduleTime, setRescheduleTime] = useState('');
+  const [slots, setSlots] = useState<string[]>([]);
+  const [loadingSlots, setLoadingSlots] = useState(false);
+  const [rescheduling, setRescheduling] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+
   useEffect(() => {
     if (!open || !appointmentId) {
       setAppointment(null);
       setHousehold([]);
+      setConfirmDelete(false);
+      setSlots([]);
       return;
     }
 
@@ -96,6 +112,9 @@ export function AppointmentDetailDrawer({ appointmentId, open, onClose, onChange
         setAppointment(apt);
         setVisitNotes(apt.visitNotes ?? '');
         setDiagnosis(apt.diagnosis ?? '');
+        setRescheduleDate(format(new Date(apt.date), 'yyyy-MM-dd'));
+        setRescheduleTime(apt.time ?? '');
+        setConfirmDelete(false);
         if (apt.visitSummaryFileId) {
           setPdfUrl(`/api/admin/visit-summary/${apt.id}`);
           setPdfGeneratedAt(
@@ -122,6 +141,32 @@ export function AppointmentDetailDrawer({ appointmentId, open, onClose, onChange
       cancelled = true;
     };
   }, [open, appointmentId]);
+
+  // Load the doctor's vacant slots for the chosen reschedule date.
+  // fetchAvailableSlots already excludes booked slots, breaks and time-blocks,
+  // and returns [] for closed / unavailable days — so we offer exactly those
+  // options and never re-add the appointment's own (booked) time.
+  useEffect(() => {
+    if (!open || !appointment?.doctorId || !rescheduleDate) {
+      setSlots([]);
+      return;
+    }
+    let cancelled = false;
+    (async () => {
+      setLoadingSlots(true);
+      const res = await fetchAvailableSlots(appointment.doctorId, new Date(rescheduleDate));
+      if (cancelled) return;
+      const list = res.success && Array.isArray(res.data) ? res.data : [];
+      setSlots(list);
+      // Keep the chosen time only if it is genuinely a vacant slot on this date;
+      // otherwise clear it so a booked/closed-day time can't be submitted.
+      setRescheduleTime((prev) => (prev && list.includes(prev) ? prev : ''));
+      setLoadingSlots(false);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [open, appointment?.doctorId, rescheduleDate]);
 
   const refresh = async () => {
     if (!appointmentId) return;
@@ -323,6 +368,53 @@ export function AppointmentDetailDrawer({ appointmentId, open, onClose, onChange
     }
   };
 
+  const handleReschedule = async () => {
+    if (!appointment) return;
+    if (!rescheduleDate || !rescheduleTime) {
+      toast.error('Pick a new date and time.');
+      return;
+    }
+    setRescheduling(true);
+    // Keep everything the same except date/time. Re-activate a cancelled/no-show
+    // appointment on reschedule (otherwise updateAppointment would clear the time).
+    const status =
+      appointment.status === 'CANCELLED' || appointment.status === 'NO_SHOW'
+        ? 'CONFIRMED'
+        : appointment.status;
+    const res = await updateAppointment({
+      id: appointment.id,
+      patientName: appointment.patientName,
+      email: appointment.email,
+      phone: appointment.phone,
+      date: new Date(rescheduleDate),
+      time: rescheduleTime,
+      status,
+      doctorId: appointment.doctorId,
+      customerId: appointment.customerId,
+    });
+    setRescheduling(false);
+    if (res.success) {
+      toast.success('Appointment rescheduled');
+      refresh();
+    } else {
+      toast.error(res.error || 'Could not reschedule');
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!appointmentId) return;
+    setDeleting(true);
+    const res = await deleteAppointmentAction(appointmentId);
+    setDeleting(false);
+    if (res.success) {
+      toast.success('Appointment deleted');
+      onChanged?.();
+      onClose();
+    } else {
+      toast.error(res.error || 'Could not delete appointment');
+    }
+  };
+
   const fmtDateTime = (d: Date | string | null) =>
     d ? format(new Date(d), 'MMM d, yyyy · h:mm a') : '—';
 
@@ -473,6 +565,55 @@ export function AppointmentDetailDrawer({ appointmentId, open, onClose, onChange
             </Card>
 
             <Card className="p-4 space-y-3">
+              <h3 className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                <CalendarClock className="w-4 h-4 text-[#8B5C9E]" />
+                Reschedule
+              </h3>
+              <p className="text-xs text-gray-500">
+                Currently: {format(new Date(appointment.date), 'MMM d, yyyy')} at {appointment.time || '—'}
+              </p>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-xs font-medium text-gray-600">New date</label>
+                  <Input
+                    type="date"
+                    value={rescheduleDate}
+                    onChange={(e) => setRescheduleDate(e.target.value)}
+                    className="mt-1"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-gray-600">New time</label>
+                  <select
+                    value={rescheduleTime}
+                    onChange={(e) => setRescheduleTime(e.target.value)}
+                    className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-[#8B5C9E] focus:outline-none focus:ring-[#8B5C9E]"
+                  >
+                    <option value="">{loadingSlots ? 'Loading…' : 'Select time'}</option>
+                    {slots.map((s) => (
+                      <option key={s} value={s}>
+                        {s}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              {!loadingSlots && rescheduleDate && slots.length === 0 && (
+                <p className="text-xs text-amber-600">
+                  No vacant slots on this date — the doctor isn&apos;t available or the clinic is closed. Please pick another day.
+                </p>
+              )}
+              <Button size="sm" onClick={handleReschedule} disabled={rescheduling || !rescheduleTime}>
+                {rescheduling ? (
+                  <Loader2 className="w-3.5 h-3.5 mr-1 animate-spin" />
+                ) : (
+                  <CalendarClock className="w-3.5 h-3.5 mr-1" />
+                )}
+                Reschedule
+              </Button>
+            </Card>
+
+            <Card className="p-4 space-y-3">
               <h3 className="text-sm font-semibold text-gray-700">Clinical notes</h3>
               <div>
                 <label className="text-xs font-medium text-gray-600">Diagnosis</label>
@@ -584,6 +725,38 @@ export function AppointmentDetailDrawer({ appointmentId, open, onClose, onChange
             <div className="text-xs text-gray-400 space-y-0.5">
               <div>Created: {fmtDateTime(appointment.createdAt)}</div>
               <div>Last updated: {fmtDateTime(appointment.updatedAt)}</div>
+            </div>
+
+            {/* Danger zone: delete */}
+            <div className="border-t border-gray-100 pt-4">
+              {!confirmDelete ? (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setConfirmDelete(true)}
+                  className="border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700"
+                >
+                  <Trash2 className="w-3.5 h-3.5 mr-1" />
+                  Delete appointment
+                </Button>
+              ) : (
+                <div className="flex flex-wrap items-center gap-2 rounded-md border border-red-200 bg-red-50 p-3">
+                  <span className="text-sm text-red-700">Delete this appointment permanently?</span>
+                  <div className="ml-auto flex gap-2">
+                    <Button size="sm" variant="ghost" onClick={() => setConfirmDelete(false)} disabled={deleting}>
+                      Cancel
+                    </Button>
+                    <Button
+                      size="sm"
+                      onClick={handleDelete}
+                      disabled={deleting}
+                      className="bg-red-600 text-white hover:bg-red-700"
+                    >
+                      {deleting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : 'Delete'}
+                    </Button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         )}
