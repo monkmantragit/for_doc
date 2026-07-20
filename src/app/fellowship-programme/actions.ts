@@ -240,8 +240,11 @@ export async function createFellowshipApplication(
         }
 
         // Resume upload is required (PDF/DOC/DOCX, max 2MB).
+        // Use the duck-typed guard rather than `instanceof File`: `File` is only a
+        // global on Node 20+, so `instanceof File` throws "File is not defined" on
+        // older server runtimes (e.g. Node 18 on the host) and crashes the action.
         const resume = formData.get('resume');
-        if (!(resume instanceof File) || resume.size === 0) {
+        if (!isResumeUpload(resume) || resume.size === 0) {
             return { success: false, message: 'A resume/CV is required. Please attach a PDF, DOC, or DOCX file.' };
         }
         if (resume.size > MAX_RESUME_BYTES) {
