@@ -11,7 +11,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { createFellowshipApplication } from '../actions';
 
-const MAX_RESUME_BYTES = 5 * 1024 * 1024; // 5MB
+const MAX_RESUME_BYTES = 2 * 1024 * 1024; // 2MB
 
 const ALLOWED_RESUME_EXTENSIONS = [
     '.pdf',
@@ -78,9 +78,9 @@ export default function FellowshipApplicationForm() {
         }
 
         const lowerCaseFileName = file.name.toLowerCase();
-
-    const MAX_RESUME_BYTES = 2 * 1024 * 1024; // 2MB
-    const ALLOWED_RESUME_EXTENSIONS = ['.pdf', '.doc', '.docx'];
+        const hasAllowedExtension = ALLOWED_RESUME_EXTENSIONS.some(
+            (extension) => lowerCaseFileName.endsWith(extension)
+        );
 
         if (!hasAllowedExtension) {
             setResumeFile(null);
@@ -103,10 +103,10 @@ export default function FellowshipApplicationForm() {
         }
 
         if (file.size > MAX_RESUME_BYTES) {
-            setResumeError('This file is too large. Please upload a resume under 2 MB.');
             setResumeFile(null);
+            setResumeError('This file is too large. Please upload a resume under 2 MB.');
             // Clear the input so re-selecting the same over-size file still fires onChange.
-            e.target.value = '';
+            event.target.value = '';
             return;
         }
 
@@ -152,24 +152,15 @@ export default function FellowshipApplicationForm() {
                 'Qualification is required.';
         }
 
-        let resumeIsValid = true;
-
-        if (!resumeFile) {
-            setResumeError(
-                'Resume / CV is required.'
-            );
-
-            resumeIsValid = false;
-        } else if (resumeError) {
-            resumeIsValid = false;
-        }
-
         setErrors(newErrors);
 
-        // Resume/CV is now mandatory.
+        // Resume/CV is mandatory.
         let resumeOk = true;
         if (!resumeFile) {
-            setResumeError('Resume is required. Please attach your CV (PDF, DOC, or DOCX).');
+            setResumeError('Resume / CV is required. Please attach your CV (PDF, DOC, or DOCX).');
+            resumeOk = false;
+        } else if (resumeError) {
+            // A previously-flagged problem (wrong type / too large) still stands.
             resumeOk = false;
         }
 
